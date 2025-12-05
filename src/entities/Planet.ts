@@ -1,5 +1,5 @@
-import MovingItem from './entities/MovingItem.js';
-import Vector2 from './Vector2.js';
+import MovingItem from './MovingItem.js';
+import Vector2 from '../Vector2.js';
 
 export default class Planet extends MovingItem {
   private name: string;
@@ -15,10 +15,18 @@ export default class Planet extends MovingItem {
     this.orbitRadius = orbitRadius;
   }
 
+  /**
+   * updates planet
+   * @param delta time elapsed
+   */
   public override update(delta: number): void {
 
   }
 
+  /**
+   * moves the planet
+   * @param position postion of the planet
+   */
   public override move(position: Vector2): void {
 
   }
