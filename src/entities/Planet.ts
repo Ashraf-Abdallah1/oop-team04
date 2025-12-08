@@ -40,7 +40,9 @@ export default class Planet extends MovingItem {
   public setPlanetImage(): void {
     if (this.name === 'Sun') {
       this.image = CanvasRenderer.loadNewImage('../../assets/Sun.png');
-      this.position = new Vector2(50, 50);
+
+      this.position = new Vector2(window.innerWidth /2 - 250, this.middelpoint.y);
+      console.log(this.image.width);
     } else if (this.name === 'Mercury') {
       this.image = CanvasRenderer.loadNewImage('../../assets/Mercury.png');
       this.position = new Vector2(70, 100);
