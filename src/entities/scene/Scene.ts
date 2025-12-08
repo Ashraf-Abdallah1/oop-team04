@@ -15,7 +15,7 @@ export default abstract class Scene {
     this.canvas = canvas;
     this.canvas.height = window.innerHeight;
     this.canvas.width = window.innerWidth;
-    this.player = new Player(new Vector2(0, 0));
+    this.player = new Player(new Vector2(100, 100));
     this.level = 1;
     this.sBucket = 0;
   }
