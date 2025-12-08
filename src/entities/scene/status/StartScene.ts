@@ -1,6 +1,7 @@
 import StatusScene from '../StatusScene.js';
 import Scene from '../Scene.js';
 import KeyListener from '../../../KeyListener.js';
+
 export default class StartScene extends StatusScene {
   public constructor(canvas: HTMLCanvasElement) {
     super(canvas);
@@ -11,6 +12,10 @@ export default class StartScene extends StatusScene {
   }
 
   public override processInput(keyListener: KeyListener): void {
+
+  }
+
+  public override render(canvas: HTMLCanvasElement): void {
 
   }
 }
