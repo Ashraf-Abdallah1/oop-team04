@@ -1,5 +1,6 @@
 import MovingItem from './MovingItem.js';
 import Vector2 from '../Vector2.js';
+import CanvasRenderer from '../CanvasRenderer.js';
 
 export default class Player extends MovingItem {
   private acceleration: number;
@@ -12,6 +13,7 @@ export default class Player extends MovingItem {
     super();
     this.position.x = boardSize.x;
     this.position.y = boardSize.y;
+    this.image = CanvasRenderer.loadNewImage('../../assets/Rocket.png');
     this.acceleration = 0;
     this.dead = false;
     this.onPlanet = false;

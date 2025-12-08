@@ -26,4 +26,6 @@ export default abstract class Scene {
   public abstract update(delta: number): void;
 
   public abstract processInput(keyListener: KeyListener): void;
+
+  public abstract render(canvas: HTMLCanvasElement): void;
 }

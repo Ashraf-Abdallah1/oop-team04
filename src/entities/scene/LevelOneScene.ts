@@ -1,6 +1,5 @@
 import KeyListener from '../../KeyListener.js';
 import SceneLevel from './SceneLevel.js';
-import Planet from '../Planet.js';
 
 export default class LevelOneScene extends SceneLevel {
   public constructor(canvas: HTMLCanvasElement) {
