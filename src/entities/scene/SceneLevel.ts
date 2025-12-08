@@ -3,7 +3,7 @@ import Scene from './Scene.js';
 import Planet from '../Planet.js';
 import Vector2 from '../../Vector2.js';
 
-export default class SceneLevel extends Scene {
+export default abstract class SceneLevel extends Scene {
   protected planets: Planet[];
 
   public constructor(canvas: HTMLCanvasElement) {
