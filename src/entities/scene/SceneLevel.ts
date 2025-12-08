@@ -21,6 +21,7 @@ export default class SceneLevel extends Scene {
     this.planets.push(new Planet(this.getCanvasCenter(), 'Saturn', 20, 220));
     this.planets.push(new Planet(this.getCanvasCenter(), 'Uranus', 18, 260));
     this.planets.push(new Planet(this.getCanvasCenter(), 'Neptune', 18, 300));
+    this.planets.push(new Planet(this.getCanvasCenter(), 'Sun', 30, 350));
   }
 
   private getCanvasCenter(): Vector2 {
@@ -39,5 +40,17 @@ export default class SceneLevel extends Scene {
    *  @param keyListener the keylistener to get input from
    * */
   public override processInput(keyListener: KeyListener): void {
+  }
+
+  /**
+   * Renders al of elements in level1 on the canvas
+   *
+   * @param canvas the canvas to render on
+   * */
+  public render(canvas: HTMLCanvasElement): void {
+    this.planets.forEach(((planet: Planet) => {
+      planet.render(canvas);
+    }));
+    this.player.render(canvas);
   }
 }
