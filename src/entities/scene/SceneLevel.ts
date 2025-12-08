@@ -21,7 +21,7 @@ export default class SceneLevel extends Scene {
     this.planets.push(new Planet(this.getCanvasCenter(), 'Saturn', 20, 220));
     this.planets.push(new Planet(this.getCanvasCenter(), 'Uranus', 18, 260));
     this.planets.push(new Planet(this.getCanvasCenter(), 'Neptune', 18, 300));
-    this.planets.push(new Planet(this.getCanvasCenter(), 'sun', 30, 350));
+    this.planets.push(new Planet(this.getCanvasCenter(), 'Sun', 30, 350));
   }
 
   private getCanvasCenter(): Vector2 {
