@@ -40,33 +40,49 @@ export default class Planet extends MovingItem {
   public setPlanetImage(): void {
     if (this.name === 'Sun') {
       this.image = CanvasRenderer.loadNewImage('../../assets/Sun.png');
-
-      this.position = new Vector2(window.innerWidth /2 - 250, this.middelpoint.y);
-      console.log(this.image.width);
+      this.image.onload = (): void => {
+        this.position = new Vector2(this.middelpoint.x - this.image.width/2, this.middelpoint.y - this.image.height/2);
+      };
     } else if (this.name === 'Mercury') {
       this.image = CanvasRenderer.loadNewImage('../../assets/Mercury.png');
-      this.position = new Vector2(70, 100);
+      this.image.onload = (): void => {
+        this.position = new Vector2(this.middelpoint.x - this.orbitRadius - this.image.width/2, this.middelpoint.y - this.image.height/2);
+      };
     } else if (this.name === 'Venus') {
       this.image = CanvasRenderer.loadNewImage('../../assets/Venus.png');
-      this.position = new Vector2(90, 110);
+      this.image.onload = (): void => {
+        this.position = new Vector2(this.middelpoint.x - this.orbitRadius - this.image.width/2, this.middelpoint.y - this.image.height/2);
+      };
     } else if (this.name === 'Earth') {
       this.image = CanvasRenderer.loadNewImage('../../assets/Earth.png');
-      this.position = new Vector2(120, 150);
+      this.image.onload = (): void => {
+        this.position = new Vector2(this.middelpoint.x - this.orbitRadius - this.image.width/2, this.middelpoint.y - this.image.height/2);
+      };
     } else if (this.name === 'Mars') {
       this.image = CanvasRenderer.loadNewImage('../../assets/Mars.png');
-      this.position = new Vector2(200, 210);
+      this.image.onload = (): void => {
+        this.position = new Vector2(this.middelpoint.x - this.orbitRadius - this.image.width/2, this.middelpoint.y - this.image.height/2);
+      };
     } else if (this.name === 'Jupiter') {
       this.image = CanvasRenderer.loadNewImage('../../assets/Jupiter.png');
-      this.position = new Vector2(210, 220);
+      this.image.onload = (): void => {
+        this.position = new Vector2(this.middelpoint.x - this.orbitRadius - this.image.width/2, this.middelpoint.y - this.image.height/2);
+      };
     } else if (this.name === 'Saturn') {
       this.image = CanvasRenderer.loadNewImage('../../assets/Saturn.png');
-      this.position = new Vector2(250, 300);
+      this.image.onload = (): void => {
+        this.position = new Vector2(this.middelpoint.x - this.orbitRadius - this.image.width/2, this.middelpoint.y - this.image.height/2);
+      };
     } else if (this.name === 'Uranus') {
       this.image = CanvasRenderer.loadNewImage('../../assets/Uranus.png');
-      this.position = new Vector2(350, 400);
+      this.image.onload = (): void => {
+        this.position = new Vector2(this.middelpoint.x - this.orbitRadius - this.image.width/2, this.middelpoint.y - this.image.height/2);
+      };
     } else if (this.name === 'Neptune') {
       this.image = CanvasRenderer.loadNewImage('../../assets/Neptune.png');
-      this.position = new Vector2(420, 410);
+      this.image.onload = (): void => {
+        this.position = new Vector2(this.middelpoint.x - this.orbitRadius - this.image.width/2, this.middelpoint.y - this.image.height/2);
+      };
     }
   }
 
