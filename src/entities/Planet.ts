@@ -31,9 +31,9 @@ export default class Planet extends MovingItem {
 
   /**
    * moves the planet
-   * @param position postion of the planet
+   * @param direction postion of the planet
    */
-  public override move(position: Vector2): void {
+  public override move(direction: string): void {
 
   }
 
