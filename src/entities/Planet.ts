@@ -39,27 +39,28 @@ export default class Planet extends MovingItem {
 
   public PlanetImage(): void {
     if (this.name === 'Sun') {
-      CanvasRenderer.loadNewImage('./assets/Sun.png');
+      this.image = CanvasRenderer.loadNewImage('./assets/Sun.png');
     } else if (this.name === 'Mercury') {
-      CanvasRenderer.loadNewImage('./assets/Mercury.png');
+      this.image = CanvasRenderer.loadNewImage('./assets/Mercury.png');
     } else if (this.name === 'Venus') {
-      CanvasRenderer.loadNewImage('./assets/Venus.png');
+      this.image = CanvasRenderer.loadNewImage('./assets/Venus.png');
     } else if (this.name === 'Earth') {
-      CanvasRenderer.loadNewImage('./assets/Earth.png');
+      this.image = CanvasRenderer.loadNewImage('./assets/Earth.png');
     } else if (this.name === 'Mars') {
-      CanvasRenderer.loadNewImage('./assets/Mars.png');
+      this.image = CanvasRenderer.loadNewImage('./assets/Mars.png');
     } else if (this.name === 'Jupiter') {
-      CanvasRenderer.loadNewImage('./assets/Jupiter.png');
+      this.image = CanvasRenderer.loadNewImage('./assets/Jupiter.png');
     } else if (this.name === 'Saturn') {
-      CanvasRenderer.loadNewImage('./assets/Saturn.png');
+      this.image = CanvasRenderer.loadNewImage('./assets/Saturn.png');
     } else if (this.name === 'Uranus') {
-      CanvasRenderer.loadNewImage('./assets/Uranus.png');
+      this.image = CanvasRenderer.loadNewImage('./assets/Uranus.png');
     } else if (this.name === 'Neptune') {
-      CanvasRenderer.loadNewImage('./assets/Neptune.png');
+      this.image = CanvasRenderer.loadNewImage('./assets/Neptune.png');
     }
   }
 
   public override render(canvas: HTMLCanvasElement): void {
     CanvasRenderer.drawCircle(canvas, this.middelpoint.x, this.middelpoint.y, this.orbitRadius, 'green');
+    CanvasRenderer.drawImage(canvas, this.image, this.position.x, this.position.y);
   }
 }
