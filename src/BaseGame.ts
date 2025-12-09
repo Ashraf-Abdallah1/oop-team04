@@ -30,7 +30,6 @@ export default class BaseGame extends Game {
    * Process all input. Called from the GameLoop.
    */
   public processInput(): void {
-    this.currentScene.processInput(this.keyListener, this.mouseListener);
     const newScene: Scene | null = this.currentScene.processInput(
       this.keyListener,
       this.mouseListener
@@ -48,7 +47,6 @@ export default class BaseGame extends Game {
    * @returns true if the game should continue
    */
   public update(delta: number): boolean {
-    this.currentScene.update(delta);
     const newScene: Scene | null = this.currentScene.update(delta);
 
     if (newScene !== null) {
