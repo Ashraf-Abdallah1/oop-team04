@@ -1,6 +1,6 @@
-import MovingItem from "./MovingItem.js";
-import Vector2 from "../Vector2.js";
-import CanvasRenderer from "../CanvasRenderer.js";
+import MovingItem from './MovingItem.js';
+import Vector2 from '../Vector2.js';
+import CanvasRenderer from '../CanvasRenderer.js';
 
 export default class Player extends MovingItem {
   private acceleration: number;
@@ -14,7 +14,7 @@ export default class Player extends MovingItem {
   public constructor(boardSize: Vector2) {
     super();
     this.position = new Vector2(boardSize.x / 2, boardSize.y / 2);
-    this.image = CanvasRenderer.loadNewImage("../../assets/Rocket.png");
+    this.image = CanvasRenderer.loadNewImage('../../assets/Rocket.png');
     this.acceleration = 0;
     this.rotation = 0;
     this.dead = false;
@@ -23,6 +23,7 @@ export default class Player extends MovingItem {
 
   /**
    * Updates the player's position based on acceleration and rotation.
+   * @param delta number
    */
   public override update(delta: number): void {
     const direction = new Vector2(Math.cos(this.rotation), Math.sin(this.rotation));
@@ -46,6 +47,7 @@ export default class Player extends MovingItem {
 
   /**
    * Rotates the player to the left.
+   * @param canvas HTMLCanvasElement
    */
   public turnLeft(canvas: HTMLCanvasElement): void {
     const rotationSpeed = 0.007 * (1 - this.acceleration);
@@ -54,6 +56,7 @@ export default class Player extends MovingItem {
 
   /**
    * Rotates the player to the right.
+   * @param canvas HTMLCanvasElement
    */
   public turnRight(canvas: HTMLCanvasElement): void {
     const rotationSpeed = 0.007 * (1 - this.acceleration);
