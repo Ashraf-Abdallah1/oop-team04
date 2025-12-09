@@ -2,6 +2,7 @@ import KeyListener from '../../KeyListener.js';
 import Scene from './Scene.js';
 import Planet from '../Planet.js';
 import Vector2 from '../../Vector2.js';
+import MouseListener from '../../MouseListener.js';
 
 export default abstract class SceneLevel extends Scene {
   protected planets: Planet[];
@@ -32,15 +33,18 @@ export default abstract class SceneLevel extends Scene {
    * update the scene
    *  @param delta time in ms elapsed from the GameLoop
    * */
-  public override update(delta: number): void {
+  public override update(delta: number): Scene | null {
+    return null;
   }
 
   /**
    * process input for the scene
    *  @param keyListener the keylistener to get input from
    * */
-  public override processInput(keyListener: KeyListener): void {
-  }
+  public abstract override processInput(
+    keyListener: KeyListener,
+    mouseListener: MouseListener
+  ): Scene | null;
 
   /**
    * Renders al of elements in level1 on the canvas

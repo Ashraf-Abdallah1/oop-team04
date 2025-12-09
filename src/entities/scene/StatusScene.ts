@@ -1,5 +1,6 @@
 import Scene from './Scene.js';
 import KeyListener from '../../KeyListener.js';
+import MouseListener from '../../MouseListener.js';
 
 export default abstract class StatusScene extends Scene {
   protected text: string | null = null;
@@ -12,7 +13,11 @@ export default abstract class StatusScene extends Scene {
     return null;
   }
 
-  public override processInput(keyListener: KeyListener): void {
-
+  public override processInput(
+    keyListener: KeyListener,
+    mouseListener: MouseListener
+  ): Scene | null {
+    return null;
   }
+
 }
