@@ -10,7 +10,7 @@ export default abstract class CanvasItem {
 
   public constructor() {
     this.boardSize = new Vector2(0, 0);
-    this.image = new HTMLImageElement();
+    this.image = new Image();
     this.position = new Vector2(0, 0);
   }
 
