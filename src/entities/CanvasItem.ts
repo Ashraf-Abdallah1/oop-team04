@@ -26,4 +26,12 @@ export default abstract class CanvasItem {
   public getPosition(): Vector2 {
     return this.position;
   }
+
+  public getWidth(): number {
+    return this.image.width;
+  }
+
+  public getHeight(): number {
+    return this.image.height;
+  }
 }
