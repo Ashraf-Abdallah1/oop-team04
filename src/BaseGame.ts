@@ -39,6 +39,7 @@ export default class BaseGame extends Game {
    * @returns true if the game should continue
    */
   public update(delta: number): boolean {
+    this.currentScene.update(delta);
     return true;
   }
 
