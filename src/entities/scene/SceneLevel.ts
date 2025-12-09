@@ -34,6 +34,7 @@ export default abstract class SceneLevel extends Scene {
    * */
   public override update(delta: number): void {
     this.player.update(delta);
+    this.planets.forEach(((planet: Planet) => planet.update(delta)));
   }
 
   /**
