@@ -60,9 +60,22 @@ export default class CanvasRenderer {
     image: HTMLImageElement,
     dx: number,
     dy: number,
+    angle?: number
   ): void {
     const ctx: CanvasRenderingContext2D = CanvasRenderer.getCanvasContext(canvas);
-    ctx.drawImage(image, dx, dy);
+
+    ctx.save();
+
+    if (angle && !isNaN(angle)) {
+      ctx.translate(dx + image.width / 2, dy + image.height / 2);
+      ctx.rotate(angle);
+      ctx.translate(-image.width / 2, -image.height / 2);
+      ctx.drawImage(image, 0, 0);
+    } else {
+      ctx.drawImage(image, dx, dy);
+    }
+
+    ctx.restore();
   }
 
   /**

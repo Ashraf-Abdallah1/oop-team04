@@ -32,6 +32,7 @@ export default abstract class SceneLevel extends Scene {
   /**
    * update the scene
    *  @param delta time in ms elapsed from the GameLoop
+   *  @returns
    * */
   public override update(delta: number): Scene | null {
     this.player.update(delta);
@@ -42,11 +43,29 @@ export default abstract class SceneLevel extends Scene {
   /**
    * process input for the scene
    *  @param keyListener the keylistener to get input from
+   *  @param mouseListener the mouseListener to get input from
+   *  @returns
    * */
-  public abstract override processInput(
-    keyListener: KeyListener,
+  public override processInput(keyListener: KeyListener,
     mouseListener: MouseListener
-  ): Scene | null;
+  ): Scene | null {
+    if (keyListener.isKeyDown(KeyListener.KEY_UP)) {
+      this.player.accelerate();
+    }
+
+    if (keyListener.isKeyDown(KeyListener.KEY_LEFT)) {
+      this.player.turnLeft(this.getCanvas());
+    }
+
+    if (keyListener.isKeyDown(KeyListener.KEY_DOWN)) {
+      this.player.brake();
+    }
+
+    if (keyListener.isKeyDown(KeyListener.KEY_RIGHT)) {
+      this.player.turnRight(this.getCanvas());
+    }
+    return null;
+  }
 
   /**
    * Renders al of elements in level1 on the canvas
@@ -57,6 +76,6 @@ export default abstract class SceneLevel extends Scene {
     this.planets.forEach(((planet: Planet) => {
       planet.render(canvas);
     }));
-    this.player.render(canvas);
+    this.player.render(canvas, this.player.getRotation());
   }
 }
