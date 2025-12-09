@@ -42,7 +42,21 @@ export default abstract class SceneLevel extends Scene {
    *  @param keyListener the keylistener to get input from
    * */
   public override processInput(keyListener: KeyListener): void {
-    // implement de process input van alee levels hierrrrrrr TODO
+    if (keyListener.isKeyDown(KeyListener.KEY_UP)) {
+      this.player.accelerate();
+    }
+
+    if (keyListener.isKeyDown(KeyListener.KEY_LEFT)) {
+      this.player.turnLeft(this.getCanvas());
+    }
+
+    if (keyListener.isKeyDown(KeyListener.KEY_DOWN)) {
+      this.player.brake();
+    }
+
+    if (keyListener.isKeyDown(KeyListener.KEY_RIGHT)) {
+      this.player.turnRight(this.getCanvas());
+    }
   }
 
   /**
@@ -54,6 +68,6 @@ export default abstract class SceneLevel extends Scene {
     this.planets.forEach(((planet: Planet) => {
       planet.render(canvas);
     }));
-    this.player.render(canvas);
+    this.player.render(canvas, this.player.getRotation());
   }
 }
