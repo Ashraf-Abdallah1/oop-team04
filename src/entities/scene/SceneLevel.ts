@@ -13,15 +13,15 @@ export default abstract class SceneLevel extends Scene {
   }
 
   protected makePlanets(): void {
-    this.planets.push(new Planet(this.getCanvasCenter(), 'Mercury', 10, 280));
-    this.planets.push(new Planet(this.getCanvasCenter(), 'Venus', 14, 350));
-    this.planets.push(new Planet(this.getCanvasCenter(), 'Earth', 16, 495));
-    this.planets.push(new Planet(this.getCanvasCenter(), 'Mars', 12, 610));
-    this.planets.push(new Planet(this.getCanvasCenter(), 'Jupiter', 22, 780));
-    this.planets.push(new Planet(this.getCanvasCenter(), 'Saturn', 20, 1050));
-    this.planets.push(new Planet(this.getCanvasCenter(), 'Uranus', 18, 1280));
-    this.planets.push(new Planet(this.getCanvasCenter(), 'Neptune', 18, 1400));
-    this.planets.push(new Planet(this.getCanvasCenter(), 'Sun', 30, 0));
+    this.planets.push(new Planet(this.getCanvasCenter(), 'Mercury', 10, 280, 0.00004));
+    this.planets.push(new Planet(this.getCanvasCenter(), 'Venus', 14, 350, 0.00003));
+    this.planets.push(new Planet(this.getCanvasCenter(), 'Earth', 16, 495, 0.00002));
+    this.planets.push(new Planet(this.getCanvasCenter(), 'Mars', 12, 610, 0.000013));
+    this.planets.push(new Planet(this.getCanvasCenter(), 'Jupiter', 22, 780, 0.00001));
+    this.planets.push(new Planet(this.getCanvasCenter(), 'Saturn', 20, 1050, 0.000007));
+    this.planets.push(new Planet(this.getCanvasCenter(), 'Uranus', 18, 1280, 0.000005));
+    this.planets.push(new Planet(this.getCanvasCenter(), 'Neptune', 18, 1400, 0.000004));
+    this.planets.push(new Planet(this.getCanvasCenter(), 'Sun', 30, 0, 0));
   }
 
   private getCanvasCenter(): Vector2 {

@@ -11,7 +11,9 @@ export default class Planet extends MovingItem {
 
   private middelpoint: Vector2;
 
-  public constructor(middlepoint: Vector2, name: string, size: number, orbitRadius: number) {
+  private currentAngle: number;
+
+  public constructor(middlepoint: Vector2, name: string, size: number, orbitRadius: number, speed: number) {
     super();
     this.name = name;
     this.size = size;
@@ -19,6 +21,8 @@ export default class Planet extends MovingItem {
     this.middelpoint = middlepoint;
     this.orbitRadius = orbitRadius;
     this.setPlanetImage();
+    this.currentAngle = Math.random() * 2;
+    this.speed = speed;
   }
 
   /**
@@ -26,7 +30,12 @@ export default class Planet extends MovingItem {
    * @param delta time elapsed
    */
   public override update(delta: number): void {
+    if (this.name !== 'Sun') {
+      this.position.x = this.middelpoint.x + this.orbitRadius * Math.sin(this.currentAngle * Math.PI);
+      this.position.y = this.middelpoint.y + this.orbitRadius * Math.cos(this.currentAngle * Math.PI);
 
+      this.currentAngle += this.speed * delta;
+    }
   }
 
   /**
@@ -42,18 +51,17 @@ export default class Planet extends MovingItem {
     this.image = CanvasRenderer.loadNewImage(imagePath);
 
     this.image.onload = (): void => {
-      const offsetX: number = this.name === 'Sun'
-        ? this.middelpoint.x - this.image.width / 2
-        : this.middelpoint.x - this.orbitRadius - this.image.width / 2;
-
-      const offsetY: number = this.middelpoint.y - this.image.height / 2;
-
-      this.position = new Vector2(offsetX, offsetY);
+      this.position = new Vector2(
+        this.middelpoint.x + this.orbitRadius,
+        this.middelpoint.y
+      );
     };
   }
 
   public override render(canvas: HTMLCanvasElement): void {
-    CanvasRenderer.drawImage(canvas, this.image, this.position.x, this.position.y);
+    const drawX: number = this.position.x - this.image.width / 2;
+    const drawY: number = this.position.y - this.image.height / 2;
+    CanvasRenderer.drawImage(canvas, this.image, drawX, drawY);
     CanvasRenderer.drawCircle(canvas, this.middelpoint.x, this.middelpoint.y, this.orbitRadius, 'rgba(211, 211, 211, 0.15)');
   }
 }
