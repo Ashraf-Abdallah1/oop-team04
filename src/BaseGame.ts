@@ -23,6 +23,7 @@ export default class BaseGame extends Game {
     this.keyListener = new KeyListener();
     this.mouseListener = new MouseListener(canvas);
     this.currentScene = new LevelOneScene(this.canvas);
+    this.canvas.style.cursor ='none';
   }
 
   /**
