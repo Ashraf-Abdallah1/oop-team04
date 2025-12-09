@@ -26,8 +26,8 @@ export default class Player extends MovingItem {
    * @param delta number
    */
   public override update(delta: number): void {
-    const direction = new Vector2(Math.cos(this.rotation), Math.sin(this.rotation));
-    const scaledDirection = new Vector2(direction.x * this.acceleration * delta, direction.y * this.acceleration * delta);
+    const direction: Vector2 = new Vector2(Math.cos(this.rotation), Math.sin(this.rotation));
+    const scaledDirection: Vector2 = new Vector2(direction.x * this.acceleration * delta, direction.y * this.acceleration * delta);
     this.position = this.position.add(scaledDirection);
   }
 
@@ -50,7 +50,7 @@ export default class Player extends MovingItem {
    * @param canvas HTMLCanvasElement
    */
   public turnLeft(canvas: HTMLCanvasElement): void {
-    const rotationSpeed = 0.007 * (1 - this.acceleration);
+    const rotationSpeed: number = 0.007 * (1 - this.acceleration);
     this.rotation -= rotationSpeed;
   }
 
@@ -59,7 +59,7 @@ export default class Player extends MovingItem {
    * @param canvas HTMLCanvasElement
    */
   public turnRight(canvas: HTMLCanvasElement): void {
-    const rotationSpeed = 0.007 * (1 - this.acceleration);
+    const rotationSpeed: number = 0.007 * (1 - this.acceleration);
     this.rotation += rotationSpeed;
   }
 
