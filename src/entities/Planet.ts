@@ -38,19 +38,19 @@ export default class Planet extends MovingItem {
   }
 
   public setPlanetImage(): void {
-  const imagePath = `../../assets/${this.name}.png`;
-  this.image = CanvasRenderer.loadNewImage(imagePath);
+    const imagePath: string = `../../assets/${this.name}.png`;
+    this.image = CanvasRenderer.loadNewImage(imagePath);
 
-  this.image.onload = (): void => {
-    const offsetX = this.name === 'Sun'
-      ? this.middelpoint.x - this.image.width / 2
-      : this.middelpoint.x - this.orbitRadius - this.image.width / 2;
+    this.image.onload = (): void => {
+      const offsetX: number = this.name === 'Sun'
+        ? this.middelpoint.x - this.image.width / 2
+        : this.middelpoint.x - this.orbitRadius - this.image.width / 2;
 
-    const offsetY = this.middelpoint.y - this.image.height / 2;
+      const offsetY: number = this.middelpoint.y - this.image.height / 2;
 
-    this.position = new Vector2(offsetX, offsetY);
-  };
-}
+      this.position = new Vector2(offsetX, offsetY);
+    };
+  }
 
   public override render(canvas: HTMLCanvasElement): void {
     CanvasRenderer.drawImage(canvas, this.image, this.position.x, this.position.y);
