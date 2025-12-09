@@ -8,14 +8,8 @@ export default class LevelOneScene extends SceneLevel {
     super(canvas);
   }
 
-  public override update(delta: number): Scene | null {
-    return null;
-  }
-
-  public override processInput(
-    keyListener: KeyListener,
-    mouseListener: MouseListener
-  ): Scene | null {
-    return null;
+  public override processInput(keyListener: KeyListener,
+    mouseListener: MouseListener): Scene | null {
+    return super.processInput(keyListener, mouseListener);
   }
 }
