@@ -1,6 +1,7 @@
 import MovingItem from './MovingItem.js';
 import Vector2 from '../Vector2.js';
 import CanvasRenderer from '../CanvasRenderer.js';
+import Question from './Question.js';
 
 export default class Planet extends MovingItem {
   private name: string;
@@ -11,6 +12,8 @@ export default class Planet extends MovingItem {
 
   private middelpoint: Vector2;
 
+  private quistions: Question[];
+
   public constructor(middlepoint: Vector2, name: string, size: number, orbitRadius: number) {
     super();
     this.name = name;
@@ -18,6 +21,7 @@ export default class Planet extends MovingItem {
     this.orbitRadius = orbitRadius;
     this.middelpoint = middlepoint;
     this.orbitRadius = orbitRadius;
+    this.quistions = [];
     this.setPlanetImage();
   }
 
