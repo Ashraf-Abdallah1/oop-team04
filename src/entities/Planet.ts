@@ -28,7 +28,6 @@ export default class Planet extends MovingItem {
     this.size = size;
     this.orbitRadius = orbitRadius;
     this.middelpoint = middlepoint;
-    this.orbitRadius = orbitRadius;
     this.quistions = [];
     this.setPlanetImage();
     this.currentAngle = Math.random() * 2;
