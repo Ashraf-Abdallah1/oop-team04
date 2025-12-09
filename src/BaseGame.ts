@@ -13,7 +13,7 @@ export default class BaseGame extends Game {
 
   private mouseListener: MouseListener;
 
-  private currentScene: Scene;
+  private currentScene: Scene | null;
 
   public constructor(canvas: HTMLCanvasElement) {
     super();
@@ -30,7 +30,9 @@ export default class BaseGame extends Game {
    * Process all input. Called from the GameLoop.
    */
   public processInput(): void {
-    this.currentScene.processInput(this.keyListener);
+    if( this.currentScene !== null) {
+      this.currentScene.processInput(this.keyListener);
+    }
   }
 
   /**
@@ -40,7 +42,12 @@ export default class BaseGame extends Game {
    * @returns true if the game should continue
    */
   public update(delta: number): boolean {
-    this.currentScene.update(delta);
+    if( this.currentScene !== null) {
+      if(this.currentScene.getNextScene() !== null ) {
+        this.currentScene = this.currentScene.getNextScene();
+      }
+    }
+    this.currentScene?.update(delta);
     return true;
   }
 
@@ -49,6 +56,8 @@ export default class BaseGame extends Game {
    */
   public render(): void {
     CanvasRenderer.clearCanvas(this.canvas);
-    this.currentScene.render(this.canvas);
+    if( this.currentScene !== null ) {
+      this.currentScene.render(this.canvas);
+    }
   }
 }
