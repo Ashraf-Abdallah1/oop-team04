@@ -29,7 +29,7 @@ export default class BaseGame extends Game {
    * Process all input. Called from the GameLoop.
    */
   public processInput(): void {
-
+    this.currentScene.processInput(this.keyListener);
   }
 
   /**
