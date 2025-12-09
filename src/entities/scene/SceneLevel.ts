@@ -33,6 +33,7 @@ export default abstract class SceneLevel extends Scene {
    *  @param delta time in ms elapsed from the GameLoop
    * */
   public override update(delta: number): void {
+    this.player.update(delta);
   }
 
   /**
