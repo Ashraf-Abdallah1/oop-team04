@@ -66,7 +66,7 @@ export default class CanvasRenderer {
 
     ctx.save();
 
-    if (!isNaN(angle)) {
+    if (angle && !isNaN(angle)) {
       ctx.translate(dx + image.width / 2, dy + image.height / 2);
       ctx.rotate(angle);
       ctx.translate(-image.width / 2, -image.height / 2);
