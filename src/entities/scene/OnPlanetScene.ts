@@ -5,10 +5,10 @@ import Planet from '../Planet.js';
 import Scene from './Scene.js';
 import LevelOneScene from './LevelOneScene.js';
 import Player from '../Player.js';
-import Question from "../Question";
+import Question from '../Question.js';
 
 export default class OnPlanetScene extends Scene {
-  protected Onplanet: Planet;
+  protected onPlanet: Planet;
 
   protected showSuccessMessage: boolean = false;
 
@@ -16,7 +16,7 @@ export default class OnPlanetScene extends Scene {
 
   public constructor(canvas: HTMLCanvasElement, player: Player, planet: Planet) {
     super(canvas, player);
-    this.Onplanet = planet;
+    this.onPlanet = planet;
   }
 
   /**
@@ -32,7 +32,7 @@ export default class OnPlanetScene extends Scene {
    *  @param keyListener the keylistener to get input from
    * */
   public override processInput(keyListener: KeyListener, mouseListener: MouseListener): void {
-    const key: string = 'Key' + this.Onplanet.getQuestions()[0]?.getGoodAnswer().toString();
+    const key: string = 'Key' + this.onPlanet.getQuestions()[0]?.getGoodAnswer().toString();
     if(keyListener.keyPressed(key)){
       this.player.setSBucks(this.player.getSBucks() + 100);
       this.showSuccessMessage = true;
@@ -59,7 +59,7 @@ export default class OnPlanetScene extends Scene {
     } else if (this.showFailureMessage) {
       CanvasRenderer.drawMessage(canvas, 'Helaas fout antwoord', 'red');
     } else {
-      const questions: Question[] = this.Onplanet.getQuestions();
+      const questions: Question[] = this.onPlanet.getQuestions();
 
       CanvasRenderer.writeText(canvas, `${questions[0]?.getTekst()}`, this.getCanvas().width / 2 + 50, 300, 'center', 'sans-serif', 100);
       CanvasRenderer.writeText(canvas, `A. ${questions[0]?.getAnswers()[0]}  -  B. ${questions[0]?.getAnswers()[1]}  -  C. ${questions[0]?.getAnswers()[2]}`, this.getCanvas().width / 2 + 50, 400, 'center', 'sans-serif', 50, 'white');
