@@ -5,6 +5,7 @@ import Vector2 from '../../Vector2.js';
 import Question from '../Question.js';
 import CanvasRenderer from '../../CanvasRenderer.js';
 import Player from '../Player.js';
+import MouseListener from '../../MouseListener.js';
 
 export default abstract class SceneLevel extends Scene {
   protected planets: Planet[];
@@ -51,8 +52,9 @@ export default abstract class SceneLevel extends Scene {
    * process input for the scene
    *
    *  @param keyListener the keylistener to get input from
+   *  @param mouseListener the mouselistener to get input from
    * */
-  public override processInput(keyListener: KeyListener,): void {
+  public override processInput(keyListener: KeyListener, mouseListener: MouseListener): void {
     this.player.setShowFlame(false);
 
     if (keyListener.isKeyDown(KeyListener.KEY_UP)) {
