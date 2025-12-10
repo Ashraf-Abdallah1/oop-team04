@@ -33,7 +33,7 @@ export default class Planet extends MovingItem {
     this.setPlanetImage();
     this.rotation = Math.random() * 2;
     this.speed = speed;
-    this. question = question;
+    this.question = question;
   }
 
   /**
@@ -78,5 +78,18 @@ export default class Planet extends MovingItem {
 
   public getQuestions(): Question[] {
     return this. question;
+  }
+
+  public renderInteractionKey(canvas: HTMLCanvasElement): void {
+    const keyX: number = this.position.x + this.image.width / 2;
+    const keyY: number = this.position.y - 5 - this.image.width / 2;
+
+    if (this.name !== 'Sun') {
+      CanvasRenderer.fillCircle(canvas, keyX, keyY, 20, 'rgba(0, 0, 0, 0)');
+
+      CanvasRenderer.drawCircle(canvas, keyX, keyY, 20, 'rgb(255, 255, 255)');
+
+      CanvasRenderer.writeText(canvas, 'E', keyX, keyY + 5, 'center', 'Arial', 20, 'green');
+    }
   }
 }
