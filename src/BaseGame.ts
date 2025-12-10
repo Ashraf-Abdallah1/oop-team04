@@ -24,7 +24,7 @@ export default class BaseGame extends Game {
     this.keyListener = new KeyListener();
     this.mouseListener = new MouseListener(canvas);
     this.currentScene = new StartScene(this.canvas);
-          if (this.currentScene instanceof StartScene){
+    if (this.currentScene instanceof StartScene){
       this.canvas.style.cursor ='default';
     } else {
       this.canvas.style.cursor ='none';
