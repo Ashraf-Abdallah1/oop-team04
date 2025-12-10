@@ -212,10 +212,11 @@ export default class CanvasRenderer {
     ctx.rect(dx, dy, width, height);
     ctx.fill();
   }
+
   public static drawMessage(
     canvas: HTMLCanvasElement,
     text: string,
-    color: string = 'red'
+    color: string = 'red',
   ): void {
     const ctx: CanvasRenderingContext2D = CanvasRenderer.getCanvasContext(canvas);
 
@@ -238,5 +239,27 @@ export default class CanvasRenderer {
     ctx.fillText(text, canvas.width / 2, canvas.height / 2);
 
     ctx.restore();
+  }
+
+  public static drawButton(
+    canvas: HTMLCanvasElement,
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    text: string,
+    backgroundColor: string = '#ffffffff',
+    textColor: string = '#000000ff'
+  ): void {
+    const ctx: CanvasRenderingContext2D = CanvasRenderer.getCanvasContext(canvas);
+
+    ctx.fillStyle = backgroundColor;
+    ctx.fillRect(x, y, width, height);
+
+    ctx.fillStyle = textColor;
+    ctx.font = '20px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, x + width / 2, y + height / 2);
   }
 }

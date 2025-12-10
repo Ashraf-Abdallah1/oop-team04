@@ -1,5 +1,6 @@
 import Scene from './Scene.js';
 import KeyListener from '../../KeyListener.js';
+import MouseListener from '../../MouseListener.js';
 import Player from '../Player.js';
 
 export default abstract class StatusScene extends Scene {
@@ -9,11 +10,13 @@ export default abstract class StatusScene extends Scene {
     super(canvas, player);
   }
 
-  public override update(delta: number): Scene | null {
-    return null;
+  public override update(delta: number): void {
   }
 
-  public override processInput(keyListener: KeyListener): void {
-
+  public override processInput(
+    keyListener: KeyListener,
+    mouseListener: MouseListener
+  ): void {
   }
+
 }

@@ -1,5 +1,6 @@
 import KeyListener from '../../KeyListener.js';
 import CanvasRenderer from '../../CanvasRenderer.js';
+import MouseListener from '../../MouseListener.js';
 import Planet from '../Planet.js';
 import Scene from './Scene.js';
 import LevelOneScene from './LevelOneScene.js';
@@ -29,7 +30,7 @@ export default class OnPlanetScene extends Scene {
    * process input for the scene
    *  @param keyListener the keylistener to get input from
    * */
-  public override processInput(keyListener: KeyListener): void {
+  public override processInput(keyListener: KeyListener, mouseListener: MouseListener): void {
     const key: string = 'Key' + this.Onplanet.getQuestions()[0]?.getGoodAnswer().toString();
     if(keyListener.keyPressed(key)){
       this.player.setSBucks(this.player.getSBucks() + 100);
