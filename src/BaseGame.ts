@@ -5,6 +5,8 @@ import KeyListener from './KeyListener.js';
 import MouseListener from './MouseListener.js';
 import Scene from './entities/scene/Scene.js';
 import LevelOneScene from './entities/scene/LevelOneScene.js';
+import Player from './entities/Player.js';
+import Vector2 from './Vector2.js';
 
 export default class BaseGame extends Game {
   private canvas: HTMLCanvasElement;
@@ -15,6 +17,8 @@ export default class BaseGame extends Game {
 
   private currentScene: Scene | null;
 
+  private player: Player;
+
   public constructor(canvas: HTMLCanvasElement) {
     super();
     this.canvas = canvas;
@@ -22,7 +26,8 @@ export default class BaseGame extends Game {
     this.canvas.width = window.innerWidth;
     this.keyListener = new KeyListener();
     this.mouseListener = new MouseListener(canvas);
-    this.currentScene = new LevelOneScene(this.canvas);
+    this.player = new Player(new Vector2(100, 100));
+    this.currentScene = new LevelOneScene(this.canvas, this.player);
     this.canvas.style.cursor ='none';
   }
 

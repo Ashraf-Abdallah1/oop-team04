@@ -14,7 +14,7 @@ export default class Planet extends MovingItem {
 
   private rotation: number;
 
-  private quistions: Question[];
+  private question: Question[];
 
   public constructor(
     middlepoint: Vector2,
@@ -22,16 +22,18 @@ export default class Planet extends MovingItem {
     size: number,
     orbitRadius: number,
     speed: number,
+    question: Question[],
   ){
     super();
     this.name = name;
     this.size = size;
     this.orbitRadius = orbitRadius;
     this.middelpoint = middlepoint;
-    this.quistions = [];
+    this.question = [];
     this.setPlanetImage();
     this.rotation = Math.random() * 2;
     this.speed = speed;
+    this.question = question;
   }
 
   /**
@@ -72,6 +74,10 @@ export default class Planet extends MovingItem {
     const drawY: number = this.position.y - this.image.height / 2;
     CanvasRenderer.drawCircle(canvas, this.middelpoint.x, this.middelpoint.y, this.orbitRadius, 'rgba(211, 211, 211, 0.15)');
     CanvasRenderer.drawImage(canvas, this.image, drawX, drawY);
+  }
+
+  public getQuestions(): Question[] {
+    return this.question;
   }
 
   public renderInteractionKey(canvas: HTMLCanvasElement): void {

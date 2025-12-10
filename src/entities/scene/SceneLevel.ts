@@ -2,26 +2,30 @@ import KeyListener from '../../KeyListener.js';
 import Scene from './Scene.js';
 import Planet from '../Planet.js';
 import Vector2 from '../../Vector2.js';
+import Question from '../Question.js';
+import CanvasRenderer from '../../CanvasRenderer.js';
+import Player from '../Player.js';
 
 export default abstract class SceneLevel extends Scene {
   protected planets: Planet[];
 
-  public constructor(canvas: HTMLCanvasElement) {
-    super(canvas);
+  public constructor(canvas: HTMLCanvasElement, player: Player) {
+    super(canvas, player);
     this.planets = [];
     this.makePlanets();
   }
 
   protected makePlanets(): void {
-    this.planets.push(new Planet(this.getCanvasCenter(), 'Mercury', 10, 280, 0.00004));
-    this.planets.push(new Planet(this.getCanvasCenter(), 'Venus', 14, 350, 0.00003));
-    this.planets.push(new Planet(this.getCanvasCenter(), 'Earth', 16, 495, 0.00002));
-    this.planets.push(new Planet(this.getCanvasCenter(), 'Mars', 12, 610, 0.000013));
-    this.planets.push(new Planet(this.getCanvasCenter(), 'Jupiter', 22, 780, 0.00001));
-    this.planets.push(new Planet(this.getCanvasCenter(), 'Saturn', 20, 1050, 0.000007));
-    this.planets.push(new Planet(this.getCanvasCenter(), 'Uranus', 18, 1280, 0.000005));
-    this.planets.push(new Planet(this.getCanvasCenter(), 'Neptune', 18, 1400, 0.000004));
-    this.planets.push(new Planet(this.getCanvasCenter(), 'Sun', 30, 0, 0));
+    // betere vragen en answers  bedenken TODO
+    this.planets.push(new Planet(this.getCanvasCenter(), 'Mercury', 10, 280, 0.00004, [new Question('wat is de naam', 'A', ['Mercury', 'blauw', 'groen'])]));
+    this.planets.push(new Planet(this.getCanvasCenter(), 'Venus', 14, 350, 0.00003, [new Question('wat is de naam', 'A', ['rood', 'blauw', 'groen'])]));
+    this.planets.push(new Planet(this.getCanvasCenter(), 'Earth', 16, 495, 0.00002, [new Question('wat is de naam', 'A', ['rood', 'blauw', 'groen'])]));
+    this.planets.push(new Planet(this.getCanvasCenter(), 'Mars', 12, 610, 0.000013, [new Question('wat is de naam', 'A', ['rood', 'blauw', 'groen'])]));
+    this.planets.push(new Planet(this.getCanvasCenter(), 'Jupiter', 22, 780, 0.00001, [new Question('wat is de naam', 'A', ['rood', 'blauw', 'groen'])]));
+    this.planets.push(new Planet(this.getCanvasCenter(), 'Saturn', 20, 1050, 0.000007, [new Question('wat is de naam', 'A', ['rood', 'Saturn', 'groen'])]));
+    this.planets.push(new Planet(this.getCanvasCenter(), 'Uranus', 18, 1280, 0.000005, [new Question('wat is de naamr', 'A', ['rood', 'Uranus', 'groen'])]));
+    this.planets.push(new Planet(this.getCanvasCenter(), 'Neptune', 18, 1400, 0.000004, [new Question('wat is de naam', 'A', ['rood', 'Neptune', 'groen'])]));
+    this.planets.push(new Planet(this.getCanvasCenter(), 'Sun', 30, 0, 0, [new Question('wat is de naam', 'A', ['Sun', 'blauw', 'groen'])]));
   }
 
   private getCanvasCenter(): Vector2 {
@@ -69,5 +73,6 @@ export default abstract class SceneLevel extends Scene {
       planet.render(canvas);
     }));
     this.player.render(canvas, this.player.getRotation());
+    CanvasRenderer.writeText(canvas, `S-Bucks: ${this.player.getSBucks()}`, 20, 40, 'left', 'sans-serif', 30, 'white');
   }
 }
