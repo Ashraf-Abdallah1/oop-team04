@@ -6,7 +6,7 @@ import LevelOneScene from './LevelOneScene.js';
 import Player from '../Player.js';
 
 export default class OnPlanetScene extends Scene {
-  protected planetOn: Planet;
+  protected Onplanet: Planet;
 
   protected showSuccessMessage: boolean = false;
 
@@ -14,7 +14,7 @@ export default class OnPlanetScene extends Scene {
 
   public constructor(canvas: HTMLCanvasElement, player: Player, planet: Planet) {
     super(canvas, player);
-    this.planetOn = planet;
+    this.Onplanet = planet;
   }
   /**
    * update the scene
@@ -29,7 +29,7 @@ export default class OnPlanetScene extends Scene {
    *  @param keyListener the keylistener to get input from
    * */
   public override processInput(keyListener: KeyListener): void {
-    const key: string = 'Key' + this.planetOn.getQuestions()[0]?.getGoodAnswer().toString();
+    const key: string = 'Key' + this.Onplanet.getQuestions()[0]?.getGoodAnswer().toString();
     if(keyListener.keyPressed(key)){
       this.player.setSBucks(this.player.getSBucks() + 100);
       this.showSuccessMessage = true;
@@ -57,10 +57,10 @@ export default class OnPlanetScene extends Scene {
     } else if(this.showFailureMessage){
       CanvasRenderer.writeText(this.getCanvas(), 'helaas fout antwoord', this.getCanvas().width / 2 + 50, 300, 'center', 'sans-serif', 100);
     }else {
-      const quistion: string|undefined =this.planetOn.getQuestions()[0]?.getTekst();
-      const answer1: string|undefined = this.planetOn.getQuestions()[0]?.getAnswers()[0];
-      const answer2: string|undefined = this.planetOn.getQuestions()[0]?.getAnswers()[1];
-      const answer3: string|undefined = this.planetOn.getQuestions()[0]?.getAnswers()[2];
+      const quistion: string|undefined =this.Onplanet.getQuestions()[0]?.getTekst();
+      const answer1: string|undefined = this.Onplanet.getQuestions()[0]?.getAnswers()[0];
+      const answer2: string|undefined = this.Onplanet.getQuestions()[0]?.getAnswers()[1];
+      const answer3: string|undefined = this.Onplanet.getQuestions()[0]?.getAnswers()[2];
 
       CanvasRenderer.writeText(canvas, `${quistion}`, this.getCanvas().width / 2 + 50, 300, 'center', 'sans-serif', 100);
       CanvasRenderer.writeText(canvas, `A.${answer1}  -  B.${answer2}  -  C.${answer3}`, this.getCanvas().width / 2 + 50, 400, 'center', 'sans-serif', 50, 'white');
