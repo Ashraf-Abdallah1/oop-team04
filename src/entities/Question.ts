@@ -1,13 +1,13 @@
 export default class Question {
   private tekst: string;
 
-  private goedAnswer: string;
+  private goodAnswer: string;
 
   private answers: string[];
 
   public constructor(tekst: string, rightAnswer: string, answers: string[]) {
     this.tekst = tekst;
-    this.goedAnswer = rightAnswer;
+    this.goodAnswer = rightAnswer;
     this.answers = answers;
   }
 
@@ -15,8 +15,8 @@ export default class Question {
     return this.tekst;
   }
 
-  public getGoedAnswer(): string {
-    return this.goedAnswer;
+  public getGoodAnswer(): string {
+    return this.goodAnswer;
   }
 
   public getAnswers(): string[] {

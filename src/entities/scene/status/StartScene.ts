@@ -2,10 +2,11 @@ import StatusScene from '../StatusScene.js';
 import KeyListener from '../../../KeyListener.js';
 import MouseListener from '../../../MouseListener.js';
 import LevelOneScene from '../LevelOneScene.js';
+import Player from '../../Player.js';
 
 export default class StartScene extends StatusScene {
-  public constructor(canvas: HTMLCanvasElement) {
-    super(canvas);
+  public constructor(canvas: HTMLCanvasElement, player: Player) {
+    super(canvas, player );
   }
 
   /**
@@ -39,7 +40,7 @@ export default class StartScene extends StatusScene {
     const insideButton: boolean = insideX && insideY;
 
     if (clicked && insideButton) {
-      this.nextScene = new LevelOneScene(this.getCanvas());
+      this.nextScene = new LevelOneScene(this.getCanvas(), this.player);
     }
   }
 

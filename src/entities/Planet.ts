@@ -14,7 +14,7 @@ export default class Planet extends MovingItem {
 
   private rotation: number;
 
-  private quistions: Question[];
+  private question: Question[];
 
   public constructor(
     middlepoint: Vector2,
@@ -22,16 +22,18 @@ export default class Planet extends MovingItem {
     size: number,
     orbitRadius: number,
     speed: number,
+    question: Question[],
   ){
     super();
     this.name = name;
     this.size = size;
     this.orbitRadius = orbitRadius;
     this.middelpoint = middlepoint;
-    this.quistions = [];
+    this.question = [];
     this.setPlanetImage();
     this.rotation = Math.random() * 2;
     this.speed = speed;
+    this.question = question;
   }
 
   /**
@@ -72,5 +74,22 @@ export default class Planet extends MovingItem {
     const drawY: number = this.position.y - this.image.height / 2;
     CanvasRenderer.drawCircle(canvas, this.middelpoint.x, this.middelpoint.y, this.orbitRadius, 'rgba(211, 211, 211, 0.15)');
     CanvasRenderer.drawImage(canvas, this.image, drawX, drawY);
+  }
+
+  public getQuestions(): Question[] {
+    return this.question;
+  }
+
+  public renderInteractionKey(canvas: HTMLCanvasElement): void {
+    const keyX: number = this.position.x + this.image.width / 2;
+    const keyY: number = this.position.y - 5 - this.image.width / 2;
+
+    if (this.name !== 'Sun') {
+      CanvasRenderer.fillCircle(canvas, keyX, keyY, 20, 'rgba(0, 0, 0, 0)');
+
+      CanvasRenderer.drawCircle(canvas, keyX, keyY, 20, 'rgb(255, 255, 255)');
+
+      CanvasRenderer.writeText(canvas, 'E', keyX, keyY + 5, 'center', 'Arial', 20, 'green');
+    }
   }
 }

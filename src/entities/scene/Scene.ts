@@ -14,11 +14,11 @@ export default abstract class Scene {
 
   private canvas: HTMLCanvasElement;
 
-  public constructor(canvas: HTMLCanvasElement) {
+  public constructor(canvas: HTMLCanvasElement, player: Player) {
     this.canvas = canvas;
     this.canvas.height = window.innerHeight;
     this.canvas.width = window.innerWidth;
-    this.player = new Player(new Vector2(100, 100));
+    this.player = player;
     this.level = 1;
     this.sBucket = 0;
   }
