@@ -2,7 +2,6 @@ import KeyListener from '../../KeyListener.js';
 import Scene from './Scene.js';
 import Planet from '../Planet.js';
 import Vector2 from '../../Vector2.js';
-import MouseListener from '../../MouseListener.js';
 import Question from '../Question.js';
 import CanvasRenderer from '../../CanvasRenderer.js';
 import Player from '../Player.js';
@@ -50,13 +49,10 @@ export default abstract class SceneLevel extends Scene {
 
   /**
    * process input for the scene
+   *
    *  @param keyListener the keylistener to get input from
-   *  @param mouseListener the mouseListener to get input from
-   *  @returns
    * */
-  public override processInput(keyListener: KeyListener,
-                               mouseListener: MouseListener
-  ): void {
+  public override processInput(keyListener: KeyListener,): void {
     this.player.setShowFlame(false);
 
     if (keyListener.isKeyDown(KeyListener.KEY_UP)) {
