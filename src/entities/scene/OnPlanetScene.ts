@@ -5,6 +5,7 @@ import Planet from '../Planet.js';
 import Scene from './Scene.js';
 import LevelOneScene from './LevelOneScene.js';
 import Player from '../Player.js';
+import Question from "../Question";
 
 export default class OnPlanetScene extends Scene {
   protected Onplanet: Planet;
@@ -54,17 +55,14 @@ export default class OnPlanetScene extends Scene {
    * */
   public override render(canvas: HTMLCanvasElement): void {
     if (this.showSuccessMessage) {
-      CanvasRenderer.drawMessage(canvas, 'Goed gedaan! +100 Bucks ', 'green');
+      CanvasRenderer.drawMessage(canvas, 'Goed gedaan! +100 Bucks', 'green');
     } else if (this.showFailureMessage) {
-      CanvasRenderer.writeText(this.getCanvas(), 'helaas fout antwoord', this.getCanvas().width / 2 + 50, 300, 'center', 'sans-serif', 100);
+      CanvasRenderer.drawMessage(canvas, 'Helaas fout antwoord', 'red');
     } else {
-      const quistion: string | undefined = this.Onplanet.getQuestions()[0]?.getTekst();
-      const answer1: string | undefined = this.Onplanet.getQuestions()[0]?.getAnswers()[0];
-      const answer2: string | undefined = this.Onplanet.getQuestions()[0]?.getAnswers()[1];
-      const answer3: string | undefined = this.Onplanet.getQuestions()[0]?.getAnswers()[2];
+      const questions: Question[] = this.Onplanet.getQuestions();
 
-      CanvasRenderer.writeText(canvas, `${quistion}`, this.getCanvas().width / 2 + 50, 300, 'center', 'sans-serif', 100);
-      CanvasRenderer.writeText(canvas, `A.${answer1}  -  B.${answer2}  -  C.${answer3}`, this.getCanvas().width / 2 + 50, 400, 'center', 'sans-serif', 50, 'white');
+      CanvasRenderer.writeText(canvas, `${questions[0]?.getTekst()}`, this.getCanvas().width / 2 + 50, 300, 'center', 'sans-serif', 100);
+      CanvasRenderer.writeText(canvas, `A. ${questions[0]?.getAnswers()[0]}  -  B. ${questions[0]?.getAnswers()[1]}  -  C. ${questions[0]?.getAnswers()[2]}`, this.getCanvas().width / 2 + 50, 400, 'center', 'sans-serif', 50, 'white');
     }
   }
 }

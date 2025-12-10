@@ -213,10 +213,17 @@ export default class CanvasRenderer {
     ctx.fill();
   }
 
+  /**
+   * Draw a message box in the center of the canvas
+   *
+   * @param canvas the canvas to draw to
+   * @param text the text to display in the message box
+   * @param color the color of the message box
+   * */
   public static drawMessage(
     canvas: HTMLCanvasElement,
     text: string,
-    color: string = 'red',
+    color: string,
   ): void {
     const ctx: CanvasRenderingContext2D = CanvasRenderer.getCanvasContext(canvas);
 
@@ -241,6 +248,18 @@ export default class CanvasRenderer {
     ctx.restore();
   }
 
+  /**
+   * Draw a button on the canvas
+   *
+   * @param canvas the canvas to draw to
+   * @param x the x-coordinate of the button
+   * @param y the y-coordinate of the button
+   * @param width the width of the button
+   * @param height the height of the button
+   * @param text the text to display on the button
+   * @param backgroundColor the background color of the button
+   * @param textColor the text color of the button
+   * */
   public static drawButton(
     canvas: HTMLCanvasElement,
     x: number,
