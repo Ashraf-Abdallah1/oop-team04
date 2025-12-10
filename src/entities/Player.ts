@@ -12,6 +12,8 @@ export default class Player extends MovingItem {
 
   private rotation: number;
 
+  private sBucks: number ;
+
   public constructor(boardSize: Vector2) {
     super();
     this.position = new Vector2(boardSize.x / 2, boardSize.y / 2);
@@ -20,6 +22,7 @@ export default class Player extends MovingItem {
     this.rotation = 0;
     this.dead = false;
     this.onPlanet = false;
+    this.sBucks = 0;
   }
 
   /**
@@ -90,5 +93,13 @@ export default class Player extends MovingItem {
 
   public isDead(): boolean {
     return this.dead;
+  }
+
+  public getSBucks(): number {
+    return this.sBucks;
+  }
+
+  public setSBucks(bucks: number): void {
+    this.sBucks = bucks;
   }
 }

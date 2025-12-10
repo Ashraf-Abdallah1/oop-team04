@@ -1,8 +1,21 @@
 import KeyListener from '../../KeyListener.js';
-import Scene from './Scene.js';
 import CanvasRenderer from '../../CanvasRenderer.js';
+import Planet from '../Planet.js';
+import Scene from './Scene.js';
+import LevelOneScene from './LevelOneScene.js';
+import Player from '../Player.js';
 
 export default class OnPlanetScene extends Scene {
+  protected planetOn: Planet;
+
+  protected showSuccessMessage: boolean = false;
+
+  protected showFailureMessage: boolean = false;
+
+  public constructor(canvas: HTMLCanvasElement, player: Player, planet: Planet) {
+    super(canvas, player);
+    this.planetOn = planet;
+  }
   /**
    * update the scene
    *  @param delta time in ms elapsed from the GameLoop
@@ -16,6 +29,21 @@ export default class OnPlanetScene extends Scene {
    *  @param keyListener the keylistener to get input from
    * */
   public override processInput(keyListener: KeyListener): void {
+    const key: string = 'Key' + this.planetOn.getQuestions()[0]?.getGoodAnswer().toString();
+    if(keyListener.keyPressed(key)){
+      this.player.setSBucks(this.player.getSBucks() + 100);
+      console.log(this.player.getSBucks());
+      this.showSuccessMessage = true;
+      setTimeout(() => {
+        this.nextScene = new LevelOneScene(this.getCanvas(), this.player);
+      }, 2000);
+    }
+    if(keyListener.keyPressed(KeyListener.KEY_B) || keyListener.keyPressed(KeyListener.KEY_C)){
+      this.showFailureMessage = true;
+      setTimeout(() => {
+        this.nextScene = new LevelOneScene(this.getCanvas(), this.player);
+      }, 2000);
+    }
   }
 
   /**
@@ -24,6 +52,19 @@ export default class OnPlanetScene extends Scene {
    * @param canvas the canvas to render on
    * */
   public override render(canvas: HTMLCanvasElement): void {
-    CanvasRenderer.writeText(canvas, 'Je bent aan de Planet', this.getCanvas().width / 2 + 50, 300, 'center', 'sans-serif', 100);
+
+    if(this.showSuccessMessage){
+      CanvasRenderer.writeText(this.getCanvas(), 'goed gedaan 100s bucks', this.getCanvas().width / 2 + 50, 300, 'center', 'sans-serif', 100);
+    } else if(this.showFailureMessage){
+      CanvasRenderer.writeText(this.getCanvas(), 'helaas fout antwoord', this.getCanvas().width / 2 + 50, 300, 'center', 'sans-serif', 100);
+    }else {
+      const quistion: string|undefined =this.planetOn.getQuestions()[0]?.getTekst();
+      const answer1: string|undefined = this.planetOn.getQuestions()[0]?.getAnswers()[0];
+      const answer2: string|undefined = this.planetOn.getQuestions()[0]?.getAnswers()[1];
+      const answer3: string|undefined = this.planetOn.getQuestions()[0]?.getAnswers()[2];
+
+      CanvasRenderer.writeText(canvas, `${quistion}`, this.getCanvas().width / 2 + 50, 300, 'center', 'sans-serif', 100);
+      CanvasRenderer.writeText(canvas, `A.${answer1}  -  B.${answer2}  -  C.${answer3}`, this.getCanvas().width / 2 + 50, 400, 'center', 'sans-serif', 50, 'white');
+    }
   }
 }
