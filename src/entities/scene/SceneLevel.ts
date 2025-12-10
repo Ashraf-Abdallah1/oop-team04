@@ -46,12 +46,15 @@ export default abstract class SceneLevel extends Scene {
    *  @param keyListener the keylistener to get input from
    * */
   public override processInput(keyListener: KeyListener): void {
+    this.player.setShowFlame(false);
+
     if (keyListener.isKeyDown(KeyListener.KEY_UP)) {
       this.player.accelerate();
+      this.player.setShowFlame(true);
     }
 
     if (keyListener.isKeyDown(KeyListener.KEY_LEFT)) {
-      this.player.turnLeft(this.getCanvas());
+      this.player.turnLeft();
     }
 
     if (keyListener.isKeyDown(KeyListener.KEY_DOWN)) {
@@ -59,7 +62,7 @@ export default abstract class SceneLevel extends Scene {
     }
 
     if (keyListener.isKeyDown(KeyListener.KEY_RIGHT)) {
-      this.player.turnRight(this.getCanvas());
+      this.player.turnRight();
     }
   }
 
@@ -73,6 +76,7 @@ export default abstract class SceneLevel extends Scene {
       planet.render(canvas);
     }));
     this.player.render(canvas, this.player.getRotation());
+    this.player.getFlame().render(canvas, this.player.getFlame().getRotation());
     CanvasRenderer.writeText(canvas, `S-Bucks: ${this.player.getSBucks()}`, 20, 40, 'left', 'sans-serif', 30, 'white');
   }
 }
