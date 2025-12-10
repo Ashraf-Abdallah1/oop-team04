@@ -5,6 +5,8 @@ import KeyListener from './KeyListener.js';
 import MouseListener from './MouseListener.js';
 import Scene from './entities/scene/Scene.js';
 import LevelOneScene from './entities/scene/LevelOneScene.js';
+import Player from './entities/Player.js';
+import Vector2 from './Vector2.js';
 
 export default class BaseGame extends Game {
   private canvas: HTMLCanvasElement;
@@ -13,7 +15,9 @@ export default class BaseGame extends Game {
 
   private mouseListener: MouseListener;
 
-  private currentScene: Scene;
+  private currentScene: Scene | null;
+
+  private player: Player;
 
   public constructor(canvas: HTMLCanvasElement) {
     super();
@@ -22,7 +26,8 @@ export default class BaseGame extends Game {
     this.canvas.width = window.innerWidth;
     this.keyListener = new KeyListener();
     this.mouseListener = new MouseListener(canvas);
-    this.currentScene = new LevelOneScene(this.canvas);
+    this.player = new Player(new Vector2(100, 100));
+    this.currentScene = new LevelOneScene(this.canvas, this.player);
     this.canvas.style.cursor ='none';
   }
 
@@ -30,7 +35,9 @@ export default class BaseGame extends Game {
    * Process all input. Called from the GameLoop.
    */
   public processInput(): void {
-    this.currentScene.processInput(this.keyListener);
+    if( this.currentScene !== null) {
+      this.currentScene.processInput(this.keyListener);
+    }
   }
 
   /**
@@ -40,7 +47,12 @@ export default class BaseGame extends Game {
    * @returns true if the game should continue
    */
   public update(delta: number): boolean {
-    this.currentScene.update(delta);
+    if( this.currentScene !== null) {
+      if(this.currentScene.getNextScene() !== null ) {
+        this.currentScene = this.currentScene.getNextScene();
+      }
+    }
+    this.currentScene?.update(delta);
     return true;
   }
 
@@ -49,6 +61,8 @@ export default class BaseGame extends Game {
    */
   public render(): void {
     CanvasRenderer.clearCanvas(this.canvas);
-    this.currentScene.render(this.canvas);
+    if( this.currentScene !== null ) {
+      this.currentScene.render(this.canvas);
+    }
   }
 }

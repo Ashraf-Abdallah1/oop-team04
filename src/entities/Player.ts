@@ -2,6 +2,7 @@ import MovingItem from './MovingItem.js';
 import Vector2 from '../Vector2.js';
 import CanvasRenderer from '../CanvasRenderer.js';
 import Flame from './Flame.js';
+import CanvasItem from './CanvasItem.js';
 
 export default class Player extends MovingItem {
   private acceleration: number;
@@ -17,6 +18,8 @@ export default class Player extends MovingItem {
   private showFlame: boolean;
 
   private timeToNextFlame: number;
+  
+  private sBucks: number;
 
   public constructor(boardSize: Vector2) {
     super();
@@ -29,6 +32,7 @@ export default class Player extends MovingItem {
     this.flame = new Flame();
     this.timeToNextFlame = Math.random() * 100;
     this.showFlame = false;
+    this.sBucks = 0;
   }
 
   /**
@@ -111,7 +115,21 @@ export default class Player extends MovingItem {
    * move the player
    * @param position postion to go
    */
-  public override move(position: Vector2): void {}
+  public override move(position: Vector2): void {
+  }
+
+  /**
+   * Checks if the player is colliding with a given CanvasItem.
+   *
+   * @param item CanvasItem
+   * @returns boolean whether the player is colliding with the item
+   * */
+  public isCollidingWithItem(item: CanvasItem): boolean {
+    return this.position.x < item.getPosition().x + item.getWidth() &&
+      this.position.x + this.image.width > item.getPosition().x &&
+      this.position.y < item.getPosition().y + item.getHeight() &&
+      this.position.y + this.image.height > item.getPosition().y;
+  }
 
   /**
    * is it dead or not
@@ -119,5 +137,13 @@ export default class Player extends MovingItem {
    */
   public isDead(): boolean {
     return this.dead;
+  }
+
+  public getSBucks(): number {
+    return this.sBucks;
+  }
+
+  public setSBucks(bucks: number): void {
+    this.sBucks = bucks;
   }
 }
