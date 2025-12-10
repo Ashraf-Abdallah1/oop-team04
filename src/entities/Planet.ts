@@ -12,7 +12,7 @@ export default class Planet extends MovingItem {
 
   private middelpoint: Vector2;
 
-  private currentAngle: number;
+  private rotation: number;
 
   private quistions: Question[];
 
@@ -30,7 +30,7 @@ export default class Planet extends MovingItem {
     this.middelpoint = middlepoint;
     this.quistions = [];
     this.setPlanetImage();
-    this.currentAngle = Math.random() * 2;
+    this.rotation = Math.random() * 2;
     this.speed = speed;
   }
 
@@ -40,10 +40,10 @@ export default class Planet extends MovingItem {
    */
   public override update(delta: number): void {
     if (this.name !== 'Sun') {
-      this.position.x = this.middelpoint.x + this.orbitRadius * Math.sin(this.currentAngle * Math.PI);
-      this.position.y = this.middelpoint.y + this.orbitRadius * Math.cos(this.currentAngle * Math.PI);
+      this.position.x = this.middelpoint.x + this.orbitRadius * Math.sin(this.rotation * Math.PI);
+      this.position.y = this.middelpoint.y + this.orbitRadius * Math.cos(this.rotation * Math.PI);
 
-      this.currentAngle += this.speed * delta;
+      this.rotation += this.speed * delta;
     }
   }
 
@@ -70,7 +70,7 @@ export default class Planet extends MovingItem {
   public override render(canvas: HTMLCanvasElement): void {
     const drawX: number = this.position.x - this.image.width / 2;
     const drawY: number = this.position.y - this.image.height / 2;
-    CanvasRenderer.drawImage(canvas, this.image, drawX, drawY);
     CanvasRenderer.drawCircle(canvas, this.middelpoint.x, this.middelpoint.y, this.orbitRadius, 'rgba(211, 211, 211, 0.15)');
+    CanvasRenderer.drawImage(canvas, this.image, drawX, drawY);
   }
 }

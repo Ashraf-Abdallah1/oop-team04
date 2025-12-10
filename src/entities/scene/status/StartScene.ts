@@ -9,8 +9,13 @@ export default class StartScene extends StatusScene {
     super(canvas);
   }
 
-  public override update(delta: number): Scene | null {
-    return null;
+  /**
+   * update method
+   * @param delta elapsed time
+   * @returns Scene or null
+   */
+  public override update(delta: number): void {
+    super.update(delta);
   }
 
   /**
@@ -21,7 +26,7 @@ export default class StartScene extends StatusScene {
    */
   public override processInput(
     keyListener: KeyListener,
-    mouseListener: MouseListener): Scene | null {
+    mouseListener: MouseListener): void {
     const mousePos: { x: number; y: number } = mouseListener.getMousePosition();
     const clicked: boolean = mouseListener.buttonPressed();
 
@@ -35,11 +40,8 @@ export default class StartScene extends StatusScene {
     const insideButton: boolean = insideX && insideY;
 
     if (clicked && insideButton) {
-      const newScene: Scene = new LevelOneScene(this.getCanvas());
-      return newScene;
+      this.nextScene = new LevelOneScene(this.getCanvas());
     }
-
-    return null;
   }
 
   /**

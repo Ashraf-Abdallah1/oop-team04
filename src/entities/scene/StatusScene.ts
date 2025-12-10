@@ -9,15 +9,13 @@ export default abstract class StatusScene extends Scene {
     super(canvas);
   }
 
-  public override update(delta: number): Scene | null {
-    return null;
+  public override update(delta: number): void {
   }
 
   public override processInput(
     keyListener: KeyListener,
     mouseListener: MouseListener
-  ): Scene | null {
-    return null;
+  ): void {
   }
 
 }

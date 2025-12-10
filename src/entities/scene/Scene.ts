@@ -10,6 +10,8 @@ export default abstract class Scene {
 
   protected sBucket: number;
 
+  protected nextScene: Scene | null = null;
+
   private canvas: HTMLCanvasElement;
 
   public constructor(canvas: HTMLCanvasElement) {
@@ -24,11 +26,16 @@ export default abstract class Scene {
   public getCanvas(): HTMLCanvasElement {
     return this.canvas;
   }
-  public abstract update(delta: number): Scene | null;
+  public abstract update(delta: number): void;
 
   public abstract processInput(
     keyListener: KeyListener,
     mouseListener: MouseListener
-  ): Scene | null;
+  ): void;
+
   public abstract render(canvas: HTMLCanvasElement): void;
+
+  public getNextScene(): Scene | null {
+    return this.nextScene;
+  }
 }

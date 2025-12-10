@@ -14,7 +14,7 @@ export default class BaseGame extends Game {
 
   private mouseListener: MouseListener;
 
-  private currentScene: Scene;
+  private currentScene: Scene | null;
 
   public constructor(canvas: HTMLCanvasElement) {
     super();
@@ -24,19 +24,19 @@ export default class BaseGame extends Game {
     this.keyListener = new KeyListener();
     this.mouseListener = new MouseListener(canvas);
     this.currentScene = new StartScene(this.canvas);
+          if (this.currentScene instanceof StartScene){
+      this.canvas.style.cursor ='default';
+    } else {
+      this.canvas.style.cursor ='none';
+    }
   }
 
   /**
    * Process all input. Called from the GameLoop.
    */
   public processInput(): void {
-    const newScene: Scene | null = this.currentScene.processInput(
-      this.keyListener,
-      this.mouseListener
-    );
-
-    if (newScene !== null) {
-      this.currentScene = newScene;
+    if( this.currentScene !== null) {
+      this.currentScene.processInput(this.keyListener, this.mouseListener);
     }
   }
 
@@ -47,12 +47,12 @@ export default class BaseGame extends Game {
    * @returns true if the game should continue
    */
   public update(delta: number): boolean {
-    const newScene: Scene | null = this.currentScene.update(delta);
-
-    if (newScene !== null) {
-      this.currentScene = newScene;
+    if( this.currentScene !== null) {
+      if(this.currentScene.getNextScene() !== null ) {
+        this.currentScene = this.currentScene.getNextScene();
+      }
     }
-
+    this.currentScene?.update(delta);
     return true;
   }
 
@@ -61,6 +61,8 @@ export default class BaseGame extends Game {
    */
   public render(): void {
     CanvasRenderer.clearCanvas(this.canvas);
-    this.currentScene.render(this.canvas);
+    if( this.currentScene !== null ) {
+      this.currentScene.render(this.canvas);
+    }
   }
 }

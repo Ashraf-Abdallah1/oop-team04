@@ -34,10 +34,9 @@ export default abstract class SceneLevel extends Scene {
    *  @param delta time in ms elapsed from the GameLoop
    *  @returns
    * */
-  public override update(delta: number): Scene | null {
+  public override update(delta: number): void {
     this.player.update(delta);
     this.planets.forEach(((planet: Planet) => planet.update(delta)));
-    return null;
   }
 
   /**
@@ -48,7 +47,7 @@ export default abstract class SceneLevel extends Scene {
    * */
   public override processInput(keyListener: KeyListener,
     mouseListener: MouseListener
-  ): Scene | null {
+  ): void {
     if (keyListener.isKeyDown(KeyListener.KEY_UP)) {
       this.player.accelerate();
     }
@@ -64,7 +63,6 @@ export default abstract class SceneLevel extends Scene {
     if (keyListener.isKeyDown(KeyListener.KEY_RIGHT)) {
       this.player.turnRight(this.getCanvas());
     }
-    return null;
   }
 
   /**

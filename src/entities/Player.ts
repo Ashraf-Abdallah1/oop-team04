@@ -1,6 +1,7 @@
 import MovingItem from './MovingItem.js';
 import Vector2 from '../Vector2.js';
 import CanvasRenderer from '../CanvasRenderer.js';
+import CanvasItem from './CanvasItem.js';
 
 export default class Player extends MovingItem {
   private acceleration: number;
@@ -26,8 +27,8 @@ export default class Player extends MovingItem {
    * @param delta number
    */
   public override update(delta: number): void {
-    const direction = new Vector2(Math.cos(this.rotation), Math.sin(this.rotation));
-    const scaledDirection = new Vector2(direction.x * this.acceleration * delta, direction.y * this.acceleration * delta);
+    const direction: Vector2 = new Vector2(Math.cos(this.rotation), Math.sin(this.rotation));
+    const scaledDirection: Vector2 = new Vector2(direction.x * this.acceleration * delta, direction.y * this.acceleration * delta);
     this.position = this.position.add(scaledDirection);
   }
 
@@ -50,7 +51,7 @@ export default class Player extends MovingItem {
    * @param canvas HTMLCanvasElement
    */
   public turnLeft(canvas: HTMLCanvasElement): void {
-    const rotationSpeed = 0.007 * (1 - this.acceleration);
+    const rotationSpeed: number = 0.007 * (1 - this.acceleration);
     this.rotation -= rotationSpeed;
   }
 
@@ -59,7 +60,7 @@ export default class Player extends MovingItem {
    * @param canvas HTMLCanvasElement
    */
   public turnRight(canvas: HTMLCanvasElement): void {
-    const rotationSpeed = 0.007 * (1 - this.acceleration);
+    const rotationSpeed: number = 0.007 * (1 - this.acceleration);
     this.rotation += rotationSpeed;
   }
 
@@ -71,7 +72,21 @@ export default class Player extends MovingItem {
    * move the player
    * @param position postion to go
    */
-  public override move(position: Vector2): void {}
+  public override move(position: Vector2): void {
+  }
+
+  /**
+   * Checks if the player is colliding with a given CanvasItem.
+   *
+   * @param item CanvasItem
+   * @returns boolean whether the player is colliding with the item
+   * */
+  public isCollidingWithItem(item: CanvasItem): boolean {
+    return this.position.x < item.getPosition().x + item.getWidth() &&
+      this.position.x + this.image.width > item.getPosition().x &&
+      this.position.y < item.getPosition().y + item.getHeight() &&
+      this.position.y + this.image.height > item.getPosition().y;
+  }
 
   public isDead(): boolean {
     return this.dead;
