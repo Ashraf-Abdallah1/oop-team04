@@ -32,7 +32,6 @@ export default class OnPlanetScene extends Scene {
     const key: string = 'Key' + this.planetOn.getQuestions()[0]?.getGoodAnswer().toString();
     if(keyListener.keyPressed(key)){
       this.player.setSBucks(this.player.getSBucks() + 100);
-      console.log(this.player.getSBucks());
       this.showSuccessMessage = true;
       setTimeout(() => {
         this.nextScene = new LevelOneScene(this.getCanvas(), this.player);

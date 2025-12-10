@@ -12,7 +12,7 @@ export default class Player extends MovingItem {
 
   private rotation: number;
 
-  private sBucks: number ;
+  private sBucks: number;
 
   public constructor(boardSize: Vector2) {
     super();

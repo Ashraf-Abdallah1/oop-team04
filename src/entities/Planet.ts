@@ -29,7 +29,7 @@ export default class Planet extends MovingItem {
     this.size = size;
     this.orbitRadius = orbitRadius;
     this.middelpoint = middlepoint;
-    this. question = [];
+    this.question = [];
     this.setPlanetImage();
     this.rotation = Math.random() * 2;
     this.speed = speed;
@@ -77,7 +77,7 @@ export default class Planet extends MovingItem {
   }
 
   public getQuestions(): Question[] {
-    return this. question;
+    return this.question;
   }
 
   public renderInteractionKey(canvas: HTMLCanvasElement): void {
