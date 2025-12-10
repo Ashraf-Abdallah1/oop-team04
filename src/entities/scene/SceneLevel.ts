@@ -13,10 +13,13 @@ export default abstract class SceneLevel extends Scene {
   public constructor(canvas: HTMLCanvasElement, player: Player) {
     super(canvas, player);
     this.planets = [];
-    this.fillPlanets();
+    this.initializePlanets();
   }
 
-  private fillPlanets(): void {
+  /**
+   * fills the planets array with planets
+   * */
+  private initializePlanets(): void {
     // betere vragen en answers  bedenken TODO
     this.planets = [
       new Planet(this.getCanvasCenter(), 'Mercury', 10, 280, 0.00004, [new Question('wat is de naam', 'A', ['Mercury', 'blauw', 'groen'])]),
