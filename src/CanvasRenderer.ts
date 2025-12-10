@@ -212,4 +212,31 @@ export default class CanvasRenderer {
     ctx.rect(dx, dy, width, height);
     ctx.fill();
   }
+  public static drawMessage(
+    canvas: HTMLCanvasElement,
+    text: string,
+    color: string = 'red'
+  ): void {
+    const ctx: CanvasRenderingContext2D = CanvasRenderer.getCanvasContext(canvas);
+
+    const boxWidth: number = 600;
+    const boxHeight: number = 200;
+    const x: number = canvas.width / 2 - boxWidth / 2;
+    const y: number = canvas.height / 2 - boxHeight / 2;
+
+    ctx.save();
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, boxWidth, boxHeight);
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '50px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+
+    ctx.restore();
+  }
 }
