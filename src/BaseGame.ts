@@ -4,7 +4,7 @@ import CanvasRenderer from './CanvasRenderer.js';
 import KeyListener from './KeyListener.js';
 import MouseListener from './MouseListener.js';
 import Scene from './entities/scene/Scene.js';
-import LevelOneScene from './entities/scene/LevelOneScene.js';
+import StartScene from './entities/scene/status/StartScene.js';
 import Player from './entities/Player.js';
 import Vector2 from './Vector2.js';
 
@@ -27,8 +27,12 @@ export default class BaseGame extends Game {
     this.keyListener = new KeyListener();
     this.mouseListener = new MouseListener(canvas);
     this.player = new Player(new Vector2(100, 100));
-    this.currentScene = new LevelOneScene(this.canvas, this.player);
-    this.canvas.style.cursor ='none';
+    this.currentScene = new StartScene(this.canvas, this.player);
+    if (this.currentScene instanceof StartScene){
+      this.canvas.style.cursor ='default';
+    } else {
+      this.canvas.style.cursor ='none';
+    }
   }
 
   /**
@@ -36,7 +40,7 @@ export default class BaseGame extends Game {
    */
   public processInput(): void {
     if( this.currentScene !== null) {
-      this.currentScene.processInput(this.keyListener);
+      this.currentScene.processInput(this.keyListener, this.mouseListener);
     }
   }
 

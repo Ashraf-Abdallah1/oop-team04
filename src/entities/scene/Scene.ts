@@ -1,6 +1,7 @@
 import Player from '../Player.js';
 import KeyListener from '../../KeyListener.js';
 import Vector2 from '../../Vector2.js';
+import MouseListener from '../../MouseListener.js';
 
 export default abstract class Scene {
   protected player: Player;
@@ -27,7 +28,10 @@ export default abstract class Scene {
   }
   public abstract update(delta: number): void;
 
-  public abstract processInput(keyListener: KeyListener): void;
+  public abstract processInput(
+    keyListener: KeyListener,
+    mouseListener: MouseListener
+  ): void;
 
   public abstract render(canvas: HTMLCanvasElement): void;
 
