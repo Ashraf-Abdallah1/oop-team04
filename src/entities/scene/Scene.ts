@@ -1,10 +1,12 @@
 import Player from '../Player.js';
 import KeyListener from '../../KeyListener.js';
-import Vector2 from '../../Vector2.js';
 import MouseListener from '../../MouseListener.js';
+import Alien from '../Alien.js';
 
 export default abstract class Scene {
   protected player: Player;
+
+  protected alien: Alien;
 
   protected level: number;
 
@@ -21,6 +23,7 @@ export default abstract class Scene {
     this.player = player;
     this.level = 1;
     this.sBucket = 0;
+    this.alien = new Alien('Joey', 'Mars');
   }
 
   public getCanvas(): HTMLCanvasElement {

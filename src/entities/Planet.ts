@@ -92,4 +92,8 @@ export default class Planet extends MovingItem {
       CanvasRenderer.writeText(canvas, 'E', keyX, keyY + 5, 'center', 'Arial', 20, 'green');
     }
   }
+
+  public getName(): string {
+    return this.name;
+  }
 }
