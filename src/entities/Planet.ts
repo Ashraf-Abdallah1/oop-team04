@@ -20,6 +20,10 @@ export default class Planet extends MovingItem {
 
   private showInteractionKey: boolean;
 
+  private pointOfInterest: HTMLImageElement;
+
+  private showPointOfIntrest: boolean;
+
   public constructor(
     middlepoint: Vector2,
     name: string,
@@ -41,6 +45,9 @@ export default class Planet extends MovingItem {
     this.showInteractionKey = false;
     this.interactionKeyE = new Image();
     this.interactionKeyE.src = '../assets/InteractionKeyE.png';
+    this.showPointOfIntrest = false;
+    this.pointOfInterest = new Image();
+    this.pointOfInterest.src = '../assets/PointOfInterest.png';
   }
 
   /**
@@ -85,10 +92,18 @@ export default class Planet extends MovingItem {
     if (this.showInteractionKey) {
       this.renderInteractionKey(canvas);
     }
+
+    if (this.showPointOfIntrest) {
+      this.renderPointOfInterestKey(canvas);
+    }
   }
 
   public setShowInteractionKey(state: boolean): void {
     this.showInteractionKey = state;
+  }
+
+  public setShowPointOfInterest(state: boolean): void {
+    this.showPointOfIntrest = state;
   }
 
   public getShowInteractionKey(): boolean {
@@ -105,6 +120,15 @@ export default class Planet extends MovingItem {
 
     if (this.name !== 'Sun') {
       CanvasRenderer.drawImage(canvas, this.interactionKeyE, keyX, keyY);
+    }
+  }
+
+  public renderPointOfInterestKey(canvas: HTMLCanvasElement): void {
+    const keyX: number = this.position.x - this.image.height / 2 - 30;
+    const keyY: number = this.position.y - 5 - this.image.height / 2 - 10;
+
+    if (this.name !== 'Sun') {
+      CanvasRenderer.drawImage(canvas, this.pointOfInterest, keyX, keyY);
     }
   }
 }
