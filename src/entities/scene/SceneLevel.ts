@@ -86,7 +86,7 @@ export default abstract class SceneLevel extends Scene {
 
         const distance: number = playerCenter.distanceTo(planet.getPosition());
 
-        const planetRadius: number = planet.getWidth() / 2;
+        const planetRadius: number = planet.getHeight() / 2;
         const playerRadius: number = Math.max(this.player.getWidth(), this.player.getHeight()) / 2;
 
         if (distance <= planetRadius + playerRadius) {
