@@ -60,9 +60,22 @@ export default class CanvasRenderer {
     image: HTMLImageElement,
     dx: number,
     dy: number,
+    angle?: number
   ): void {
     const ctx: CanvasRenderingContext2D = CanvasRenderer.getCanvasContext(canvas);
-    ctx.drawImage(image, dx, dy);
+
+    ctx.save();
+
+    if (angle && !isNaN(angle)) {
+      ctx.translate(dx + image.width / 2, dy + image.height / 2);
+      ctx.rotate(angle);
+      ctx.translate(-image.width / 2, -image.height / 2);
+      ctx.drawImage(image, 0, 0);
+    } else {
+      ctx.drawImage(image, dx, dy);
+    }
+
+    ctx.restore();
   }
 
   /**
@@ -102,6 +115,45 @@ export default class CanvasRenderer {
     ctx.fillStyle = color;
     ctx.textAlign = alignment;
     ctx.fillText(text, xCoordinate, yCoordinate);
+  }
+
+  /**
+   * Function to create an instructionset all new lines divided by '-'
+   * @param canvas Canvas to write to
+   * @param text Text to write
+   * @param xCoordinate x-coordinate of the text
+   * @param yCoordinate y-coordinate of the text
+   * @param alignment align of the text
+   * @param fontFamily font family to use when writing text
+   * @param fontSize font size in pixels
+   * @param color colour of text to write
+   */
+  public static writeInstructions(
+    canvas: HTMLCanvasElement,
+    text: string,
+    xCoordinate: number,
+    yCoordinate: number,
+    alignment: CanvasTextAlign = 'left',
+    fontFamily: string = 'sans-serif',
+    fontSize: number = 20,
+    color: string = 'red',
+  ): void {
+    const ctx: CanvasRenderingContext2D = CanvasRenderer.getCanvasContext(canvas);
+    ctx.font = `${fontSize}px ${fontFamily}`;
+    ctx.fillStyle = color;
+    ctx.textAlign = alignment;
+
+    // Split text into multiple lines
+    const lines: string[] = text.split('\n');
+
+    // Draw each line separately
+    let offsetY: number = 0;
+    const lineHeight: number = fontSize * 1.4; // adjust for spacing
+
+    for (const line of lines) {
+      ctx.fillText(line, xCoordinate, yCoordinate + offsetY);
+      offsetY += lineHeight;
+    }
   }
 
   /**
@@ -198,5 +250,74 @@ export default class CanvasRenderer {
     ctx.fillStyle = color;
     ctx.rect(dx, dy, width, height);
     ctx.fill();
+  }
+
+  /**
+   * Draw a message box in the center of the canvas
+   *
+   * @param canvas the canvas to draw to
+   * @param text the text to display in the message box
+   * @param color the color of the message box
+   * */
+  public static drawMessage(
+    canvas: HTMLCanvasElement,
+    text: string,
+    color: string,
+  ): void {
+    const ctx: CanvasRenderingContext2D = CanvasRenderer.getCanvasContext(canvas);
+
+    const boxWidth: number = 600;
+    const boxHeight: number = 200;
+    const x: number = canvas.width / 2 - boxWidth / 2;
+    const y: number = canvas.height / 2 - boxHeight / 2;
+
+    ctx.save();
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, boxWidth, boxHeight);
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '50px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+
+    ctx.restore();
+  }
+
+  /**
+   * Draw a button on the canvas
+   *
+   * @param canvas the canvas to draw to
+   * @param x the x-coordinate of the button
+   * @param y the y-coordinate of the button
+   * @param width the width of the button
+   * @param height the height of the button
+   * @param text the text to display on the button
+   * @param backgroundColor the background color of the button
+   * @param textColor the text color of the button
+   * */
+  public static drawButton(
+    canvas: HTMLCanvasElement,
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    text: string,
+    backgroundColor: string = '#ffffffff',
+    textColor: string = '#000000ff'
+  ): void {
+    const ctx: CanvasRenderingContext2D = CanvasRenderer.getCanvasContext(canvas);
+
+    ctx.fillStyle = backgroundColor;
+    ctx.fillRect(x, y, width, height);
+
+    ctx.fillStyle = textColor;
+    ctx.font = '25px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, x + width / 2, y + height / 2);
   }
 }

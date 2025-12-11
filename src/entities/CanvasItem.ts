@@ -19,11 +19,19 @@ export default abstract class CanvasItem {
    *
    * @param canvas de canvas
    * */
-  public render(canvas: HTMLCanvasElement): void {
-    CanvasRenderer.drawImage(canvas, this.image, this.position.x, this.position.y);
+  public render(canvas: HTMLCanvasElement, angle?: number): void {
+    CanvasRenderer.drawImage(canvas, this.image, this.position.x, this.position.y, angle);
   }
 
   public getPosition(): Vector2 {
     return this.position;
+  }
+
+  public getWidth(): number {
+    return this.image.width;
+  }
+
+  public getHeight(): number {
+    return this.image.height;
   }
 }
