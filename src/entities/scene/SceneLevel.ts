@@ -78,9 +78,22 @@ export default abstract class SceneLevel extends Scene {
     this.planets.forEach((planet: Planet) => {
       planet.update(delta);
 
-      if (!hasActiveInteractionKey && new Vector2(this.player.getPosition().x + this.player.getWidth() / 2,
-        this.player.getPosition().y).distanceTo(planet.getPosition()) <= 140) {
-        planet.setShowInteractionKey(true);
+      if (!hasActiveInteractionKey) {
+        const playerCenter: Vector2 = new Vector2(
+          this.player.getPosition().x + this.player.getWidth() / 2,
+          this.player.getPosition().y + this.player.getHeight() / 2
+        );
+
+        const distance = playerCenter.distanceTo(planet.getPosition());
+
+        const planetRadius: number = planet.getWidth() / 2;
+        const playerRadius: number = Math.max(this.player.getWidth(), this.player.getHeight()) / 2;
+
+        if (distance <= planetRadius + playerRadius) {
+          planet.setShowInteractionKey(true);
+        } else {
+          planet.setShowInteractionKey(false);
+        }
       } else {
         planet.setShowInteractionKey(false);
       }
