@@ -2,10 +2,10 @@ import KeyListener from '../../KeyListener.js';
 import Scene from './Scene.js';
 import Planet from '../Planet.js';
 import Vector2 from '../../Vector2.js';
-import MouseListener from '../../MouseListener.js';
 import Question from '../Question.js';
 import CanvasRenderer from '../../CanvasRenderer.js';
 import Player from '../Player.js';
+import MouseListener from '../../MouseListener.js';
 
 export default abstract class SceneLevel extends Scene {
   protected planets: Planet[];
@@ -13,20 +13,25 @@ export default abstract class SceneLevel extends Scene {
   public constructor(canvas: HTMLCanvasElement, player: Player) {
     super(canvas, player);
     this.planets = [];
-    this.makePlanets();
+    this.initializePlanets();
   }
 
-  protected makePlanets(): void {
+  /**
+   * fills the planets array with planets
+   * */
+  private initializePlanets(): void {
     // betere vragen en answers  bedenken TODO
-    this.planets.push(new Planet(this.getCanvasCenter(), 'Mercury', 10, 280, 0.00004, [new Question('wat is de naam', 'A', ['Mercury', 'blauw', 'groen'])]));
-    this.planets.push(new Planet(this.getCanvasCenter(), 'Venus', 14, 350, 0.00003, [new Question('wat is de naam', 'A', ['rood', 'blauw', 'groen'])]));
-    this.planets.push(new Planet(this.getCanvasCenter(), 'Earth', 16, 495, 0.00002, [new Question('wat is de naam', 'A', ['rood', 'blauw', 'groen'])]));
-    this.planets.push(new Planet(this.getCanvasCenter(), 'Mars', 12, 610, 0.000013, [new Question('wat is de naam', 'A', ['rood', 'blauw', 'groen'])]));
-    this.planets.push(new Planet(this.getCanvasCenter(), 'Jupiter', 22, 780, 0.00001, [new Question('wat is de naam', 'A', ['rood', 'blauw', 'groen'])]));
-    this.planets.push(new Planet(this.getCanvasCenter(), 'Saturn', 20, 1050, 0.000007, [new Question('wat is de naam', 'A', ['rood', 'Saturn', 'groen'])]));
-    this.planets.push(new Planet(this.getCanvasCenter(), 'Uranus', 18, 1280, 0.000005, [new Question('wat is de naamr', 'A', ['rood', 'Uranus', 'groen'])]));
-    this.planets.push(new Planet(this.getCanvasCenter(), 'Neptune', 18, 1400, 0.000004, [new Question('wat is de naam', 'A', ['rood', 'Neptune', 'groen'])]));
-    this.planets.push(new Planet(this.getCanvasCenter(), 'Sun', 30, 0, 0, [new Question('wat is de naam', 'A', ['Sun', 'blauw', 'groen'])]));
+    this.planets = [
+      new Planet(this.getCanvasCenter(), 'Mercury', 10, 280, 0.00004, [new Question('wat is de naam', 'A', ['Mercury', 'blauw', 'groen'])]),
+      new Planet(this.getCanvasCenter(), 'Venus', 14, 350, 0.00003, [new Question('wat is de naam', 'A', ['rood', 'blauw', 'groen'])]),
+      new Planet(this.getCanvasCenter(), 'Earth', 16, 495, 0.00002, [new Question('wat is de naam', 'A', ['rood', 'blauw', 'groen'])]),
+      new Planet(this.getCanvasCenter(), 'Mars', 12, 610, 0.000013, [new Question('wat is de naam', 'A', ['rood', 'blauw', 'groen'])]),
+      new Planet(this.getCanvasCenter(), 'Jupiter', 22, 780, 0.00001, [new Question('wat is de naam', 'A', ['rood', 'blauw', 'groen'])]),
+      new Planet(this.getCanvasCenter(), 'Saturn', 20, 1050, 0.000007, [new Question('wat is de naam', 'A', ['rood', 'Saturn', 'groen'])]),
+      new Planet(this.getCanvasCenter(), 'Uranus', 18, 1280, 0.000005, [new Question('wat is de naam', 'A', ['rood', 'Uranus', 'groen'])]),
+      new Planet(this.getCanvasCenter(), 'Neptune', 18, 1400, 0.000004, [new Question('wat is de naam', 'A', ['rood', 'Neptune', 'groen'])]),
+      new Planet(this.getCanvasCenter(), 'Sun', 30, 0, 0, [new Question('wat is de naam', 'A', ['Sun', 'blauw', 'groen'])]),
+    ];
   }
 
   private getCanvasCenter(): Vector2 {
@@ -45,13 +50,11 @@ export default abstract class SceneLevel extends Scene {
 
   /**
    * process input for the scene
+   *
    *  @param keyListener the keylistener to get input from
-   *  @param mouseListener the mouseListener to get input from
-   *  @returns
+   *  @param mouseListener the mouselistener to get input from
    * */
-  public override processInput(keyListener: KeyListener,
-    mouseListener: MouseListener
-  ): void {
+  public override processInput(keyListener: KeyListener, mouseListener: MouseListener): void {
     this.player.setShowFlame(false);
 
     if (keyListener.isKeyDown(KeyListener.KEY_UP)) {
