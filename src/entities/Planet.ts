@@ -16,6 +16,14 @@ export default class Planet extends MovingItem {
 
   private question: Question[];
 
+  private interactionKeyE: HTMLImageElement;
+
+  private showInteractionKey: boolean;
+
+  private pointOfInterest: HTMLImageElement;
+
+  private showPointOfIntrest: boolean;
+
   public constructor(
     middlepoint: Vector2,
     name: string,
@@ -23,7 +31,7 @@ export default class Planet extends MovingItem {
     orbitRadius: number,
     speed: number,
     question: Question[],
-  ){
+  ) {
     super();
     this.name = name;
     this.size = size;
@@ -34,6 +42,12 @@ export default class Planet extends MovingItem {
     this.rotation = Math.random() * 2;
     this.speed = speed;
     this.question = question;
+    this.showInteractionKey = false;
+    this.interactionKeyE = new Image();
+    this.interactionKeyE.src = '../assets/InteractionKeyE.png';
+    this.showPointOfIntrest = false;
+    this.pointOfInterest = new Image();
+    this.pointOfInterest.src = '../assets/PointOfInterest.png';
   }
 
   /**
@@ -69,27 +83,54 @@ export default class Planet extends MovingItem {
     };
   }
 
-  public override render(canvas: HTMLCanvasElement): void {
-    const drawX: number = this.position.x - this.image.width / 2;
-    const drawY: number = this.position.y - this.image.height / 2;
-    CanvasRenderer.drawCircle(canvas, this.middelpoint.x, this.middelpoint.y, this.orbitRadius, 'rgba(211, 211, 211, 0.15)');
+  public override render(canvas: HTMLCanvasElement, cameraX: number = 0, cameraY: number = 0): void {
+    const drawX: number = this.position.x - this.image.width / 2 - cameraX;
+    const drawY: number = this.position.y - this.image.height / 2 - cameraY;
+
+    CanvasRenderer.drawCircle(canvas, this.middelpoint.x - cameraX, this.middelpoint.y - cameraY, this.orbitRadius, 'rgba(211, 211, 211, 0.15)');
+
     CanvasRenderer.drawImage(canvas, this.image, drawX, drawY);
+
+    if (this.showInteractionKey) {
+      this.renderInteractionKey(canvas, cameraX, cameraY);
+    }
+
+    if (this.showPointOfIntrest) {
+      this.renderPointOfInterestKey(canvas);
+    }
+  }
+
+  public setShowInteractionKey(state: boolean): void {
+    this.showInteractionKey = state;
+  }
+
+  public setShowPointOfInterest(state: boolean): void {
+    this.showPointOfIntrest = state;
+  }
+
+  public getShowInteractionKey(): boolean {
+    return this.showInteractionKey;
   }
 
   public getQuestions(): Question[] {
     return this.question;
   }
 
-  public renderInteractionKey(canvas: HTMLCanvasElement): void {
-    const keyX: number = this.position.x + this.image.width / 2;
-    const keyY: number = this.position.y - 5 - this.image.width / 2;
+  public renderInteractionKey(canvas: HTMLCanvasElement, cameraX: number = 0, cameraY: number = 0): void {
+    const keyX: number = this.position.x + this.image.width / 2 - cameraX;
+    const keyY: number = this.position.y - 5 - this.image.width / 2 - cameraY;
 
     if (this.name !== 'Sun') {
-      CanvasRenderer.fillCircle(canvas, keyX, keyY, 20, 'rgba(0, 0, 0, 0)');
+      CanvasRenderer.drawImage(canvas, this.interactionKeyE, keyX, keyY);
+    }
+  }
 
-      CanvasRenderer.drawCircle(canvas, keyX, keyY, 20, 'rgb(255, 255, 255)');
+  public renderPointOfInterestKey(canvas: HTMLCanvasElement): void {
+    const keyX: number = this.position.x - this.image.height / 2 - 30;
+    const keyY: number = this.position.y - 5 - this.image.height / 2 - 10;
 
-      CanvasRenderer.writeText(canvas, 'E', keyX, keyY + 5, 'center', 'Arial', 20, 'green');
+    if (this.name !== 'Sun') {
+      CanvasRenderer.drawImage(canvas, this.pointOfInterest, keyX, keyY);
     }
   }
 

@@ -12,6 +12,11 @@ export default class Flame extends CanvasItem {
     this.currentImageIndex = 0;
   }
 
+  public override render(
+  canvas: HTMLCanvasElement, angle?: number, cameraX: number = 0, cameraY: number = 0): void {
+  CanvasRenderer.drawImage(canvas, this.image, this.position.x - cameraX, this.position.y - cameraY,angle);
+}
+
   public setRotation(newRotation: number): void {
     this.rotation = newRotation;
   }

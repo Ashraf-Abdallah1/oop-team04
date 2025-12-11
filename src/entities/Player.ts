@@ -73,6 +73,9 @@ export default class Player extends MovingItem {
     this.timeToNextFlame -= delta;
   }
 
+  public override render(canvas: HTMLCanvasElement, angle?: number, cameraX: number = 0, cameraY: number = 0): void {
+  CanvasRenderer.drawImage(canvas, this.image, this.position.x - cameraX, this.position.y - cameraY, angle);}
+
   public getFlame(): Flame {
     return this.flame;
   }
