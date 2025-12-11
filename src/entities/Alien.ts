@@ -9,7 +9,7 @@ export default class Alien extends CanvasItem {
 
   private delivered: boolean;
 
-  private planetsToGo: string[] = ['Mars', 'Venus', 'Jupiter', 'Saturn'];
+  private planetsToGo: string[] = ['Mercury', 'Neptune', 'Uranus', 'Mars', 'Venus', 'Jupiter', 'Saturn'];
 
   public constructor(name: string, destination: string) {
     super();
