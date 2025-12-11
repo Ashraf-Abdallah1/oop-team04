@@ -69,17 +69,17 @@ export default abstract class SceneLevel extends Scene {
   /**
    * update the scene
    *  @param delta time in ms elapsed from the GameLoop
-   *  @returns
    * */
   public override update(delta: number): void {
     this.player.update(delta);
 
-    const hasActiveInteractionKey = this.planets.some((planet: Planet) => planet.getShowInteractionKey());
+    const hasActiveInteractionKey: boolean = this.planets.some((planet: Planet) => planet.getShowInteractionKey());
 
     this.planets.forEach((planet: Planet) => {
       planet.update(delta);
 
-      if (!hasActiveInteractionKey && new Vector2(this.player.getPosition().x + this.player.getWidth() / 2, this.player.getPosition().y).distanceTo(planet.getPosition()) <= 140) {
+      if (!hasActiveInteractionKey && new Vector2(this.player.getPosition().x + this.player.getWidth() / 2,
+        this.player.getPosition().y).distanceTo(planet.getPosition()) <= 140) {
         planet.setShowInteractionKey(true);
       } else {
         planet.setShowInteractionKey(false);
