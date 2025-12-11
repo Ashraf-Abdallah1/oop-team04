@@ -16,6 +16,8 @@ export default class Planet extends MovingItem {
 
   private question: Question[];
 
+  private showInteractionKey: boolean;
+
   public constructor(
     middlepoint: Vector2,
     name: string,
@@ -34,6 +36,7 @@ export default class Planet extends MovingItem {
     this.rotation = Math.random() * 2;
     this.speed = speed;
     this.question = question;
+    this.showInteractionKey = false;
   }
 
   /**
@@ -74,6 +77,14 @@ export default class Planet extends MovingItem {
     const drawY: number = this.position.y - this.image.height / 2;
     CanvasRenderer.drawCircle(canvas, this.middelpoint.x, this.middelpoint.y, this.orbitRadius, 'rgba(211, 211, 211, 0.15)');
     CanvasRenderer.drawImage(canvas, this.image, drawX, drawY);
+
+    if (this.showInteractionKey) {
+      this.renderInteractionKey(canvas);
+    }
+  }
+
+  public setShowInteractionKey(state: boolean): void {
+    this.showInteractionKey = state;
   }
 
   public getQuestions(): Question[] {
