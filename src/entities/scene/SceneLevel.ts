@@ -73,31 +73,41 @@ export default abstract class SceneLevel extends Scene {
   public override update(delta: number): void {
     this.player.update(delta);
 
-    const hasActiveInteractionKey: boolean = this.planets.some((planet: Planet) => planet.getShowInteractionKey());
+    const playerCenter: Vector2 = new Vector2(
+      this.player.getPosition().x + this.player.getWidth() / 2,
+      this.player.getPosition().y + this.player.getHeight() / 2
+    );
+
+    const playerRadius: number = Math.max(this.player.getWidth(), this.player.getHeight()) / 2;
 
     this.planets.forEach((planet: Planet) => {
       planet.update(delta);
+      planet.setShowInteractionKey(false);
+      planet.setShowPointOfInterest(false);
+    });
 
-      if (!hasActiveInteractionKey) {
-        const playerCenter: Vector2 = new Vector2(
-          this.player.getPosition().x + this.player.getWidth() / 2,
-          this.player.getPosition().y + this.player.getHeight() / 2
-        );
+    let closestPlanet: Planet | undefined;
+    let closestDistance: number = Infinity;
 
-        const distance: number = playerCenter.distanceTo(planet.getPosition());
+    this.planets.forEach((planet: Planet) => {
+      const distance: number = playerCenter.distanceTo(planet.getPosition());
+      const planetRadius: number = planet.getHeight() / 2;
 
-        const planetRadius: number = planet.getHeight() / 2;
-        const playerRadius: number = Math.max(this.player.getWidth(), this.player.getHeight()) / 2;
-
-        if (distance <= planetRadius + playerRadius) {
-          planet.setShowInteractionKey(true);
-        } else {
-          planet.setShowInteractionKey(false);
+      if (distance <= planetRadius + playerRadius) {
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestPlanet = planet;
         }
-      } else {
-        planet.setShowInteractionKey(false);
+      }
+
+      if (planet.getName() === this.player.getPlanetToGo()) {
+        planet.setShowPointOfInterest(true);
       }
     });
+
+    if (closestPlanet) {
+      closestPlanet.setShowInteractionKey(true);
+    }
   }
 
   /**
@@ -133,8 +143,8 @@ export default abstract class SceneLevel extends Scene {
    * @param canvas the canvas to render on
    * */
   public render(canvas: HTMLCanvasElement): void {
-    const cameraX = this.player.getPosition().x - canvas.width / 2;
-    const cameraY = this.player.getPosition().y - canvas.height / 2;
+    const cameraX: number = this.player.getPosition().x - canvas.width / 2;
+    const cameraY: number = this.player.getPosition().y - canvas.height / 2;
 
     this.planets.forEach((planet: Planet) => {
       planet.render(canvas, cameraX, cameraY);
@@ -143,13 +153,13 @@ export default abstract class SceneLevel extends Scene {
     this.player.render(canvas, this.player.getRotation(), cameraX, cameraY);
     this.player.getFlame().render(canvas, this.player.getFlame().getRotation(), cameraX, cameraY);
 
-    CanvasRenderer.writeText(canvas, `${this.player.getSBucks()}`, this.sBucksImage.width + 10, 45, 'left', 'sans-serif', 30, 'white');
+    CanvasRenderer.writeText(canvas, `${this.player.getSBucks()}`, this.sBucksImage.width + 30, 52, 'left', 'sans-serif', 30, 'white');
 
     if (this.sBucksHudImage.complete) {
-      CanvasRenderer.drawImage(canvas, this.sBucksHudImage, 0, -1);
+      CanvasRenderer.drawImage(canvas, this.sBucksHudImage, 5, 5);
     }
     if (this.sBucksImage.complete) {
-      CanvasRenderer.drawImage(canvas, this.sBucksImage, 10, 35 - this.sBucksImage.height / 2);
+      CanvasRenderer.drawImage(canvas, this.sBucksImage, 30, 40 - this.sBucksImage.height / 2);
     }
   }
 }

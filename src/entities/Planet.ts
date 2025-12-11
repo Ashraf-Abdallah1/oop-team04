@@ -83,7 +83,17 @@ export default class Planet extends MovingItem {
     };
   }
 
-  public override render(canvas: HTMLCanvasElement, cameraX: number = 0, cameraY: number = 0): void {
+  /**
+   * Renders the planet on the canvas with camera offset
+   * @param canvas the canvas to render on
+   * @param cameraX the camera x offset
+   * @param cameraY the camera y offset
+   */
+  public override render(
+    canvas: HTMLCanvasElement,
+    cameraX: number = 0,
+    cameraY: number = 0
+  ): void {
     const drawX: number = this.position.x - this.image.width / 2 - cameraX;
     const drawY: number = this.position.y - this.image.height / 2 - cameraY;
 
@@ -96,7 +106,7 @@ export default class Planet extends MovingItem {
     }
 
     if (this.showPointOfIntrest) {
-      this.renderPointOfInterestKey(canvas);
+      this.renderPointOfInterestKey(canvas, cameraX, cameraY);
     }
   }
 
@@ -116,7 +126,17 @@ export default class Planet extends MovingItem {
     return this.question;
   }
 
-  public renderInteractionKey(canvas: HTMLCanvasElement, cameraX: number = 0, cameraY: number = 0): void {
+  /**
+   * Renders the interaction key on the planet
+   * @param canvas the canvas to render on
+   * @param cameraX the camera x offset
+   * @param cameraY the camera y offset
+   */
+  public renderInteractionKey(
+    canvas: HTMLCanvasElement,
+    cameraX: number = 0,
+    cameraY: number = 0
+  ): void {
     const keyX: number = this.position.x + this.image.width / 2 - cameraX;
     const keyY: number = this.position.y - 5 - this.image.width / 2 - cameraY;
 
@@ -125,9 +145,19 @@ export default class Planet extends MovingItem {
     }
   }
 
-  public renderPointOfInterestKey(canvas: HTMLCanvasElement): void {
-    const keyX: number = this.position.x - this.image.height / 2 - 30;
-    const keyY: number = this.position.y - 5 - this.image.height / 2 - 10;
+  /**
+   * Renders the point of interest indicator at (0,0) of the planet image
+   * @param canvas the canvas to render on
+   * @param cameraX the camera x offset
+   * @param cameraY the camera y offset
+   */
+  public renderPointOfInterestKey(
+    canvas: HTMLCanvasElement,
+    cameraX: number = 0,
+    cameraY: number = 0
+  ): void {
+    const keyX: number = this.position.x - this.image.width / 2 - cameraX;
+    const keyY: number = this.position.y - this.image.height / 2 - cameraY;
 
     if (this.name !== 'Sun') {
       CanvasRenderer.drawImage(canvas, this.pointOfInterest, keyX, keyY);
