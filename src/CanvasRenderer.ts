@@ -213,6 +213,53 @@ export default class CanvasRenderer {
     ctx.fill();
   }
 
+  /**
+   * Draw a message box in the center of the canvas
+   *
+   * @param canvas the canvas to draw to
+   * @param text the text to display in the message box
+   * @param color the color of the message box
+   * */
+  public static drawMessage(
+    canvas: HTMLCanvasElement,
+    text: string,
+    color: string,
+  ): void {
+    const ctx: CanvasRenderingContext2D = CanvasRenderer.getCanvasContext(canvas);
+
+    const boxWidth: number = 600;
+    const boxHeight: number = 200;
+    const x: number = canvas.width / 2 - boxWidth / 2;
+    const y: number = canvas.height / 2 - boxHeight / 2;
+
+    ctx.save();
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, boxWidth, boxHeight);
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '50px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+
+    ctx.restore();
+  }
+
+  /**
+   * Draw a button on the canvas
+   *
+   * @param canvas the canvas to draw to
+   * @param x the x-coordinate of the button
+   * @param y the y-coordinate of the button
+   * @param width the width of the button
+   * @param height the height of the button
+   * @param text the text to display on the button
+   * @param backgroundColor the background color of the button
+   * @param textColor the text color of the button
+   * */
   public static drawButton(
     canvas: HTMLCanvasElement,
     x: number,
