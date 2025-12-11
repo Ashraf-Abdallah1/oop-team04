@@ -87,6 +87,10 @@ export default class Planet extends MovingItem {
     this.showInteractionKey = state;
   }
 
+  public getShowInteractionKey(): boolean {
+    return this.showInteractionKey;
+  }
+
   public getQuestions(): Question[] {
     return this.question;
   }
