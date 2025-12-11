@@ -133,12 +133,18 @@ export default abstract class SceneLevel extends Scene {
    * @param canvas the canvas to render on
    * */
   public render(canvas: HTMLCanvasElement): void {
-    this.planets.forEach(((planet: Planet) => {
-      planet.render(canvas);
-    }));
-    this.player.render(canvas, this.player.getRotation());
-    this.player.getFlame().render(canvas, this.player.getFlame().getRotation());
+    const cameraX = this.player.getPosition().x - canvas.width / 2;
+    const cameraY = this.player.getPosition().y - canvas.height / 2;
+
+    this.planets.forEach((planet: Planet) => {
+      planet.render(canvas, cameraX, cameraY);
+    });
+
+    this.player.render(canvas, this.player.getRotation(), cameraX, cameraY);
+    this.player.getFlame().render(canvas, this.player.getFlame().getRotation(), cameraX, cameraY);
+
     CanvasRenderer.writeText(canvas, `${this.player.getSBucks()}`, this.sBucksImage.width + 10, 45, 'left', 'sans-serif', 30, 'white');
+
     if (this.sBucksHudImage.complete) {
       CanvasRenderer.drawImage(canvas, this.sBucksHudImage, 0, -1);
     }
