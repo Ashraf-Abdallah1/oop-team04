@@ -10,6 +10,8 @@ import MouseListener from '../../MouseListener.js';
 export default abstract class SceneLevel extends Scene {
   protected planets: Planet[];
 
+  private sBucksHudImage: HTMLImageElement;
+
   private sBucksImage: HTMLImageElement;
 
   public constructor(canvas: HTMLCanvasElement, player: Player) {
@@ -18,6 +20,8 @@ export default abstract class SceneLevel extends Scene {
     this.initializePlanets();
     this.sBucksImage = new Image();
     this.sBucksImage.src = '../../assets/S-bucks.png';
+    this.sBucksHudImage = new Image();
+    this.sBucksHudImage.src = '../../assets/S-bucksHud.png';
   }
 
   /**
@@ -91,6 +95,9 @@ export default abstract class SceneLevel extends Scene {
     this.player.render(canvas, this.player.getRotation());
     this.player.getFlame().render(canvas, this.player.getFlame().getRotation());
     CanvasRenderer.writeText(canvas, `${this.player.getSBucks()}`, this.sBucksImage.width + 10, 45, 'left', 'sans-serif', 30, 'white');
+    if (this.sBucksHudImage.complete) {
+      CanvasRenderer.drawImage(canvas, this.sBucksHudImage, 0, -1);
+    }
     if (this.sBucksImage.complete) {
       CanvasRenderer.drawImage(canvas, this.sBucksImage, 10, 35 - this.sBucksImage.height / 2);
     }
