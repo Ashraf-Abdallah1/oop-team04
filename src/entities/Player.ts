@@ -9,6 +9,10 @@ export default class Player extends MovingItem {
 
   private dead: boolean;
 
+  private planetToGo: string= 'Earth';
+
+  protected onCorrectPlanet: boolean = false;
+
   private onPlanet: boolean;
 
   private rotation: number;
@@ -18,7 +22,7 @@ export default class Player extends MovingItem {
   private showFlame: boolean;
 
   private timeToNextFlame: number;
-  
+
   private sBucks: number;
 
   public constructor(boardSize: Vector2) {
@@ -148,5 +152,21 @@ export default class Player extends MovingItem {
 
   public setSBucks(bucks: number): void {
     this.sBucks = bucks;
+  }
+
+  public getPlanetToGo(): string | null {
+    return this.planetToGo;
+  }
+
+  public setPlanetToGo(planet: string): void {
+    this.planetToGo = planet;
+  }
+
+  public isOnCorrectPlanet(): boolean{
+    return this.onCorrectPlanet;
+  }
+
+  public setOnCorrectPlanet(onRightPlanet: boolean): void {
+    this.onCorrectPlanet = onRightPlanet;
   }
 }

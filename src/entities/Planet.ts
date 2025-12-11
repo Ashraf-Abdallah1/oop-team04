@@ -133,4 +133,8 @@ export default class Planet extends MovingItem {
       CanvasRenderer.drawImage(canvas, this.pointOfInterest, keyX, keyY);
     }
   }
+
+  public getName(): string {
+    return this.name;
+  }
 }

@@ -30,7 +30,13 @@ export default class LevelOneScene extends SceneLevel {
     this.planets.forEach(((planet: Planet) => {
       if (this.player.isCollidingWithItem(planet)) {
         if(keyListener.isKeyDown(KeyListener.KEY_E)){
-          this.nextScene = new OnPlanetScene(this.getCanvas(), this.player, planet);
+          if(this.player.getPlanetToGo()?.toString() == planet.getName().toString()){
+            this.player.setOnCorrectPlanet(true);
+            this.nextScene = new OnPlanetScene(this.getCanvas(), this.player, planet);
+          }else {
+            this.nextScene = new OnPlanetScene(this.getCanvas(), this.player, planet);
+            this.player.setOnCorrectPlanet(false);
+          }
         }
       }
     }));
