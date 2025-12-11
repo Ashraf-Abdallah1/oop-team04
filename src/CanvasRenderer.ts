@@ -118,6 +118,45 @@ export default class CanvasRenderer {
   }
 
   /**
+   * Function to create an instructionset all new lines divided by '-'
+   * @param canvas Canvas to write to
+   * @param text Text to write
+   * @param xCoordinate x-coordinate of the text
+   * @param yCoordinate y-coordinate of the text
+   * @param alignment align of the text
+   * @param fontFamily font family to use when writing text
+   * @param fontSize font size in pixels
+   * @param color colour of text to write
+   */
+  public static writeInstructions(
+    canvas: HTMLCanvasElement,
+    text: string,
+    xCoordinate: number,
+    yCoordinate: number,
+    alignment: CanvasTextAlign = 'left',
+    fontFamily: string = 'sans-serif',
+    fontSize: number = 20,
+    color: string = 'red',
+  ): void {
+    const ctx: CanvasRenderingContext2D = CanvasRenderer.getCanvasContext(canvas);
+    ctx.font = `${fontSize}px ${fontFamily}`;
+    ctx.fillStyle = color;
+    ctx.textAlign = alignment;
+
+    // Split text into multiple lines
+    const lines: string[] = text.split('\n');
+
+    // Draw each line separately
+    let offsetY: number = 0;
+    const lineHeight: number = fontSize * 1.4; // adjust for spacing
+
+    for (const line of lines) {
+      ctx.fillText(line, xCoordinate, yCoordinate + offsetY);
+      offsetY += lineHeight;
+    }
+  }
+
+  /**
    * Draw a circle outline on the canvas
    *
    * @param canvas the canvas to draw to
@@ -276,7 +315,7 @@ export default class CanvasRenderer {
     ctx.fillRect(x, y, width, height);
 
     ctx.fillStyle = textColor;
-    ctx.font = '20px Arial';
+    ctx.font = '25px Arial';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(text, x + width / 2, y + height / 2);
