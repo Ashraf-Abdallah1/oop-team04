@@ -66,12 +66,10 @@ export default class OnPlanetScene extends Scene {
 
     const buttonX: number = this.getCanvas().width / 2 - 75;
     const buttonY: number = 220;
-    const buttonWidth: number = 150;
-    const buttonHeight: number = 50;
-
-    const insideX: boolean = mousePos.x >= buttonX && mousePos.x <= buttonX + buttonWidth;
-    const insideY: boolean = mousePos.y >= buttonY && mousePos.y <= buttonY + buttonHeight;
-    const insideButton: boolean = insideX && insideY;
+    const insideButton: boolean = mousePos.x >= buttonX
+      && mousePos.x <= buttonX + 150
+      && mousePos.y >= buttonY
+      && mousePos.y <= buttonY + 50;
 
     if (clicked && insideButton) {
       this.nextScene = new LevelOneScene(this.getCanvas(), this.player);
