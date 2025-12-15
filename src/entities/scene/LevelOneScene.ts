@@ -42,7 +42,8 @@ export default class LevelOneScene extends SceneLevel {
     if (closestPlanet) {
       const playerRadius: number = Math.max(this.player.getWidth(), this.player.getHeight()) / 2;
       const planetRadius: number = closestPlanet.getHeight() / 2;
-      const collisionDistance: number = closestDistance - (playerRadius + 67 /** SIX SEVEN */ + planetRadius);
+      const collisionDistance: number = closestDistance -
+      (playerRadius + 67 /** SIX SEVEN */ + planetRadius);
 
       if (collisionDistance <= planetRadius && keyListener.isKeyDown(KeyListener.KEY_E)) {
         if (this.player.getPlanetToGo()?.toString() === closestPlanet.getName().toString()) {

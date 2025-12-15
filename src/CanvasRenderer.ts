@@ -343,7 +343,7 @@ export default class CanvasRenderer {
     fillColor: string,
     shadowColor?: string,
   ): void {
-    const ctx: CanvasRenderingContext2D = CanvasRenderer.getCanvasContext(canvas)
+    const ctx: CanvasRenderingContext2D = CanvasRenderer.getCanvasContext(canvas);
 
     ctx.save();
 
