@@ -27,6 +27,7 @@ export default class Player extends MovingItem {
 
   public constructor(boardSize: Vector2) {
     super();
+
     this.position = new Vector2(boardSize.x / 2, boardSize.y / 2);
     this.image = CanvasRenderer.loadNewImage('../../assets/rockets/Rocket.png');
     this.acceleration = 0;
@@ -71,6 +72,28 @@ export default class Player extends MovingItem {
     }
 
     this.timeToNextFlame -= delta;
+
+    const mapCenter: Vector2 = new Vector2(window.innerWidth/2, window.innerHeight/2);
+    const mapRadius: number = 4500;
+
+    const playerCenter: Vector2 = new Vector2(this.position.x + this.image.width / 2, this.position.y + this.image.height / 2);
+
+    const dx: number = playerCenter.x - mapCenter.x;
+    const dy: number = playerCenter.y - mapCenter.y;
+    const distance: number = Math.sqrt(dx * dx + dy * dy);
+
+    const playerRadius: number = Math.max(this.image.width, this.image.height) / 2;
+    const maxDistance: number = mapRadius - playerRadius + this.image.height / 2;
+
+    if (distance > maxDistance) {
+      const nx: number = dx / distance;
+      const ny: number = dy / distance;
+
+      this.position.x = mapCenter.x + nx * maxDistance - this.image.width / 2;;
+      this.position.y = mapCenter.y + ny * maxDistance - this.image.height / 2;
+
+      this.acceleration = 0;
+    }
   }
 
   public override render(canvas: HTMLCanvasElement, angle?: number, cameraX: number = 0, cameraY: number = 0): void {
