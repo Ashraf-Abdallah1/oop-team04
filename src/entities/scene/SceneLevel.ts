@@ -25,6 +25,7 @@ export default abstract class SceneLevel extends Scene {
     this.sBucksImage.src = '../../assets/S-bucks.png';
     this.sBucksHudImage = new Image();
     this.sBucksHudImage.src = '../../assets/S-bucksHud.png';
+    this.borderRadius = 4500;
   }
 
   public getClosestPlanet(): { planet: Planet | null; distance: number } {
