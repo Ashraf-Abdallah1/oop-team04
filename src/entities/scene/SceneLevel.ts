@@ -33,7 +33,7 @@ export default abstract class SceneLevel extends Scene {
     let closestDistance: number = Infinity;
 
     this.planets.forEach((planet: Planet) => {
-      const distance = this.player.getPosition().distanceTo(planet.getPosition());
+      const distance : number = this.player.getPosition().distanceTo(planet.getPosition());
 
       if (distance < closestDistance) {
         closestDistance = distance;
@@ -112,13 +112,14 @@ export default abstract class SceneLevel extends Scene {
 
       if (closestPlanet) {
         const planetRadius: number = closestPlanet.getHeight() / 2;
-        const collisionDistance: number = closestDistance - (playerRadius + 67 /** SIX SEVEN */ + planetRadius);
+        const collisionDistance: number = closestDistance -
+        (playerRadius + 67 /** SIX SEVEN */ + planetRadius);
 
         if (collisionDistance <= 0) {
           closestPlanet.setShowInteractionKey(true);
         }
       }
-    })
+    });
   }
 
   /**
