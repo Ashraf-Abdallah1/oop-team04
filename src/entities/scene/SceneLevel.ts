@@ -6,6 +6,7 @@ import Question from '../Question.js';
 import CanvasRenderer from '../../CanvasRenderer.js';
 import Player from '../Player.js';
 import MouseListener from '../../MouseListener.js';
+import Alien from '../Alien.js';
 
 export default abstract class SceneLevel extends Scene {
   protected planets: Planet[];
@@ -16,8 +17,8 @@ export default abstract class SceneLevel extends Scene {
 
   private borderRadius: number;
 
-  public constructor(canvas: HTMLCanvasElement, player: Player) {
-    super(canvas, player);
+  public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
+    super(canvas, player, alien);
     this.planets = [];
     this.initializePlanets();
     this.sBucksImage = new Image();

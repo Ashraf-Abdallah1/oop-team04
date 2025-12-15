@@ -4,6 +4,7 @@ import MouseListener from '../../../MouseListener.js';
 import Player from '../../Player.js';
 import CanvasRenderer from '../../../CanvasRenderer.js';
 import InstructionScene from '../InstructionScene.js';
+import Alien from '../../Alien.js';
 
 export default class StartScene extends StatusScene {
   private buttonX: number;
@@ -14,8 +15,8 @@ export default class StartScene extends StatusScene {
 
   private buttonHeight: number = 75;
 
-  public constructor(canvas: HTMLCanvasElement, player: Player) {
-    super(canvas, player );
+  public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
+    super(canvas, player, alien );
     this.buttonX = canvas.width / 2 - this.buttonWidth / 2;
     this.buttonY = canvas.height / 2 - this.buttonHeight / 2;
   }
@@ -49,7 +50,7 @@ export default class StartScene extends StatusScene {
     const insideButton: boolean = insideX && insideY;
 
     if (clicked && insideButton) {
-      this.nextScene = new InstructionScene(this.getCanvas(), this.player);
+      this.nextScene = new InstructionScene(this.getCanvas(), this.player, this.alien);
     }
   }
 
