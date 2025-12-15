@@ -1,11 +1,11 @@
-import KeyListener from '../../KeyListener.js';
-import Scene from './Scene.js';
-import Planet from '../Planet.js';
-import Vector2 from '../../Vector2.js';
-import Question from '../Question.js';
-import CanvasRenderer from '../../CanvasRenderer.js';
-import Player from '../Player.js';
-import MouseListener from '../../MouseListener.js';
+import KeyListener from "../../KeyListener.js";
+import Scene from "./Scene.js";
+import Planet from "../Planet.js";
+import Vector2 from "../../Vector2.js";
+import Question from "../Question.js";
+import CanvasRenderer from "../../CanvasRenderer.js";
+import Player from "../Player.js";
+import MouseListener from "../../MouseListener.js";
 
 export default abstract class SceneLevel extends Scene {
   protected planets: Planet[];
@@ -19,9 +19,25 @@ export default abstract class SceneLevel extends Scene {
     this.planets = [];
     this.initializePlanets();
     this.sBucksImage = new Image();
-    this.sBucksImage.src = '../../assets/S-bucks.png';
+    this.sBucksImage.src = "../../assets/S-bucks.png";
     this.sBucksHudImage = new Image();
-    this.sBucksHudImage.src = '../../assets/S-bucksHud.png';
+    this.sBucksHudImage.src = "../../assets/S-bucksHud.png";
+  }
+
+  public getClosestPlanet(): { planet: Planet | null; distance: number } {
+    let closestPlanet: Planet | null = null;
+    let closestDistance: number = Infinity;
+
+    this.planets.forEach((planet: Planet) => {
+      const distance = this.player.getPosition().distanceTo(planet.getPosition());
+
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestPlanet = planet;
+      }
+    });
+
+    return { planet: closestPlanet, distance: closestDistance };
   }
 
   /**
@@ -73,11 +89,6 @@ export default abstract class SceneLevel extends Scene {
   public override update(delta: number): void {
     this.player.update(delta);
 
-    const playerCenter: Vector2 = new Vector2(
-      this.player.getPosition().x + this.player.getWidth() / 2,
-      this.player.getPosition().y + this.player.getHeight() / 2
-    );
-
     const playerRadius: number = Math.max(this.player.getWidth(), this.player.getHeight()) / 2;
 
     this.planets.forEach((planet: Planet) => {
@@ -86,28 +97,24 @@ export default abstract class SceneLevel extends Scene {
       planet.setShowPointOfInterest(false);
     });
 
-    let closestPlanet: Planet | undefined;
-    let closestDistance: number = Infinity;
+    const closestPlanetData: { planet: Planet | null; distance: number } = this.getClosestPlanet();
+    const closestPlanet: Planet | null = closestPlanetData.planet;
+    const closestDistance: number = closestPlanetData.distance;
 
     this.planets.forEach((planet: Planet) => {
-      const distance: number = playerCenter.distanceTo(planet.getPosition());
-      const planetRadius: number = planet.getHeight() / 2;
-
-      if (distance <= planetRadius + playerRadius) {
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          closestPlanet = planet;
-        }
-      }
-
       if (planet.getName() === this.player.getPlanetToGo()) {
         planet.setShowPointOfInterest(true);
       }
-    });
 
-    if (closestPlanet) {
-      closestPlanet.setShowInteractionKey(true);
-    }
+      if (closestPlanet) {
+        const planetRadius: number = closestPlanet.getHeight() / 2;
+        const collisionDistance: number = closestDistance - (playerRadius + 67 /** SIX SEVEN */ + planetRadius);
+
+        if (collisionDistance <= 0) {
+          closestPlanet.setShowInteractionKey(true);
+        }
+      }
+    })
   }
 
   /**
@@ -153,7 +160,7 @@ export default abstract class SceneLevel extends Scene {
     this.player.render(canvas, this.player.getRotation(), cameraX, cameraY);
     this.player.getFlame().render(canvas, this.player.getFlame().getRotation(), cameraX, cameraY);
 
-    CanvasRenderer.writeText(canvas, `${this.player.getSBucks()}`, this.sBucksImage.width + 30, 52, 'left', 'sans-serif', 30, 'white');
+    CanvasRenderer.writeText(canvas, `${this.player.getSBucks()}`, this.sBucksImage.width + 30, 52, "left", "sans-serif", 30, "white");
 
     if (this.sBucksHudImage.complete) {
       CanvasRenderer.drawImage(canvas, this.sBucksHudImage, 5, 5);
