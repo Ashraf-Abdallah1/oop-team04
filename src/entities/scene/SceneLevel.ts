@@ -14,6 +14,8 @@ export default abstract class SceneLevel extends Scene {
 
   private sBucksImage: HTMLImageElement;
 
+  private borderRadius: number;
+
   public constructor(canvas: HTMLCanvasElement, player: Player) {
     super(canvas, player);
     this.planets = [];
@@ -22,6 +24,7 @@ export default abstract class SceneLevel extends Scene {
     this.sBucksImage.src = '../../assets/S-bucks.png';
     this.sBucksHudImage = new Image();
     this.sBucksHudImage.src = '../../assets/S-bucksHud.png';
+    this.borderRadius = 4500;
   }
 
   /**
@@ -149,6 +152,14 @@ export default abstract class SceneLevel extends Scene {
     this.planets.forEach((planet: Planet) => {
       planet.render(canvas, cameraX, cameraY);
     });
+
+    CanvasRenderer.drawCircle(
+      canvas,
+      this.getCanvasCenter().x - cameraX,
+      this.getCanvasCenter().y - cameraY,
+      this.borderRadius,
+      'red'
+    );
 
     this.player.render(canvas, this.player.getRotation(), cameraX, cameraY);
     this.player.getFlame().render(canvas, this.player.getFlame().getRotation(), cameraX, cameraY);
