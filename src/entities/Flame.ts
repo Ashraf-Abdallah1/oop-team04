@@ -14,7 +14,7 @@ export default class Flame extends CanvasItem {
 
   public override render(
   canvas: HTMLCanvasElement, angle?: number, cameraX: number = 0, cameraY: number = 0): void {
-  CanvasRenderer.drawImage(canvas, this.image, this.position.x - cameraX, this.position.y - cameraY,angle);
+  CanvasRenderer.drawImage(canvas, this.image, this.position.x - cameraX - this.image.width / 2, this.position.y - cameraY - this.image.height / 2, angle);
 }
 
   public setRotation(newRotation: number): void {

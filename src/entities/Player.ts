@@ -28,8 +28,8 @@ export default class Player extends MovingItem {
   public constructor(boardSize: Vector2) {
     super();
 
-    this.position = new Vector2(boardSize.x / 2, boardSize.y / 2);
     this.image = CanvasRenderer.loadNewImage('../../assets/rockets/Rocket.png');
+    this.position = new Vector2(boardSize.x / 2 - this.image.width / 2, boardSize.y / 2 - this.image.height);
     this.acceleration = 0;
     this.rotation = 0;
     this.dead = false;
@@ -97,7 +97,8 @@ export default class Player extends MovingItem {
   }
 
   public override render(canvas: HTMLCanvasElement, angle?: number, cameraX: number = 0, cameraY: number = 0): void {
-  CanvasRenderer.drawImage(canvas, this.image, this.position.x - cameraX, this.position.y - cameraY, angle);}
+    CanvasRenderer.drawImage(canvas, this.image, this.position.x - cameraX - this.image.width / 2, this.position.y - cameraY - this.image.height / 2, angle);
+  }
 
   public getFlame(): Flame {
     return this.flame;
