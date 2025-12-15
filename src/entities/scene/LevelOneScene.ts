@@ -4,10 +4,11 @@ import SceneLevel from "./SceneLevel.js";
 import Planet from "../Planet.js";
 import OnPlanetScene from "./OnPlanetScene.js";
 import Player from "../Player.js";
+import Alien from '../Alien.js';
 
 export default class LevelOneScene extends SceneLevel {
-  public constructor(canvas: HTMLCanvasElement, player: Player) {
-    super(canvas, player);
+  public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
+    super(canvas, player, alien);
   }
 
   /**
@@ -39,9 +40,9 @@ export default class LevelOneScene extends SceneLevel {
       if (collisionDistance <= planetRadius && keyListener.isKeyDown(KeyListener.KEY_E)) {
         if (this.player.getPlanetToGo()?.toString() === closestPlanet.getName().toString()) {
           this.player.setOnCorrectPlanet(true);
-          this.nextScene = new OnPlanetScene(this.getCanvas(), this.player, closestPlanet);
+          this.nextScene = new OnPlanetScene(this.getCanvas(), this.player, closestPlanet, this.alien);
         } else {
-          this.nextScene = new OnPlanetScene(this.getCanvas(), this.player, closestPlanet);
+          this.nextScene = new OnPlanetScene(this.getCanvas(), this.player, closestPlanet, this.alien);
           this.player.setOnCorrectPlanet(false);
         }
       }

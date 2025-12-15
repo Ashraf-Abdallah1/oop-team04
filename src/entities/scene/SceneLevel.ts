@@ -1,11 +1,12 @@
-import KeyListener from "../../KeyListener.js";
-import Scene from "./Scene.js";
-import Planet from "../Planet.js";
-import Vector2 from "../../Vector2.js";
-import Question from "../Question.js";
-import CanvasRenderer from "../../CanvasRenderer.js";
-import Player from "../Player.js";
-import MouseListener from "../../MouseListener.js";
+import KeyListener from '../../KeyListener.js';
+import Scene from './Scene.js';
+import Planet from '../Planet.js';
+import Vector2 from '../../Vector2.js';
+import Question from '../Question.js';
+import CanvasRenderer from '../../CanvasRenderer.js';
+import Player from '../Player.js';
+import MouseListener from '../../MouseListener.js';
+import Alien from '../Alien.js';
 
 export default abstract class SceneLevel extends Scene {
   protected planets: Planet[];
@@ -14,14 +15,16 @@ export default abstract class SceneLevel extends Scene {
 
   private sBucksImage: HTMLImageElement;
 
-  public constructor(canvas: HTMLCanvasElement, player: Player) {
-    super(canvas, player);
+  private borderRadius: number;
+
+  public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
+    super(canvas, player, alien);
     this.planets = [];
     this.initializePlanets();
     this.sBucksImage = new Image();
-    this.sBucksImage.src = "../../assets/S-bucks.png";
+    this.sBucksImage.src = '../../assets/S-bucks.png';
     this.sBucksHudImage = new Image();
-    this.sBucksHudImage.src = "../../assets/S-bucksHud.png";
+    this.sBucksHudImage.src = '../../assets/S-bucksHud.png';
   }
 
   public getClosestPlanet(): { planet: Planet | null; distance: number } {
@@ -156,6 +159,14 @@ export default abstract class SceneLevel extends Scene {
     this.planets.forEach((planet: Planet) => {
       planet.render(canvas, cameraX, cameraY);
     });
+
+    CanvasRenderer.drawCircle(
+      canvas,
+      this.getCanvasCenter().x - cameraX,
+      this.getCanvasCenter().y - cameraY,
+      this.borderRadius,
+      'red'
+    );
 
     this.player.render(canvas, this.player.getRotation(), cameraX, cameraY);
     this.player.getFlame().render(canvas, this.player.getFlame().getRotation(), cameraX, cameraY);
