@@ -22,9 +22,15 @@ export default class OnPlanetScene extends Scene {
     this.onPlanet = planet;
 
     const planets: string[] = this.alien.getPlanetsToGo();
-    const randomIndex: number = Math.floor(Math.random() * planets.length);
+    let randomIndex: number = Math.floor(Math.random() * planets.length);
 
-    const nextPlanetName: string | undefined = planets.splice(randomIndex, 1)[0];
+    let nextPlanetName: string | undefined = planets[randomIndex];
+
+    while(this.onPlanet.getName() == nextPlanetName) {
+      randomIndex = Math.floor(Math.random() * planets.length);
+      nextPlanetName = planets[randomIndex];
+    }
+    planets.splice(randomIndex, 1);
     this.alien.setPlanetsToGo(planets);
 
     if (nextPlanetName) {
