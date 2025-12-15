@@ -83,7 +83,7 @@ export default class OnPlanetScene extends Scene {
     const buttonX: number = centerX - buttonWidth / 2;
     const buttonY: number = boxY + boxHeight + 30;
 
-    const mousePos:{ x: number; y: number } = mouseListener.getMousePosition();
+    const mousePos: { x: number; y: number } = mouseListener.getMousePosition();
     const clicked: boolean = mouseListener.buttonPressed();
 
     const insideButton: boolean =
