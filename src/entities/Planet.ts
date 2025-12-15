@@ -167,4 +167,8 @@ export default class Planet extends MovingItem {
   public getName(): string {
     return this.name;
   }
+
+  public getRadius(): number {
+    return this.orbitRadius;
+  }
 }
