@@ -8,6 +8,7 @@ import Player from '../Player.js';
 import Question from '../Question.js';
 import Alien from '../Alien.js';
 
+
 export default class OnPlanetScene extends Scene {
   protected onPlanet: Planet;
 
@@ -17,9 +18,16 @@ export default class OnPlanetScene extends Scene {
 
   protected showFailureMessage: boolean = false;
 
-  public constructor(canvas: HTMLCanvasElement, player: Player, planet: Planet, alien: Alien) {
+  protected levelOneScene: LevelOneScene;
+
+  public constructor(canvas: HTMLCanvasElement,
+    player: Player,
+    planet: Planet,
+    alien: Alien,
+    levelOneScene: LevelOneScene) {
     super(canvas, player, alien);
     this.onPlanet = planet;
+    this.levelOneScene = levelOneScene;
 
     if (this.player.isOnCorrectPlanet()) {
       const planets: string[] = this.alien.getPlanetsToGo();
@@ -61,7 +69,8 @@ export default class OnPlanetScene extends Scene {
       this.player.setSBucks(this.player.getSBucks() + 100);
       this.showSuccessMessage = true;
       setTimeout(() => {
-        this.nextScene = new LevelOneScene(this.getCanvas(), this.player, this.alien);
+        this.levelOneScene.clearScene();
+        this.nextScene = this.levelOneScene;
       }, 2000);
     } else if (
       keyListener.keyPressed(KeyListener.KEY_B) ||
@@ -69,7 +78,8 @@ export default class OnPlanetScene extends Scene {
       keyListener.keyPressed(KeyListener.KEY_A)) {
       this.showFailureMessage = true;
       setTimeout(() => {
-        this.nextScene = new LevelOneScene(this.getCanvas(), this.player, this.alien);
+        this.levelOneScene.clearScene();
+        this.nextScene = this.levelOneScene;
       }, 2000);
     }
 
@@ -92,15 +102,9 @@ export default class OnPlanetScene extends Scene {
       mousePos.y >= buttonY &&
       mousePos.y <= buttonY + buttonHeight;
 
-    // const buttonX: number = this.getCanvas().width / 2 - 75;
-    // const buttonY: number = 220;
-    // const insideButton: boolean = mousePos.x >= buttonX
-    //   && mousePos.x <= buttonX + 150
-    //   && mousePos.y >= buttonY
-    //   && mousePos.y <= buttonY + 50;
-
     if (clicked && insideButton) {
-      this.nextScene = new LevelOneScene(this.getCanvas(), this.player, this.alien);
+      this.levelOneScene.clearScene();
+      this.nextScene = this.levelOneScene;
     }
   }
 

@@ -67,7 +67,7 @@ export default class InstructionScene extends StatusScene {
 
 
     if (clicked && insideButton) {
-      this.nextScene = new LevelOneScene(this.getCanvas(), this.player, this.alien);
+      this.nextScene = new LevelOneScene(canvas, this.player, this.alien);
     }
   }
 
