@@ -52,4 +52,8 @@ export default class Alien extends CanvasItem {
   public getPlanetsToGo(): string[] {
     return this.planetsToGo;
   }
+
+  public setPlanetsToGo(planetsToGo: string[]): void {
+    this.planetsToGo = planetsToGo;
+  }
 }

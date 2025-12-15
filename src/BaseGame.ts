@@ -7,6 +7,7 @@ import Scene from './entities/scene/Scene.js';
 import StartScene from './entities/scene/status/StartScene.js';
 import Player from './entities/Player.js';
 import Vector2 from './Vector2.js';
+import Alien from './entities/Alien.js';
 
 export default class BaseGame extends Game {
   private canvas: HTMLCanvasElement;
@@ -19,6 +20,8 @@ export default class BaseGame extends Game {
 
   private player: Player;
 
+  private alien : Alien;
+
   public constructor(canvas: HTMLCanvasElement) {
     super();
     this.canvas = canvas;
@@ -27,7 +30,8 @@ export default class BaseGame extends Game {
     this.keyListener = new KeyListener();
     this.mouseListener = new MouseListener(canvas);
     this.player = new Player(new Vector2(100, 100));
-    this.currentScene = new StartScene(this.canvas, this.player);
+    this.alien = new Alien('Joey', 'Earth');
+    this.currentScene = new StartScene(this.canvas, this.player, this.alien);
     if (this.currentScene instanceof StartScene){
       this.canvas.style.cursor ='default';
     } else {

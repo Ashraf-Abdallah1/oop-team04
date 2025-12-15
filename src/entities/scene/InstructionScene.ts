@@ -4,6 +4,7 @@ import MouseListener from './../../MouseListener.js';
 import LevelOneScene from './LevelOneScene.js';
 import Player from './../Player.js';
 import CanvasRenderer from './../../CanvasRenderer.js';
+import Alien from '../Alien.js';
 
 export default class InstructionScene extends StatusScene {
   private buttonWidth: number = 150;
@@ -27,8 +28,8 @@ export default class InstructionScene extends StatusScene {
     .join('\n');
 
 
-  public constructor(canvas: HTMLCanvasElement, player: Player) {
-    super(canvas, player);
+  public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
+    super(canvas, player, alien);
   }
 
   /**
@@ -66,7 +67,7 @@ export default class InstructionScene extends StatusScene {
 
 
     if (clicked && insideButton) {
-      this.nextScene = new LevelOneScene(this.getCanvas(), this.player);
+      this.nextScene = new LevelOneScene(this.getCanvas(), this.player, this.alien);
     }
   }
 
