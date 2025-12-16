@@ -156,7 +156,7 @@ export default class Player extends MovingItem {
    * Rotates the player to the right.
    */
   public turnRight(): void {
-    this.turnDirection = 'right'
+    this.turnDirection = 'right';
   }
 
   public getRotation(): number {
