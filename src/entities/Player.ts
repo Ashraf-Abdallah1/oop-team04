@@ -66,7 +66,7 @@ export default class Player extends MovingItem {
     }
 
     this.turnDirection = 'none';
-    this.moveType = 'none'
+    this.moveType = 'none';
 
     const direction: Vector2 = new Vector2(Math.cos(this.rotation), Math.sin(this.rotation)).scale(delta);
 
