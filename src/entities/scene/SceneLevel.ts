@@ -7,6 +7,7 @@ import CanvasRenderer from '../../CanvasRenderer.js';
 import Player from '../Player.js';
 import MouseListener from '../../MouseListener.js';
 import Alien from '../Alien.js';
+import Speedometer from '../Speedometer.js';
 
 export default abstract class SceneLevel extends Scene {
   protected planets: Planet[];
@@ -17,6 +18,8 @@ export default abstract class SceneLevel extends Scene {
 
   private borderRadius: number;
 
+  private speedometer: Speedometer;
+
   public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     super(canvas, player, alien);
     this.planets = [];
@@ -26,6 +29,7 @@ export default abstract class SceneLevel extends Scene {
     this.sBucksHudImage = new Image();
     this.sBucksHudImage.src = '../../assets/S-bucksHud.png';
     this.borderRadius = 4500;
+    this.speedometer = new Speedometer(new Vector2(canvas.width, canvas.height));
   }
 
   public getClosestPlanet(): { planet: Planet | null; distance: number } {
@@ -120,6 +124,8 @@ export default abstract class SceneLevel extends Scene {
         }
       }
     });
+
+    this.speedometer.setSpeed(Math.round(this.player.getAcceleration() * 10000));
   }
 
   /**
@@ -225,6 +231,8 @@ export default abstract class SceneLevel extends Scene {
     this.planets.forEach((planet: Planet) => {
       planet.render(canvas, cameraX, cameraY);
     });
+
+    this.speedometer.render(canvas);
 
     CanvasRenderer.drawCircle(
       canvas,

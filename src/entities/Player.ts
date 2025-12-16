@@ -183,6 +183,10 @@ export default class Player extends MovingItem {
     return this.planetToGo;
   }
 
+  public getAcceleration(): number {
+    return this.acceleration;
+  }
+
   public setPlanetToGo(planet: string): void {
     this.planetToGo = planet;
   }
