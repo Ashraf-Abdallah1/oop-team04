@@ -29,7 +29,7 @@ export default abstract class SceneLevel extends Scene {
     this.sBucksHudImage = new Image();
     this.sBucksHudImage.src = '../../assets/S-bucksHud.png';
     this.borderRadius = 4500;
-    this.speedometer = new Speedometer(new Vector2(canvas.width, canvas.height))
+    this.speedometer = new Speedometer(new Vector2(canvas.width, canvas.height));
   }
 
   public getClosestPlanet(): { planet: Planet | null; distance: number } {
