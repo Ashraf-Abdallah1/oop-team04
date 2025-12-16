@@ -142,7 +142,7 @@ export default class Player extends MovingItem {
    * Slows down the player (but not achterruit).
    */
   public brake(): void {
-    this.moveType = 'brake'
+    this.moveType = 'brake';
   }
 
   /**
