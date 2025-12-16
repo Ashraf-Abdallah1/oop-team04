@@ -123,6 +123,17 @@ export default abstract class SceneLevel extends Scene {
           closestPlanet.setShowInteractionKey(true);
         }
       }
+
+      if (planet.getName() === 'Sun') {
+      const sunRadius: number = planet.getHeight() / 2 - 120;
+      const distanceToSun: number = this.player.getPosition().distanceTo(planet.getPosition());
+      const collisionDistanceSun: number = distanceToSun - (playerRadius + sunRadius);
+
+      if (collisionDistanceSun <= 0) {
+        /**Zet hier wat er gebeurt als je in de zon komt*/
+      }
+    }
+
     });
 
     this.speedometer.setSpeed(Math.round(this.player.getAcceleration() * 10000));
