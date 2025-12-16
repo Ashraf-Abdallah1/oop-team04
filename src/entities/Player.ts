@@ -29,7 +29,8 @@ export default class Player extends MovingItem {
     super();
 
     this.image = CanvasRenderer.loadNewImage('../../assets/rockets/Rocket.png');
-    this.position = new Vector2(boardSize.x / 2 - this.image.width / 2, boardSize.y / 2 - this.image.height);
+    this.boardSize = boardSize;
+    this.position = new Vector2(0, 0);
     this.acceleration = 0;
     this.rotation = 0;
     this.dead = false;

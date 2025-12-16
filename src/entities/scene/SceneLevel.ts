@@ -149,12 +149,76 @@ export default abstract class SceneLevel extends Scene {
     }
   }
 
+  public renderMinimap(canvas: HTMLCanvasElement): void {
+    const miniMapsRadius: number = 153;
+    const scale: number = 0.034;
+
+    const offsetX: number = canvas.width - 10;
+    const offsetY: number = 10;
+
+    const centerMap: Vector2 = new Vector2(
+      offsetX - miniMapsRadius,
+      offsetY + miniMapsRadius
+    );
+
+    CanvasRenderer.fillCircle(canvas, centerMap.x, centerMap.y, miniMapsRadius, 'rgba(0, 0, 0, 0.74)');
+
+    const sun: Planet | undefined = this.planets.find(
+      (p: Planet): boolean => p.getName() === 'Sun'
+    );
+
+    if (!sun) {
+      return;
+    }
+
+    const worldCenterX: number = sun.getPosition().x;
+    const worldCenterY: number = sun.getPosition().y;
+
+    this.planets.forEach((planet: Planet): void => {
+      const pos: Vector2 = planet.getPosition();
+
+      const mapX: number = centerMap.x + (pos.x - worldCenterX) * scale;
+      const mapY: number = centerMap.y + (pos.y - worldCenterY) * scale;
+
+      CanvasRenderer.drawCircle(
+        canvas,
+        centerMap.x,
+        centerMap.y,
+        planet.getRadius() * scale,
+        'rgba(255, 255, 255, 0.23)'
+      );
+
+      const radius: number = (planet.getHeight() / 2) * scale;
+      const color: string = planet.getName() === 'Sun' ? 'rgba(255, 128, 0, 0.68)' : 'rgba(255, 255, 255, 0.55)';
+
+      CanvasRenderer.fillCircle(canvas, mapX, mapY, radius, color);
+    });
+
+    const playerPos: Vector2 = this.player.getPosition();
+
+    CanvasRenderer.fillCircle(
+      canvas,
+      centerMap.x + (playerPos.x - worldCenterX) * scale,
+      centerMap.y + (playerPos.y - worldCenterY) * scale,
+      5,
+      'green'
+    );
+
+    CanvasRenderer.drawCircle(
+      canvas,
+      centerMap.x,
+      centerMap.y,
+      this.borderRadius * scale,
+      'rgba(255, 0, 0, 0.57)'
+    );
+  }
+
   /**
    * Renders al of elements in level1 on the canvas
    *
    * @param canvas the canvas to render on
    * */
-  public render(canvas: HTMLCanvasElement): void {
+  public override render(canvas: HTMLCanvasElement): void {
     const cameraX: number = this.player.getPosition().x - canvas.width / 2;
     const cameraY: number = this.player.getPosition().y - canvas.height / 2;
 
@@ -181,5 +245,6 @@ export default abstract class SceneLevel extends Scene {
     if (this.sBucksImage.complete) {
       CanvasRenderer.drawImage(canvas, this.sBucksImage, 30, 40 - this.sBucksImage.height / 2);
     }
+    this.renderMinimap(canvas);
   }
 }
