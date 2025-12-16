@@ -195,7 +195,11 @@ export default abstract class SceneLevel extends Scene {
       );
 
       const radius: number = (planet.getHeight() / 2) * scale;
-      const color: string = planet.getName() === 'Sun' ? 'rgba(255, 128, 0, 0.68)' : 'rgba(255, 255, 255, 0.55)';
+      const color: string = planet.getName() === 'Sun'
+        ? 'rgba(255, 128, 0, 0.68)'
+        : planet.getRenderPointOfInterestKey()
+          ? 'rgba(255, 0, 0, 0.55)'
+          : 'rgba(255, 255, 255, 0.55)';
 
       CanvasRenderer.fillCircle(canvas, mapX, mapY, radius, color);
     });

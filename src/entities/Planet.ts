@@ -171,4 +171,8 @@ export default class Planet extends MovingItem {
   public getRadius(): number {
     return this.orbitRadius;
   }
+
+  public getRenderPointOfInterestKey(): boolean {
+    return this.showPointOfIntrest;
+  }
 }
