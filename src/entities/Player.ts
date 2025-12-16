@@ -25,6 +25,10 @@ export default class Player extends MovingItem {
 
   private sBucks: number;
 
+  private turnDirection: 'left' | 'right' | 'none';
+
+  private moveType: 'brake' | 'accelerate' | 'none';
+
   public constructor(boardSize: Vector2) {
     super();
 
@@ -39,6 +43,8 @@ export default class Player extends MovingItem {
     this.timeToNextFlame = Math.random() * 100;
     this.showFlame = false;
     this.sBucks = 0;
+    this.turnDirection = 'none';
+    this.moveType = 'none';
   }
 
   /**
@@ -46,10 +52,26 @@ export default class Player extends MovingItem {
    * @param delta number
    */
   public override update(delta: number): void {
-    const direction: Vector2 = new Vector2(Math.cos(this.rotation), Math.sin(this.rotation));
-    const scaledDirection: Vector2 = new Vector2(direction.x * this.acceleration * delta,
-      direction.y * this.acceleration * delta);
-    this.position = this.position.add(scaledDirection);
+    const rotationSpeed: number = (0.001 * (1 - this.acceleration)) * delta;
+    if (this.turnDirection === 'right') {
+      this.rotation += rotationSpeed;
+    } else if (this.turnDirection === 'left') {
+      this.rotation -= rotationSpeed;
+    }
+
+    if (this.moveType === 'accelerate') {
+      this.acceleration = Math.min(this.acceleration + 0.0001 * delta, 0.67);
+    } else if (this.moveType === 'brake') {
+      this.acceleration = Math.max(this.acceleration - 0.0001 * delta, 0);
+    }
+
+    this.turnDirection = 'none';
+    this.moveType = 'none';
+
+    const direction: Vector2 = new Vector2(Math.cos(this.rotation), Math.sin(this.rotation)).scale(delta);
+
+    this.position = this.position.add(new Vector2(direction.x * this.acceleration,
+      direction.y * this.acceleration));
 
     this.flame.setRotation(this.rotation);
 
@@ -109,7 +131,7 @@ export default class Player extends MovingItem {
    * Accelerates the player forward.
    */
   public accelerate(): void {
-    this.acceleration = Math.min(this.acceleration + 0.001, 1);
+    this.moveType = 'accelerate';
   }
 
   public setShowFlame(value: boolean): void {
@@ -120,23 +142,21 @@ export default class Player extends MovingItem {
    * Slows down the player (but not achterruit).
    */
   public brake(): void {
-    this.acceleration = Math.max(this.acceleration - 0.001, 0);
+    this.moveType = 'brake';
   }
 
   /**
    * Rotates the player to the left.
    */
   public turnLeft(): void {
-    const rotationSpeed: number = 0.007 * (1 - this.acceleration);
-    this.rotation -= rotationSpeed;
+    this.turnDirection = 'left';
   }
 
   /**
    * Rotates the player to the right.
    */
   public turnRight(): void {
-    const rotationSpeed: number = 0.007 * (1 - this.acceleration);
-    this.rotation += rotationSpeed;
+    this.turnDirection = 'right';
   }
 
   public getRotation(): number {
