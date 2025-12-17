@@ -167,7 +167,7 @@ export default class Player extends MovingItem {
    * move the player
    * @param position postion to go
    */
-  public override move(position: Vector2): void {
+  public override move(delta: number): void {
   }
 
   /**

@@ -1,4 +1,3 @@
-import Vector2 from '../Vector2.js';
 import MovingItem from './MovingItem.js';
 
 export default class Astroid extends MovingItem {
@@ -12,7 +11,7 @@ export default class Astroid extends MovingItem {
     this.score = score;
   }
 
-  public override move(position: Vector2): void {
+  public override move(delta: number): void {
 
   }
 
