@@ -10,7 +10,7 @@ export default class Planet extends MovingItem {
 
   private orbitRadius: number;
 
-  private middelpoint: Vector2;
+  private midpoint: Vector2;
 
   private rotation: number;
 
@@ -25,7 +25,7 @@ export default class Planet extends MovingItem {
   private showPointOfIntrest: boolean;
 
   public constructor(
-    middlepoint: Vector2,
+    midpoint: Vector2,
     name: string,
     size: number,
     orbitRadius: number,
@@ -36,18 +36,16 @@ export default class Planet extends MovingItem {
     this.name = name;
     this.size = size;
     this.orbitRadius = orbitRadius;
-    this.middelpoint = middlepoint;
+    this.midpoint = midpoint;
     this.question = [];
     this.setPlanetImage();
     this.rotation = Math.random() * 2;
     this.speed = speed;
     this.question = question;
     this.showInteractionKey = false;
-    this.interactionKeyE = new Image();
-    this.interactionKeyE.src = '../assets/InteractionKeyE.png';
+    this.interactionKeyE = CanvasRenderer.loadNewImage('../assets/InteractionKeyE.png');
     this.showPointOfIntrest = false;
-    this.pointOfInterest = new Image();
-    this.pointOfInterest.src = '../assets/PointOfInterest.png';
+    this.pointOfInterest = CanvasRenderer.loadNewImage('../assets/PointOfInterest.png');
   }
 
   /**
@@ -55,20 +53,20 @@ export default class Planet extends MovingItem {
    * @param delta time elapsed
    */
   public override update(delta: number): void {
-    if (this.name !== 'Sun') {
-      this.position.x = this.middelpoint.x + this.orbitRadius * Math.sin(this.rotation * Math.PI);
-      this.position.y = this.middelpoint.y + this.orbitRadius * Math.cos(this.rotation * Math.PI);
-
-      this.rotation += this.speed * delta;
-    }
+    this.move(delta);
   }
 
   /**
    * moves the planet
-   * @param position postion of the planet
+   * @param delta time in ms
    */
-  public override move(position: Vector2): void {
+  public override move(delta: number): void {
+    if (this.name !== 'Sun') {
+      this.position.x = this.midpoint.x + this.orbitRadius * Math.sin(this.rotation * Math.PI);
+      this.position.y = this.midpoint.y + this.orbitRadius * Math.cos(this.rotation * Math.PI);
 
+      this.rotation += this.speed * delta;
+    }
   }
 
   public setPlanetImage(): void {
@@ -77,8 +75,8 @@ export default class Planet extends MovingItem {
 
     this.image.onload = (): void => {
       this.position = new Vector2(
-        this.middelpoint.x + this.orbitRadius,
-        this.middelpoint.y
+        this.midpoint.x + this.orbitRadius,
+        this.midpoint.y
       );
     };
   }
@@ -97,7 +95,7 @@ export default class Planet extends MovingItem {
     const drawX: number = this.position.x - this.image.width / 2 - cameraX;
     const drawY: number = this.position.y - this.image.height / 2 - cameraY;
 
-    CanvasRenderer.drawCircle(canvas, this.middelpoint.x - cameraX, this.middelpoint.y - cameraY, this.orbitRadius, 'rgba(211, 211, 211, 0.15)');
+    CanvasRenderer.drawCircle(canvas, this.midpoint.x - cameraX, this.midpoint.y - cameraY, this.orbitRadius, 'rgba(211, 211, 211, 0.15)');
 
     CanvasRenderer.drawImage(canvas, this.image, drawX, drawY);
 

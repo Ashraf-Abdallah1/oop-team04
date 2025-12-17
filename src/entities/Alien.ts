@@ -3,20 +3,14 @@ import CanvasRenderer from '../CanvasRenderer.js';
 import Vector2 from '../Vector2.js';
 
 export default class Alien extends CanvasItem {
-  private name: string;
-
-  private destination: string;
-
   private delivered: boolean;
 
   private planetsToGo: string[] = ['Mercury', 'Neptune', 'Uranus', 'Mars', 'Venus', 'Jupiter', 'Saturn'];
 
-  public constructor(name: string, destination: string) {
+  public constructor() {
     super();
     this.image = CanvasRenderer.loadNewImage('../../assets/Alien.png');
     this.position = new Vector2(70, 100);
-    this.name = name;
-    this.destination = destination;
     this.delivered = false;
   }
 
@@ -39,14 +33,6 @@ export default class Alien extends CanvasItem {
    */
   public setDelivered(): void {
     this.delivered = true;
-  }
-
-  /**
-   * prints the message above the alien
-   * @param message string
-   */
-  public sayMessage(message: string): void {
-
   }
 
   public getPlanetsToGo(): string[] {

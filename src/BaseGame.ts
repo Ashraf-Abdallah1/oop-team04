@@ -30,7 +30,7 @@ export default class BaseGame extends Game {
     this.keyListener = new KeyListener();
     this.mouseListener = new MouseListener(canvas);
     this.player = new Player(new Vector2(100, 100));
-    this.alien = new Alien('Joey', 'Earth');
+    this.alien = new Alien();
     this.currentScene = new StartScene(this.canvas, this.player, this.alien);
     if (this.currentScene instanceof StartScene){
       this.canvas.style.cursor ='default';

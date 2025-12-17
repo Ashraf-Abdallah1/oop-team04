@@ -17,7 +17,7 @@ export default abstract class MovingItem extends CanvasItem {
    *
    * @param position Vector2 positie
    * */
-  public abstract move(position: Vector2): void;
+  public abstract move(delta: number): void;
 
   /**
    * update the entity
