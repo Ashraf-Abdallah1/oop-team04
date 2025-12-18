@@ -22,6 +22,16 @@ export default abstract class SceneLevel extends Scene {
 
   private background: HTMLImageElement;
 
+  private miniMapRadius: number = 153;
+
+  private scale: number = 0.034;
+
+  private minimapOffsetX: number;
+
+  private minimapOffsetY: number = 10;
+
+  private miniMapBig: boolean = false;
+
   public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     super(canvas, player, alien);
     this.planets = [];
@@ -32,6 +42,7 @@ export default abstract class SceneLevel extends Scene {
     this.speedometer = new Speedometer(new Vector2(canvas.width, canvas.height));
     this.background = new Image();
     this.background = CanvasRenderer.loadNewImage('../../../../assets/BackgroundSpace.png');
+    this.minimapOffsetX = canvas.width - 10;
   }
 
   public getClosestPlanet(): { planet: Planet | null; distance: number } {
@@ -142,6 +153,26 @@ export default abstract class SceneLevel extends Scene {
    * */
   public override processInput(keyListener: KeyListener, mouseListener: MouseListener): void {
     this.player.processInput(keyListener);
+
+    if (keyListener.keyPressed(KeyListener.KEY_M)) {
+      this.changeMiniMapSize();
+    }
+  }
+
+  public changeMiniMapSize(): void {
+    if (this.miniMapBig) {
+      this.miniMapRadius /= 3;
+      this.scale /= 3;
+      this.miniMapBig = false;
+      this.minimapOffsetX = this.getCanvas().width - 10;
+      this.minimapOffsetY = 10;
+    } else {
+      this.miniMapRadius *= 3;
+      this.scale *= 3;
+      this.miniMapBig = true;
+      this.minimapOffsetX = this.getCanvas().width/2 + this.miniMapRadius;
+      this.minimapOffsetY = this.getCanvas().height/2 - this.miniMapRadius;
+    }
   }
 
   /**
@@ -150,18 +181,12 @@ export default abstract class SceneLevel extends Scene {
    * @param canvas canvas to draw on
    * */
   public renderMinimap(canvas: HTMLCanvasElement): void {
-    const miniMapsRadius: number = 153;
-    const scale: number = 0.034;
-
-    const offsetX: number = canvas.width - 10;
-    const offsetY: number = 10;
-
     const centerMap: Vector2 = new Vector2(
-      offsetX - miniMapsRadius,
-      offsetY + miniMapsRadius
+      this.minimapOffsetX - this.miniMapRadius,
+      this.minimapOffsetY + this.miniMapRadius
     );
 
-    CanvasRenderer.fillCircle(canvas, centerMap.x, centerMap.y, miniMapsRadius, 'rgba(0, 0, 0, 0.74)');
+    CanvasRenderer.fillCircle(canvas, centerMap.x, centerMap.y, this.miniMapRadius, 'rgba(0, 0, 0, 0.74)');
 
     const sun: Planet | undefined = this.planets.find(
       (p: Planet): boolean => p.getName() === 'Sun'
@@ -177,18 +202,18 @@ export default abstract class SceneLevel extends Scene {
     this.planets.forEach((planet: Planet): void => {
       const pos: Vector2 = planet.getPosition();
 
-      const mapX: number = centerMap.x + (pos.x - worldCenterX) * scale;
-      const mapY: number = centerMap.y + (pos.y - worldCenterY) * scale;
+      const mapX: number = centerMap.x + (pos.x - worldCenterX) * this.scale;
+      const mapY: number = centerMap.y + (pos.y - worldCenterY) * this.scale;
 
       CanvasRenderer.drawCircle(
         canvas,
         centerMap.x,
         centerMap.y,
-        planet.getRadius() * scale,
+        planet.getRadius() * this.scale,
         'rgba(255, 255, 255, 0.23)'
       );
 
-      const radius: number = (planet.getHeight() / 2) * scale;
+      const radius: number = (planet.getHeight() / 2) * this.scale;
       const color: string = planet.getName() === 'Sun'
         ? 'rgba(255, 128, 0, 0.68)'
         : planet.getRenderPointOfInterestKey()
@@ -202,8 +227,8 @@ export default abstract class SceneLevel extends Scene {
 
     CanvasRenderer.fillCircle(
       canvas,
-      centerMap.x + (playerPos.x - worldCenterX) * scale,
-      centerMap.y + (playerPos.y - worldCenterY) * scale,
+      centerMap.x + (playerPos.x - worldCenterX) * this.scale,
+      centerMap.y + (playerPos.y - worldCenterY) * this.scale,
       5,
       'green'
     );
@@ -212,7 +237,7 @@ export default abstract class SceneLevel extends Scene {
       canvas,
       centerMap.x,
       centerMap.y,
-      this.borderRadius * scale,
+      this.borderRadius * this.scale,
       'rgba(255, 0, 0, 0.57)'
     );
   }
