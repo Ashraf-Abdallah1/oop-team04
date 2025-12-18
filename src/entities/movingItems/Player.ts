@@ -192,20 +192,20 @@ export default class Player extends MovingItem {
   public processInput(keyListener: KeyListener): void {
     this.setShowFlame(false);
 
-    if (keyListener.isKeyDown(KeyListener.KEY_UP)) {
+    if (keyListener.isKeyDown(KeyListener.KEY_UP) || keyListener.isKeyDown(KeyListener.KEY_W)) {
       this.accelerate();
       this.setShowFlame(true);
     }
 
-    if (keyListener.isKeyDown(KeyListener.KEY_LEFT)) {
+    if (keyListener.isKeyDown(KeyListener.KEY_LEFT) || keyListener.isKeyDown(KeyListener.KEY_A)) {
       this.turnLeft();
     }
 
-    if (keyListener.isKeyDown(KeyListener.KEY_DOWN)) {
+    if (keyListener.isKeyDown(KeyListener.KEY_DOWN) || keyListener.isKeyDown(KeyListener.KEY_S)) {
       this.brake();
     }
 
-    if (keyListener.isKeyDown(KeyListener.KEY_RIGHT)) {
+    if (keyListener.isKeyDown(KeyListener.KEY_RIGHT) || keyListener.isKeyDown(KeyListener.KEY_D)) {
       this.turnRight();
     }
   }
