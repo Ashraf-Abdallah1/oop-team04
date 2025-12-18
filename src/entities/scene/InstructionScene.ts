@@ -25,7 +25,6 @@ export default class InstructionScene extends StatusScene {
     .map((line: string) => line.trim() ? `- ${line}` : '')
     .join('\n');
 
-
   public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     super(canvas, player, alien);
     this.frame = CanvasRenderer.loadNewImage('../../../assets/sci-fi/info-frame.png');
@@ -66,7 +65,6 @@ export default class InstructionScene extends StatusScene {
       this.nextScene = new LevelOneScene(canvas, this.player, this.alien);
     }
   }
-
 
   /**
    * Rendering for the button

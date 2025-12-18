@@ -57,7 +57,6 @@ export default class StartScene extends StatusScene {
       canvas.style.cursor = 'default';
     }
 
-
     if (clicked && insideButton) {
       canvas.style.cursor = 'default';
       this.nextScene = new InstructionScene(this.getCanvas(), this.player, this.alien);
