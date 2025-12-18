@@ -141,7 +141,7 @@ export default class Player extends MovingItem {
    * keep the player in the map
    *
    * */
-  public keepPlayerWithinMap(): void {
+  private keepPlayerWithinMap(): void {
     const mapCenter: Vector2 = new Vector2(window.innerWidth / 2, window.innerHeight / 2);
     const mapRadius: number = 4500;
 
