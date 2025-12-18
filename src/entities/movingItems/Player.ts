@@ -2,7 +2,6 @@ import MovingItem from './MovingItem.js';
 import Vector2 from '../../utils/Vector2.js';
 import CanvasRenderer from '../../rendering/CanvasRenderer.js';
 import Flame from '../Flame.js';
-import CanvasItem from '../CanvasItem.js';
 import Planet from './Planet.js';
 import KeyListener from '../../input/KeyListener.js';
 
@@ -54,6 +53,43 @@ export default class Player extends MovingItem {
    * @param delta number
    */
   public override update(delta: number): void {
+    this.move(delta);
+    this.keepPlayerWithinMap();
+  }
+
+  /**
+   * Accelerates the player forward.
+   */
+  public accelerate(): void {
+    this.moveType = 'accelerate';
+  }
+
+  /**
+   * Slows down the player (but not achterruit).
+   */
+  public brake(): void {
+    this.moveType = 'brake';
+  }
+
+  /**
+   * Rotates the player to the left.
+   */
+  public turnLeft(): void {
+    this.turnDirection = 'left';
+  }
+
+  /**
+   * Rotates the player to the right.
+   */
+  public turnRight(): void {
+    this.turnDirection = 'right';
+  }
+
+  /**
+   * move the player
+   * @param delta time in ms
+   */
+  public override move(delta: number): void {
     const rotationSpeed: number = (0.001 * (1 - this.acceleration)) * delta;
     if (this.turnDirection === 'right') {
       this.rotation += rotationSpeed;
@@ -70,7 +106,10 @@ export default class Player extends MovingItem {
     this.turnDirection = 'none';
     this.moveType = 'none';
 
-    const direction: Vector2 = new Vector2(Math.cos(this.rotation), Math.sin(this.rotation)).scale(delta);
+    const direction: Vector2 = new Vector2(
+      Math.cos(this.rotation),
+      Math.sin(this.rotation)
+    ).scale(delta);
 
     this.position = this.position.add(new Vector2(direction.x * this.acceleration,
       direction.y * this.acceleration));
@@ -95,13 +134,21 @@ export default class Player extends MovingItem {
         this.timeToNextFlame = Math.random() * 100;
       }
     }
-
     this.timeToNextFlame -= delta;
+  }
 
+  /**
+   * keep the player in the map
+   *
+   * */
+  private keepPlayerWithinMap(): void {
     const mapCenter: Vector2 = new Vector2(window.innerWidth / 2, window.innerHeight / 2);
     const mapRadius: number = 4500;
 
-    const playerCenter: Vector2 = new Vector2(this.position.x + this.image.width / 2, this.position.y + this.image.height / 2);
+    const playerCenter: Vector2 = new Vector2(
+      this.position.x + this.image.width / 2,
+      this.position.y + this.image.height / 2
+    );
 
     const dx: number = playerCenter.x - mapCenter.x;
     const dy: number = playerCenter.y - mapCenter.y;
@@ -115,77 +162,19 @@ export default class Player extends MovingItem {
       const ny: number = dy / distance;
 
       this.position.x = mapCenter.x + nx * maxDistance - this.image.width / 2;
-      ;
+
       this.position.y = mapCenter.y + ny * maxDistance - this.image.height / 2;
 
       this.acceleration = 0;
     }
   }
 
-  public override render(canvas: HTMLCanvasElement, angle?: number, cameraX: number = 0, cameraY: number = 0): void {
-    CanvasRenderer.drawImage(canvas, this.image, this.position.x - cameraX - this.image.width / 2, this.position.y - cameraY - this.image.height / 2, angle);
-  }
-
-  public getFlame(): Flame {
-    return this.flame;
-  }
-
   /**
-   * Accelerates the player forward.
-   */
-  public accelerate(): void {
-    this.moveType = 'accelerate';
-  }
-
-  public setShowFlame(value: boolean): void {
-    this.showFlame = value;
-  }
-
-  /**
-   * Slows down the player (but not achterruit).
-   */
-  public brake(): void {
-    this.moveType = 'brake';
-  }
-
-  /**
-   * Rotates the player to the left.
-   */
-  public turnLeft(): void {
-    this.turnDirection = 'left';
-  }
-
-  /**
-   * Rotates the player to the right.
-   */
-  public turnRight(): void {
-    this.turnDirection = 'right';
-  }
-
-  public getRotation(): number {
-    return this.rotation;
-  }
-
-  /**
-   * move the player
-   * @param position postion to go
-   */
-  public override move(delta: number): void {
-  }
-
-  /**
-   * Checks if the player is colliding with a given CanvasItem.
+   * check colliding met de sun
    *
-   * @param item CanvasItem
-   * @returns boolean whether the player is colliding with the item
+   * @param sun planet sun
+   * @returns false or true base on of player colliding with sun
    * */
-  public isCollidingWithItem(item: CanvasItem): boolean {
-    return this.position.x < item.getPosition().x + item.getWidth() &&
-      this.position.x + this.image.width > item.getPosition().x &&
-      this.position.y < item.getPosition().y + item.getHeight() &&
-      this.position.y + this.image.height > item.getPosition().y;
-  }
-
   public isCollidingWithSun(sun: Planet): boolean {
     const playerRadius: number = Math.max(this.image.width, this.image.height) / 2;
     const sunRadius: number = sun.getHeight() / 2 - 120;
@@ -222,6 +211,29 @@ export default class Player extends MovingItem {
   }
 
   /**
+   * render
+   *
+   * @param canvas canvas to draw on
+   * @param angle the side that the player locks at
+   * @param cameraX view x
+   * @param cameraY view y
+   * */
+  public override render(
+    canvas: HTMLCanvasElement,
+    angle?: number,
+    cameraX: number = 0,
+    cameraY: number = 0,
+  ): void {
+    CanvasRenderer.drawImage(
+      canvas,
+      this.image,
+      this.position.x - cameraX - this.image.width / 2,
+      this.position.y - cameraY - this.image.height / 2,
+      angle,
+    );
+  }
+
+  /**
    * is it dead or not
    * @returns boolean
    */
@@ -255,5 +267,17 @@ export default class Player extends MovingItem {
 
   public setOnCorrectPlanet(onRightPlanet: boolean): void {
     this.onCorrectPlanet = onRightPlanet;
+  }
+
+  public getRotation(): number {
+    return this.rotation;
+  }
+
+  public getFlame(): Flame {
+    return this.flame;
+  }
+
+  public setShowFlame(value: boolean): void {
+    this.showFlame = value;
   }
 }
