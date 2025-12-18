@@ -1,4 +1,4 @@
-import Player from '../movingItem/Player.js';
+import Player from '../movingItems/Player.js';
 import KeyListener from '../../KeyListener.js';
 import MouseListener from '../../MouseListener.js';
 import Alien from '../Alien.js';
