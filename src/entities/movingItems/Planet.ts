@@ -43,9 +43,9 @@ export default class Planet extends MovingItem {
     this.speed = speed;
     this.question = question;
     this.showInteractionKey = false;
-    this.interactionKeyE = CanvasRenderer.loadNewImage('../assets/InteractionKeyE.png');
+    this.interactionKeyE = CanvasRenderer.loadNewImage('../assets/interaction/InteractionKeyE.png');
     this.showPointOfIntrest = false;
-    this.pointOfInterest = CanvasRenderer.loadNewImage('../assets/PointOfInterest.png');
+    this.pointOfInterest = CanvasRenderer.loadNewImage('../assets/interaction/PointOfInterest.png');
   }
 
   /**
@@ -70,7 +70,7 @@ export default class Planet extends MovingItem {
   }
 
   public setPlanetImage(): void {
-    const imagePath: string = `../../assets/${this.name}.png`;
+    const imagePath: string = `../../assets/planets/${this.name}.png`;
     this.image = CanvasRenderer.loadNewImage(imagePath);
 
     this.image.onload = (): void => {
