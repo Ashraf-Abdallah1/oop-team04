@@ -1,13 +1,13 @@
-import KeyListener from '../../KeyListener.js';
-import Scene from './Scene.js';
-import Planet from '../Planet.js';
-import Vector2 from '../../Vector2.js';
-import Question from '../Question.js';
-import CanvasRenderer from '../../CanvasRenderer.js';
-import Player from '../Player.js';
-import MouseListener from '../../MouseListener.js';
-import Alien from '../Alien.js';
-import Speedometer from '../Speedometer.js';
+import KeyListener from '../../../KeyListener.js';
+import Scene from '../Scene.js';
+import Planet from '../../Planet.js';
+import Vector2 from '../../../Vector2.js';
+import Question from '../../Question.js';
+import CanvasRenderer from '../../../CanvasRenderer.js';
+import Player from '../../Player.js';
+import MouseListener from '../../../MouseListener.js';
+import Alien from '../../Alien.js';
+import Speedometer from '../../Speedometer.js';
 
 export default abstract class SceneLevel extends Scene {
   protected planets: Planet[];

@@ -1,4 +1,4 @@
-import StatusScene from '../StatusScene.js';
+import StatusScene from './StatusScene.js';
 import KeyListener from '../../../KeyListener.js';
 import MouseListener from '../../../MouseListener.js';
 import Player from '../../Player.js';
@@ -16,7 +16,7 @@ export default class StartScene extends StatusScene {
   private buttonHeight: number = 75;
 
   public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
-    super(canvas, player, alien );
+    super(canvas, player, alien);
     this.buttonX = canvas.width / 2 - this.buttonWidth / 2;
     this.buttonY = canvas.height / 2 - this.buttonHeight / 2;
   }
@@ -39,13 +39,24 @@ export default class StartScene extends StatusScene {
   public override processInput(
     keyListener: KeyListener,
     mouseListener: MouseListener): void {
+    this.checkButtonClick(mouseListener);
+  }
+
+
+  /**
+   * check if button clicked
+   *
+   * @param mouseListener MouseListener to listen to the mouse
+   *
+   * */
+  public checkButtonClick(mouseListener: MouseListener): void {
     const mousePosition: { x: number; y: number } = mouseListener.getMousePosition();
     const clicked: boolean = mouseListener.buttonPressed();
 
-    const insideX : boolean = mousePosition.x >=
-    this.buttonX && mousePosition.x <= this.buttonX + this.buttonWidth;
-    const insideY : boolean = mousePosition.y >=
-    this.buttonY && mousePosition.y <= this.buttonY + this.buttonHeight;
+    const insideX: boolean = mousePosition.x >=
+      this.buttonX && mousePosition.x <= this.buttonX + this.buttonWidth;
+    const insideY: boolean = mousePosition.y >=
+      this.buttonY && mousePosition.y <= this.buttonY + this.buttonHeight;
 
     const insideButton: boolean = insideX && insideY;
 
