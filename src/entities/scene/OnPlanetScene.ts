@@ -64,6 +64,17 @@ export default class OnPlanetScene extends Scene {
    *  @param mouseListener the mouseListener to get input from
    * */
   public override processInput(keyListener: KeyListener, mouseListener: MouseListener): void {
+    this.checkButtonClick(keyListener);
+    this.checkMouseClick(mouseListener);
+  }
+
+  /**
+   * check if button clicked
+   *
+   * @param keyListener keyListener to listen to the mouse
+   *
+   * */
+  public checkButtonClick(keyListener: KeyListener): void {
     const key: string = 'Key' + this.onPlanet.getQuestions()[0]?.getGoodAnswer().toString();
     if (keyListener.keyPressed(key)) {
       this.player.setSBucks(this.player.getSBucks() + 100);
@@ -82,6 +93,15 @@ export default class OnPlanetScene extends Scene {
         this.nextScene = this.levelOneScene;
       }, 2000);
     }
+  }
+
+  /**
+   * check if mouse clicked
+   *
+   * @param mouseListener MouseListener to listen to the mouse
+   *
+   * */
+  public checkMouseClick(mouseListener: MouseListener): void {
 
     const centerX: number = this.getCanvas().width / 2;
 
