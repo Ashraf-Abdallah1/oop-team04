@@ -1,10 +1,10 @@
 import KeyListener from '../../KeyListener.js';
 import CanvasRenderer from '../../CanvasRenderer.js';
 import MouseListener from '../../MouseListener.js';
-import Planet from '../Planet.js';
+import Planet from '../movingItem/Planet.js';
 import Scene from './Scene.js';
 import LevelOneScene from './level/LevelOneScene.js';
-import Player from '../Player.js';
+import Player from '../movingItem/Player.js';
 import Question from '../Question.js';
 import Alien from '../Alien.js';
 

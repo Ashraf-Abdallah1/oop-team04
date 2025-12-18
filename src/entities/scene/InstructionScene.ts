@@ -2,7 +2,7 @@ import StatusScene from './status/StatusScene.js';
 import KeyListener from './../../KeyListener.js';
 import MouseListener from './../../MouseListener.js';
 import LevelOneScene from './level/LevelOneScene.js';
-import Player from './../Player.js';
+import Player from '../movingItem/Player.js';
 import CanvasRenderer from './../../CanvasRenderer.js';
 import Alien from '../Alien.js';
 

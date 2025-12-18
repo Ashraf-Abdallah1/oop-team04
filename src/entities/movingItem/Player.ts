@@ -1,8 +1,8 @@
 import MovingItem from './MovingItem.js';
-import Vector2 from '../Vector2.js';
-import CanvasRenderer from '../CanvasRenderer.js';
-import Flame from './Flame.js';
-import CanvasItem from './CanvasItem.js';
+import Vector2 from '../../Vector2.js';
+import CanvasRenderer from '../../CanvasRenderer.js';
+import Flame from '../Flame.js';
+import CanvasItem from '../CanvasItem.js';
 import Planet from './Planet.js';
 
 export default class Player extends MovingItem {

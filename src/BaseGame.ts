@@ -5,7 +5,7 @@ import KeyListener from './KeyListener.js';
 import MouseListener from './MouseListener.js';
 import Scene from './entities/scene/Scene.js';
 import StartScene from './entities/scene/status/StartScene.js';
-import Player from './entities/Player.js';
+import Player from './entities/movingItem/Player.js';
 import Vector2 from './Vector2.js';
 import Alien from './entities/Alien.js';
 
