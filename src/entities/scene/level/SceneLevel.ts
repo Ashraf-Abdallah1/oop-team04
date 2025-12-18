@@ -123,6 +123,10 @@ export default abstract class SceneLevel extends Scene {
           closestPlanet.setShowInteractionKey(true);
         }
       }
+
+      if (planet.getName() === 'Sun') {
+        this.player.isCollidingWithSun(planet);
+      }
     });
 
     this.speedometer.setSpeed(Math.round(this.player.getAcceleration() * 10000));
