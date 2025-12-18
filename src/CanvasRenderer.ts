@@ -106,7 +106,7 @@ export default class CanvasRenderer {
     xCoordinate: number,
     yCoordinate: number,
     alignment: CanvasTextAlign = 'center',
-    fontFamily: string = 'sans-serif',
+    fontFamily: string = 'starjedi-fill',
     fontSize: number = 20,
     color: string = 'red',
   ): void {
