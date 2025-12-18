@@ -1,8 +1,8 @@
 import StatusScene from './StatusScene.js';
-import KeyListener from '../../../KeyListener.js';
-import MouseListener from '../../../MouseListener.js';
-import Player from '../../Player.js';
-import CanvasRenderer from '../../../CanvasRenderer.js';
+import KeyListener from '../../../input/KeyListener.js';
+import MouseListener from '../../../input/MouseListener.js';
+import Player from '../../movingItems/Player.js';
+import CanvasRenderer from '../../../rendering/CanvasRenderer.js';
 import InstructionScene from '../InstructionScene.js';
 import Alien from '../../Alien.js';
 

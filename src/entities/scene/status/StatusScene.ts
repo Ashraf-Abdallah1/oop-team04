@@ -1,7 +1,7 @@
 import Scene from '../Scene.js';
-import KeyListener from '../../../KeyListener.js';
-import MouseListener from '../../../MouseListener.js';
-import Player from '../../Player.js';
+import KeyListener from '../../../input/KeyListener.js';
+import MouseListener from '../../../input/MouseListener.js';
+import Player from '../../movingItems/Player.js';
 import Alien from '../../Alien.js';
 
 export default abstract class StatusScene extends Scene {

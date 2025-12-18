@@ -1,11 +1,11 @@
-import KeyListener from '../../../KeyListener.js';
+import KeyListener from '../../../input/KeyListener.js';
 import Scene from '../Scene.js';
-import Planet from '../../Planet.js';
-import Vector2 from '../../../Vector2.js';
+import Planet from '../../movingItems/Planet.js';
+import Vector2 from '../../../utils/Vector2.js';
 import Question from '../../Question.js';
-import CanvasRenderer from '../../../CanvasRenderer.js';
-import Player from '../../Player.js';
-import MouseListener from '../../../MouseListener.js';
+import CanvasRenderer from '../../../rendering/CanvasRenderer.js';
+import Player from '../../movingItems/Player.js';
+import MouseListener from '../../../input/MouseListener.js';
 import Alien from '../../Alien.js';
 import Speedometer from '../../Speedometer.js';
 
@@ -25,9 +25,9 @@ export default abstract class SceneLevel extends Scene {
     this.planets = [];
     this.initializePlanets();
     this.sBucksImage = new Image();
-    this.sBucksImage.src = '../../assets/S-bucks.png';
+    this.sBucksImage.src = '../../assets/s-bucks/S-bucks.png';
     this.sBucksHudImage = new Image();
-    this.sBucksHudImage.src = '../../assets/S-bucksHud.png';
+    this.sBucksHudImage.src = '../../assets/s-bucks/S-bucksHud.png';
     this.borderRadius = 4500;
     this.speedometer = new Speedometer(new Vector2(canvas.width, canvas.height));
   }

@@ -1,5 +1,5 @@
-import CanvasRenderer from '../CanvasRenderer.js';
-import Vector2 from '../Vector2.js';
+import CanvasRenderer from '../rendering/CanvasRenderer.js';
+import Vector2 from '../utils/Vector2.js';
 import CanvasItem from './CanvasItem.js';
 
 export default class Speedometer extends CanvasItem {

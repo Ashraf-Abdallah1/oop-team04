@@ -1,5 +1,5 @@
-import Vector2 from '../Vector2.js';
-import CanvasRenderer from '../CanvasRenderer.js';
+import Vector2 from '../utils/Vector2.js';
+import CanvasRenderer from '../rendering/CanvasRenderer.js';
 
 export default abstract class CanvasItem {
   protected boardSize: Vector2;

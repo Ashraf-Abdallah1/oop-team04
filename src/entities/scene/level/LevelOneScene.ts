@@ -1,9 +1,9 @@
-import KeyListener from '../../../KeyListener.js';
-import MouseListener from '../../../MouseListener.js';
+import KeyListener from '../../../input/KeyListener.js';
+import MouseListener from '../../../input/MouseListener.js';
 import SceneLevel from './SceneLevel.js';
-import Planet from '../../Planet.js';
+import Planet from '../../movingItems/Planet.js';
 import OnPlanetScene from '../OnPlanetScene.js';
-import Player from '../../Player.js';
+import Player from '../../movingItems/Player.js';
 import Alien from '../../Alien.js';
 
 export default class LevelOneScene extends SceneLevel {

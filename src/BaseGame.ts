@@ -1,12 +1,12 @@
 import Game from './Game.js';
 
-import CanvasRenderer from './CanvasRenderer.js';
-import KeyListener from './KeyListener.js';
-import MouseListener from './MouseListener.js';
+import CanvasRenderer from './rendering/CanvasRenderer.js';
+import KeyListener from './input/KeyListener.js';
+import MouseListener from './input/MouseListener.js';
 import Scene from './entities/scene/Scene.js';
 import StartScene from './entities/scene/status/StartScene.js';
-import Player from './entities/Player.js';
-import Vector2 from './Vector2.js';
+import Player from './entities/movingItems/Player.js';
+import Vector2 from './utils/Vector2.js';
 import Alien from './entities/Alien.js';
 
 export default class BaseGame extends Game {
