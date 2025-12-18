@@ -42,7 +42,6 @@ export default class StartScene extends StatusScene {
     this.checkButtonClick(mouseListener);
   }
 
-
   /**
    * check if button clicked
    *
