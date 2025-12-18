@@ -20,6 +20,8 @@ export default class OnPlanetScene extends Scene {
 
   protected levelOneScene: LevelOneScene;
 
+  protected planetImage: HTMLImageElement;
+
   public constructor(canvas: HTMLCanvasElement,
     player: Player,
     planet: Planet,
@@ -28,6 +30,9 @@ export default class OnPlanetScene extends Scene {
     super(canvas, player, alien);
     this.onPlanet = planet;
     this.levelOneScene = levelOneScene;
+
+    this.planetImage = new Image();
+    this.planetImage = CanvasRenderer.loadNewImage(`../../../assets/planets/onPlanet/On${planet.getName()}.png`);
 
     if (this.player.isOnCorrectPlanet()) {
       const planets: string[] = this.alien.getPlanetsToGo();
@@ -129,6 +134,8 @@ export default class OnPlanetScene extends Scene {
   public override render(canvas: HTMLCanvasElement): void {
     const centerX: number = canvas.width / 2;
     const canvasHeight: number = canvas.height;
+    
+    CanvasRenderer.drawImage(canvas, this.planetImage, 0, canvasHeight - canvas.height / 3);
 
     if (this.player.isOnCorrectPlanet()) {
       if (this.hasNextPlanet) {
