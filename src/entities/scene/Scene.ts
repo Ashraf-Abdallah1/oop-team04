@@ -29,7 +29,6 @@ export default abstract class Scene {
   public getCanvas(): HTMLCanvasElement {
     return this.canvas;
   }
-  public abstract update(delta: number): void;
 
   public abstract processInput(
     keyListener: KeyListener,

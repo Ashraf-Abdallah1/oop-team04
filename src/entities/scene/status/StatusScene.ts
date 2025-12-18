@@ -11,13 +11,14 @@ export default abstract class StatusScene extends Scene {
     super(canvas, player, alien);
   }
 
-  public override update(delta: number): void {
-  }
-
-  public override processInput(
+  /**
+   * processes user input
+   *
+   * @param keyListener KeyListener to listen to the keyboard
+   * @param mouseListener MouseListener to listen to the mouse
+   * */
+  public abstract override processInput(
     keyListener: KeyListener,
     mouseListener: MouseListener
-  ): void {
-  }
-
+  ): void;
 }

@@ -4,13 +4,14 @@ import CanvasRenderer from '../../rendering/CanvasRenderer.js';
 import Flame from '../Flame.js';
 import CanvasItem from '../CanvasItem.js';
 import Planet from './Planet.js';
+import KeyListener from '../../input/KeyListener.js';
 
 export default class Player extends MovingItem {
   private acceleration: number;
 
   private dead: boolean;
 
-  private planetToGo: string= 'Earth';
+  private planetToGo: string = 'Earth';
 
   protected onCorrectPlanet: boolean = false;
 
@@ -89,7 +90,7 @@ export default class Player extends MovingItem {
     if (!this.showFlame) {
       this.flame.setNewImage(true);
     } else {
-      if (this.timeToNextFlame <= 0 ) {
+      if (this.timeToNextFlame <= 0) {
         this.flame.setNewImage(false);
         this.timeToNextFlame = Math.random() * 100;
       }
@@ -97,7 +98,7 @@ export default class Player extends MovingItem {
 
     this.timeToNextFlame -= delta;
 
-    const mapCenter: Vector2 = new Vector2(window.innerWidth/2, window.innerHeight/2);
+    const mapCenter: Vector2 = new Vector2(window.innerWidth / 2, window.innerHeight / 2);
     const mapRadius: number = 4500;
 
     const playerCenter: Vector2 = new Vector2(this.position.x + this.image.width / 2, this.position.y + this.image.height / 2);
@@ -113,7 +114,8 @@ export default class Player extends MovingItem {
       const nx: number = dx / distance;
       const ny: number = dy / distance;
 
-      this.position.x = mapCenter.x + nx * maxDistance - this.image.width / 2;;
+      this.position.x = mapCenter.x + nx * maxDistance - this.image.width / 2;
+      ;
       this.position.y = mapCenter.y + ny * maxDistance - this.image.height / 2;
 
       this.acceleration = 0;
@@ -190,10 +192,33 @@ export default class Player extends MovingItem {
     const distanceToSun: number = this.getPosition().distanceTo(sun.getPosition());
     const collisionDistanceSun: number = distanceToSun - (playerRadius + sunRadius);
 
-    if (collisionDistanceSun <= 0) {
-      return true;
+    return collisionDistanceSun <= 0;
+  }
+
+  /**
+   * handle and show flame base on user input
+   *
+   * @param keyListener  keyListener gwn
+   * */
+  public processInput(keyListener: KeyListener): void {
+    this.setShowFlame(false);
+
+    if (keyListener.isKeyDown(KeyListener.KEY_UP)) {
+      this.accelerate();
+      this.setShowFlame(true);
     }
-    return false;
+
+    if (keyListener.isKeyDown(KeyListener.KEY_LEFT)) {
+      this.turnLeft();
+    }
+
+    if (keyListener.isKeyDown(KeyListener.KEY_DOWN)) {
+      this.brake();
+    }
+
+    if (keyListener.isKeyDown(KeyListener.KEY_RIGHT)) {
+      this.turnRight();
+    }
   }
 
   /**
@@ -224,7 +249,7 @@ export default class Player extends MovingItem {
     this.planetToGo = planet;
   }
 
-  public isOnCorrectPlanet(): boolean{
+  public isOnCorrectPlanet(): boolean {
     return this.onCorrectPlanet;
   }
 

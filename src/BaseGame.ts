@@ -8,6 +8,7 @@ import StartScene from './entities/scene/status/StartScene.js';
 import Player from './entities/movingItems/Player.js';
 import Vector2 from './utils/Vector2.js';
 import Alien from './entities/Alien.js';
+import SceneLevel from './entities/scene/level/SceneLevel.js';
 
 export default class BaseGame extends Game {
   private canvas: HTMLCanvasElement;
@@ -60,7 +61,9 @@ export default class BaseGame extends Game {
         this.currentScene = this.currentScene.getNextScene();
       }
     }
-    this.currentScene?.update(delta);
+    if(this.currentScene instanceof SceneLevel){
+      this.currentScene.update(delta);
+    }
     return true;
   }
 

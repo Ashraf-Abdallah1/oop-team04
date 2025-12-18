@@ -52,13 +52,6 @@ export default class OnPlanetScene extends Scene {
   }
 
   /**
-   * update the scene
-   *  @param delta time in ms elapsed from the GameLoop
-   * */
-  public override update(delta: number): void {
-  }
-
-  /**
    * process input for the scene
    *  @param keyListener the keylistener to get input from
    *  @param mouseListener the mouseListener to get input from

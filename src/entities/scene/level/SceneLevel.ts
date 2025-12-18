@@ -24,10 +24,8 @@ export default abstract class SceneLevel extends Scene {
     super(canvas, player, alien);
     this.planets = [];
     this.initializePlanets();
-    this.sBucksImage = new Image();
-    this.sBucksImage.src = '../../assets/s-bucks/S-bucks.png';
-    this.sBucksHudImage = new Image();
-    this.sBucksHudImage.src = '../../assets/s-bucks/S-bucksHud.png';
+    this.sBucksImage = CanvasRenderer.loadNewImage('../../assets/s-bucks/S-bucks.png');
+    this.sBucksHudImage = CanvasRenderer.loadNewImage('../../assets/s-bucks/S-bucksHud.png');
     this.borderRadius = 4500;
     this.speedometer = new Speedometer(new Vector2(canvas.width, canvas.height));
   }
@@ -94,7 +92,7 @@ export default abstract class SceneLevel extends Scene {
    * update the scene
    *  @param delta time in ms elapsed from the GameLoop
    * */
-  public override update(delta: number): void {
+  public update(delta: number): void {
     this.player.update(delta);
 
     const playerRadius: number = Math.max(this.player.getWidth(), this.player.getHeight()) / 2;
@@ -139,26 +137,14 @@ export default abstract class SceneLevel extends Scene {
    *  @param mouseListener the mouselistener to get input from
    * */
   public override processInput(keyListener: KeyListener, mouseListener: MouseListener): void {
-    this.player.setShowFlame(false);
-
-    if (keyListener.isKeyDown(KeyListener.KEY_UP)) {
-      this.player.accelerate();
-      this.player.setShowFlame(true);
-    }
-
-    if (keyListener.isKeyDown(KeyListener.KEY_LEFT)) {
-      this.player.turnLeft();
-    }
-
-    if (keyListener.isKeyDown(KeyListener.KEY_DOWN)) {
-      this.player.brake();
-    }
-
-    if (keyListener.isKeyDown(KeyListener.KEY_RIGHT)) {
-      this.player.turnRight();
-    }
+    this.player.processInput(keyListener);
   }
 
+  /**
+   * show minimap
+   *
+   * @param canvas canvas to draw on
+   * */
   public renderMinimap(canvas: HTMLCanvasElement): void {
     const miniMapsRadius: number = 153;
     const scale: number = 0.034;
