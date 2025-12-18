@@ -20,6 +20,8 @@ export default abstract class SceneLevel extends Scene {
 
   private speedometer: Speedometer;
 
+  private background: HTMLImageElement;
+
   public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     super(canvas, player, alien);
     this.planets = [];
@@ -28,6 +30,8 @@ export default abstract class SceneLevel extends Scene {
     this.sBucksHudImage = CanvasRenderer.loadNewImage('../../assets/s-bucks/S-bucksHud.png');
     this.borderRadius = 4500;
     this.speedometer = new Speedometer(new Vector2(canvas.width, canvas.height));
+    this.background = new Image();
+    this.background = CanvasRenderer.loadNewImage('../../../../assets/BackgroundSpace.png');
   }
 
   public getClosestPlanet(): { planet: Planet | null; distance: number } {
@@ -221,6 +225,14 @@ export default abstract class SceneLevel extends Scene {
   public override render(canvas: HTMLCanvasElement): void {
     const cameraX: number = this.player.getPosition().x - canvas.width / 2;
     const cameraY: number = this.player.getPosition().y - canvas.height / 2;
+
+    if (this.background.width > 0) {
+      for (let x: number = -5000; x < 10000; x += this.background.width) {
+        for (let y: number = -5000; y < 10000; y += this.background.height) {
+          CanvasRenderer.drawImage(canvas, this.background, x - cameraX, y - cameraY);
+        }
+      }
+    }
 
     this.planets.forEach((planet: Planet) => {
       planet.render(canvas, cameraX, cameraY);
