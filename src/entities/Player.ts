@@ -3,6 +3,7 @@ import Vector2 from '../Vector2.js';
 import CanvasRenderer from '../CanvasRenderer.js';
 import Flame from './Flame.js';
 import CanvasItem from './CanvasItem.js';
+import Planet from './Planet.js';
 
 export default class Player extends MovingItem {
   private acceleration: number;
@@ -181,6 +182,18 @@ export default class Player extends MovingItem {
       this.position.x + this.image.width > item.getPosition().x &&
       this.position.y < item.getPosition().y + item.getHeight() &&
       this.position.y + this.image.height > item.getPosition().y;
+  }
+
+  public isCollidingWithSun(sun: Planet): boolean {
+    const playerRadius: number = Math.max(this.image.width, this.image.height) / 2;
+    const sunRadius: number = sun.getHeight() / 2 - 120;
+    const distanceToSun: number = this.getPosition().distanceTo(sun.getPosition());
+    const collisionDistanceSun: number = distanceToSun - (playerRadius + sunRadius);
+
+    if (collisionDistanceSun <= 0) {
+      return true;
+    }
+    return false;
   }
 
   /**
