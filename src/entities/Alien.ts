@@ -7,10 +7,10 @@ export default class Alien extends CanvasItem {
 
   private planetsToGo: string[] = ['Mercury', 'Neptune', 'Uranus', 'Mars', 'Venus', 'Jupiter', 'Saturn'];
 
-  public constructor() {
+  public constructor(canvas: HTMLCanvasElement) {
     super();
     this.image = CanvasRenderer.loadNewImage('../../assets/Alien.png');
-    this.position = new Vector2(70, 100);
+    this.position = new Vector2(240, (canvas.height - (canvas.height / 3)) - this.image.height + 30);
     this.delivered = false;
   }
 
