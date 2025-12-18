@@ -1,6 +1,6 @@
 import MovingItem from './MovingItem.js';
-import Vector2 from '../../Vector2.js';
-import CanvasRenderer from '../../CanvasRenderer.js';
+import Vector2 from '../../utils/Vector2.js';
+import CanvasRenderer from '../../rendering/CanvasRenderer.js';
 import Question from '../Question.js';
 
 export default class Planet extends MovingItem {

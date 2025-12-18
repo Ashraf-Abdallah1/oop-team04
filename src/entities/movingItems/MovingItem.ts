@@ -1,4 +1,4 @@
-import Vector2 from '../../Vector2.js';
+import Vector2 from '../../utils/Vector2.js';
 import CanvasItem from '../CanvasItem.js';
 
 export default abstract class MovingItem extends CanvasItem {

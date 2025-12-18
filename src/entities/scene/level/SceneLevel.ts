@@ -1,11 +1,11 @@
-import KeyListener from '../../../KeyListener.js';
+import KeyListener from '../../../input/KeyListener.js';
 import Scene from '../Scene.js';
 import Planet from '../../movingItems/Planet.js';
-import Vector2 from '../../../Vector2.js';
+import Vector2 from '../../../utils/Vector2.js';
 import Question from '../../Question.js';
-import CanvasRenderer from '../../../CanvasRenderer.js';
+import CanvasRenderer from '../../../rendering/CanvasRenderer.js';
 import Player from '../../movingItems/Player.js';
-import MouseListener from '../../../MouseListener.js';
+import MouseListener from '../../../input/MouseListener.js';
 import Alien from '../../Alien.js';
 import Speedometer from '../../Speedometer.js';
 

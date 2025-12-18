@@ -1,4 +1,4 @@
-import CanvasRenderer from '../CanvasRenderer.js';
+import CanvasRenderer from '../rendering/CanvasRenderer.js';
 import CanvasItem from './CanvasItem.js';
 
 export default class Flame extends CanvasItem {
