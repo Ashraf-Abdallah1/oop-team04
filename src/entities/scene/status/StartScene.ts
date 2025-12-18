@@ -86,7 +86,7 @@ export default class StartScene extends StatusScene {
       canvas.width / 2,
       canvas.height / 2 - 90,
       'center',
-      'sans-serif',
+      'Starjedi',
       50,
       'white'
     );
