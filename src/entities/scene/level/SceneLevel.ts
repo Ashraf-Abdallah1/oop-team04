@@ -160,15 +160,16 @@ export default abstract class SceneLevel extends Scene {
   }
 
   public changeMiniMapSize(): void {
+    const scaleChange: number = 2.8;
     if (this.miniMapBig) {
-      this.miniMapRadius /= 3;
-      this.scale /= 3;
+      this.miniMapRadius /= scaleChange;
+      this.scale /= scaleChange;
       this.miniMapBig = false;
       this.minimapOffsetX = this.getCanvas().width - 10;
       this.minimapOffsetY = 10;
     } else {
-      this.miniMapRadius *= 3;
-      this.scale *= 3;
+      this.miniMapRadius *= scaleChange;
+      this.scale *= scaleChange;
       this.miniMapBig = true;
       this.minimapOffsetX = this.getCanvas().width/2 + this.miniMapRadius;
       this.minimapOffsetY = this.getCanvas().height/2 - this.miniMapRadius;
