@@ -4,11 +4,11 @@ import CanvasRenderer from '../../rendering/CanvasRenderer.js';
 import Question from '../Question.js';
 
 export default class Planet extends MovingItem {
-  private name: string;
+  private readonly name: string;
 
   private size: number;
 
-  private orbitRadius: number;
+  private readonly orbitRadius: number;
 
   private midpoint: Vector2;
 
@@ -60,7 +60,7 @@ export default class Planet extends MovingItem {
    * moves the planet
    * @param delta time in ms
    */
-  public override move(delta: number): void {
+  protected override move(delta: number): void {
     if (this.name !== 'Sun') {
       this.position.x = this.midpoint.x + this.orbitRadius * Math.sin(this.rotation * Math.PI);
       this.position.y = this.midpoint.y + this.orbitRadius * Math.cos(this.rotation * Math.PI);

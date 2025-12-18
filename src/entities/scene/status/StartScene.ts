@@ -7,9 +7,9 @@ import InstructionScene from '../InstructionScene.js';
 import Alien from '../../Alien.js';
 
 export default class StartScene extends StatusScene {
-  private buttonX: number;
+  private readonly buttonX: number;
 
-  private buttonY: number;
+  private readonly buttonY: number;
 
   private buttonWidth: number = 200;
 
