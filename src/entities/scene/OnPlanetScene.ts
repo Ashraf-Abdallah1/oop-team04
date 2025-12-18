@@ -3,7 +3,7 @@ import CanvasRenderer from '../../CanvasRenderer.js';
 import MouseListener from '../../MouseListener.js';
 import Planet from '../Planet.js';
 import Scene from './Scene.js';
-import LevelOneScene from './LevelOneScene.js';
+import LevelOneScene from './level/LevelOneScene.js';
 import Player from '../Player.js';
 import Question from '../Question.js';
 import Alien from '../Alien.js';

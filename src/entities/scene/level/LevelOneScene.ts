@@ -1,10 +1,10 @@
-import KeyListener from "../../KeyListener.js";
-import MouseListener from "../../MouseListener.js";
-import SceneLevel from "./SceneLevel.js";
-import Planet from "../Planet.js";
-import OnPlanetScene from "./OnPlanetScene.js";
-import Player from "../Player.js";
-import Alien from '../Alien.js';
+import KeyListener from '../../../KeyListener.js';
+import MouseListener from '../../../MouseListener.js';
+import SceneLevel from './SceneLevel.js';
+import Planet from '../../Planet.js';
+import OnPlanetScene from '../OnPlanetScene.js';
+import Player from '../../Player.js';
+import Alien from '../../Alien.js';
 
 export default class LevelOneScene extends SceneLevel {
   public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
