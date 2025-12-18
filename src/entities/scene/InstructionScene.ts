@@ -33,15 +33,6 @@ export default class InstructionScene extends StatusScene {
   }
 
   /**
-   * update method
-   * @param delta elapsed time
-   * @returns Scene or null
-   */
-  public override update(delta: number): void {
-    super.update(delta);
-  }
-
-  /**
    * See if we have pressed the button on the screen
    * @param keyListener keyListener
    * @param mouseListener keyListener
