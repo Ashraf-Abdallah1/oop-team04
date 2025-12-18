@@ -1,9 +1,9 @@
 export default class Question {
-  private tekst: string;
+  private readonly tekst: string;
 
-  private goodAnswer: string;
+  private readonly goodAnswer: string;
 
-  private answers: string[];
+  private readonly answers: string[];
 
   public constructor(tekst: string, rightAnswer: string, answers: string[]) {
     this.tekst = tekst;

@@ -14,7 +14,7 @@ export default abstract class Scene {
 
   protected nextScene: Scene | null = null;
 
-  private canvas: HTMLCanvasElement;
+  private readonly canvas: HTMLCanvasElement;
 
   public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     this.canvas = canvas;

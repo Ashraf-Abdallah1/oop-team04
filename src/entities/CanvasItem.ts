@@ -18,6 +18,7 @@ export default abstract class CanvasItem {
    * render the canvas
    *
    * @param canvas de canvas
+   * @param angle side that the item locks at
    * */
   public render(canvas: HTMLCanvasElement, angle?: number): void {
     CanvasRenderer.drawImage(canvas, this.image, this.position.x, this.position.y, angle);
