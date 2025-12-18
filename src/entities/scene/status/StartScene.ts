@@ -50,7 +50,16 @@ export default class StartScene extends StatusScene {
 
     const insideButton: boolean = insideX && insideY;
 
+    const canvas: HTMLCanvasElement = this.getCanvas();
+    if (insideButton) {
+      canvas.style.cursor = 'pointer';
+    } else {
+      canvas.style.cursor = 'default';
+    }
+
+
     if (clicked && insideButton) {
+      canvas.style.cursor = 'default';
       this.nextScene = new InstructionScene(this.getCanvas(), this.player, this.alien);
     }
   }
@@ -75,10 +84,10 @@ export default class StartScene extends StatusScene {
       canvas,
       'Space Game',
       canvas.width / 2,
-      canvas.height / 2 - 90,
+      canvas.height / 4,
       'center',
       'Starjedi',
-      50,
+      188,
       'white'
     );
   }

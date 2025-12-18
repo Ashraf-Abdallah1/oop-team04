@@ -11,9 +11,7 @@ export default class InstructionScene extends StatusScene {
 
   private buttonHeight: number = 50;
 
-  private infoScreenWidth: number = 500;
-
-  private infoScreenHeight: number = 500;
+  private frame: HTMLImageElement = new Image();
 
   private instructionText: string = [
     'Welkom bij space taxi',
@@ -30,6 +28,7 @@ export default class InstructionScene extends StatusScene {
 
   public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     super(canvas, player, alien);
+    this.frame = CanvasRenderer.loadNewImage('../../../assets/sci-fi/info-frame.png');
   }
 
   /**
@@ -40,27 +39,34 @@ export default class InstructionScene extends StatusScene {
    */
   public override processInput(
     keyListener: KeyListener,
-    mouseListener: MouseListener): void {
-    const mousePosition: { x: number; y: number } = mouseListener.getMousePosition();
+    mouseListener: MouseListener
+  ): void {
+    const mousePosition: { x: number, y: number} = mouseListener.getMousePosition();
     const clicked: boolean = mouseListener.buttonPressed();
 
     const canvas: HTMLCanvasElement = this.getCanvas();
-    const buttonX: number = canvas.width / 2 - this.buttonWidth / 2;
-    const buttonY: number = canvas.height / 2 - this.infoScreenHeight / 2
-    + this.infoScreenHeight + 30;
 
-    const insideX : boolean = mousePosition.x >=
-    buttonX && mousePosition.x <= buttonX + this.buttonWidth;
-    const insideY : boolean = mousePosition.y >=
-    buttonY && mousePosition.y <= buttonY + this.buttonHeight;
+    const infoScreenY: number = canvas.height / 2 - this.frame.height / 2;
+
+    const insideX: boolean = mousePosition.x >= canvas.width / 2 - this.buttonWidth / 2
+      && mousePosition.x <= canvas.width / 2 - this.buttonWidth / 2 + this.buttonWidth;
+    const insideY: boolean = mousePosition.y >= infoScreenY + this.frame.height
+      && mousePosition.y <= infoScreenY + this.frame.height + this.buttonHeight;
 
     const insideButton: boolean = insideX && insideY;
 
+    if (insideButton) {
+      canvas.style.cursor = 'pointer';
+    } else {
+      canvas.style.cursor = 'default';
+    }
 
     if (clicked && insideButton) {
+      canvas.style.cursor = 'default';
       this.nextScene = new LevelOneScene(canvas, this.player, this.alien);
     }
   }
+
 
   /**
    * Rendering for the button
@@ -68,28 +74,19 @@ export default class InstructionScene extends StatusScene {
    * @returns return de button
    */
   public override render(canvas: HTMLCanvasElement): void {
-    const infoScreenX: number = canvas.width / 2 - this.infoScreenWidth / 2;
-    const infoScreenY: number = canvas.height / 2 - this.infoScreenHeight / 2;
-    const buttonX: number = canvas.width / 2 - this.buttonWidth / 2;
-    const buttonY: number = infoScreenY + this.infoScreenHeight + 30;
-    CanvasRenderer.drawButton(
-      canvas,
-      buttonX,
-      buttonY,
-      this.buttonWidth,
-      this.buttonHeight,
-      'Ok',
-      '#ffffffff',
-      '#000000ff'
-    );
-    CanvasRenderer.drawRectangle(
-      canvas,
-      infoScreenX,
-      infoScreenY,
-      this.infoScreenWidth,
-      this.infoScreenHeight,
-      '#ffffffff'
-    );
+    const buttonImage: HTMLImageElement = CanvasRenderer.loadNewImage('../../../assets/sci-fi/buttons/OK.png');
+
+    const infoScreenX: number = canvas.width / 2 - this.frame.width / 2;
+    const infoScreenY: number = canvas.height / 2 - this.frame.height / 2;
+
+    CanvasRenderer.writeText(canvas, 'instructies', canvas.width / 2,
+      infoScreenY + 20, 'center', 'Starjedi', 28, '#00ffff');
+
+    CanvasRenderer.drawImage(canvas, buttonImage, canvas.width / 2 - this.buttonWidth / 2,
+      infoScreenY + this.frame.height);
+
+    CanvasRenderer.drawImage(canvas, this.frame, infoScreenX, infoScreenY);
+
     CanvasRenderer.writeInstructions(
       canvas,
       this.instructionText,
@@ -98,16 +95,6 @@ export default class InstructionScene extends StatusScene {
       'left',
       'sans-serif',
       20,
-      'white'
-    );
-    CanvasRenderer.writeText(
-      canvas,
-      'Instructies',
-      canvas.width / 2,
-      infoScreenY - 50,
-      'center',
-      'sans-serif',
-      50,
       'white'
     );
   }
