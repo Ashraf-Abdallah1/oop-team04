@@ -32,7 +32,7 @@ export default abstract class Scene {
 
   public abstract processInput(
     keyListener: KeyListener,
-    mouseListener: MouseListener
+    mouseListener?: MouseListener
   ): void;
 
   public abstract render(canvas: HTMLCanvasElement): void;
