@@ -5,7 +5,6 @@ import Vector2 from '../../../utils/Vector2.js';
 import Question from '../../Question.js';
 import CanvasRenderer from '../../../rendering/CanvasRenderer.js';
 import Player from '../../movingItems/Player.js';
-import MouseListener from '../../../input/MouseListener.js';
 import Alien from '../../Alien.js';
 import Speedometer from '../../Speedometer.js';
 
@@ -151,7 +150,7 @@ export default abstract class SceneLevel extends Scene {
    *  @param keyListener the keylistener to get input from
    *  @param mouseListener the mouselistener to get input from
    * */
-  public override processInput(keyListener: KeyListener, mouseListener: MouseListener): void {
+  public override processInput(keyListener: KeyListener): void {
     this.player.processInput(keyListener);
 
     if (keyListener.keyPressed(KeyListener.KEY_M)) {
@@ -159,6 +158,9 @@ export default abstract class SceneLevel extends Scene {
     }
   }
 
+  /**
+   * Changes the minimap size
+   */
   public changeMiniMapSize(): void {
     const scaleChange: number = 2.8;
     if (this.miniMapBig) {
@@ -277,7 +279,7 @@ export default abstract class SceneLevel extends Scene {
     this.player.render(canvas, this.player.getRotation(), cameraX, cameraY);
     this.player.getFlame().render(canvas, this.player.getFlame().getRotation(), cameraX, cameraY);
 
-    CanvasRenderer.writeText(canvas, `${this.player.getSBucks()}`, this.sBucksImage.width + 30, 52, "left", "sans-serif", 30, "white");
+    CanvasRenderer.writeText(canvas, `${this.player.getSBucks()}`, this.sBucksImage.width + 30, 52, 'left', 'sans-serif', 30, '#C9C9C9');
 
     if (this.sBucksHudImage.complete) {
       CanvasRenderer.drawImage(canvas, this.sBucksHudImage, 5, 5);

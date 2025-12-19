@@ -1,5 +1,4 @@
 import KeyListener from '../../../input/KeyListener.js';
-import MouseListener from '../../../input/MouseListener.js';
 import SceneLevel from './SceneLevel.js';
 import Planet from '../../movingItems/Planet.js';
 import OnPlanetScene from '../OnPlanetScene.js';
@@ -32,8 +31,8 @@ export default class LevelOneScene extends SceneLevel {
    * @param mouseListener the mouseListener
    * @returns the next scene
    * */
-  public override processInput(keyListener: KeyListener, mouseListener: MouseListener): void {
-    super.processInput(keyListener, mouseListener);
+  public override processInput(keyListener: KeyListener): void {
+    super.processInput(keyListener);
 
     const closestPlanetData: { planet: Planet | null; distance: number } = this.getClosestPlanet();
     const closestPlanet: Planet | null = closestPlanetData.planet;

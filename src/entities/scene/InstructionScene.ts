@@ -7,16 +7,14 @@ import CanvasRenderer from '../../rendering/CanvasRenderer.js';
 import Alien from '../Alien.js';
 
 export default class InstructionScene extends StatusScene {
-  private buttonWidth: number = 150;
-
-  private buttonHeight: number = 50;
-
   private frame: HTMLImageElement = new Image();
+
+  private button: HTMLImageElement = new Image();
 
   private instructionText: string = [
     'Welkom bij space taxi',
-    'Beweeg de ruimte schip met de pijltjes',
-    'ga naar de aarde en daar staat een passagier',
+    'Beweeg het ruimte schip met de pijltjes of WASD',
+    'ga naar de rode planeet op de minimap, er wacht daar een passagier',
     'deze passagier moet naar zijn bestemming toe',
     'breng deze alien naar de juiste planeet',
     'bij deze planeet krijg je een vraag',
@@ -28,6 +26,7 @@ export default class InstructionScene extends StatusScene {
   public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     super(canvas, player, alien);
     this.frame = CanvasRenderer.loadNewImage('../../../assets/sci-fi/info-frame.png');
+    this.button = CanvasRenderer.loadNewImage('../../../assets/sci-fi/buttons/OK.png');
   }
 
   /**
@@ -40,25 +39,25 @@ export default class InstructionScene extends StatusScene {
     keyListener: KeyListener,
     mouseListener: MouseListener
   ): void {
+    this.checkButtonClick(mouseListener);
+  }
+
+  /**
+   * checks if the button is clicked
+   * @param mouseListener mouse listener
+   */
+  private checkButtonClick(mouseListener: MouseListener): void {
     const mousePosition: { x: number, y: number} = mouseListener.getMousePosition();
     const clicked: boolean = mouseListener.buttonPressed();
-
     const canvas: HTMLCanvasElement = this.getCanvas();
 
-    const infoScreenY: number = canvas.height / 2 - this.frame.height / 2;
+    const insideButton: boolean = mousePosition.x >= (canvas.width / 2) - (this.button.width / 2) &&
+      mousePosition.x <= (canvas.width / 2) + (this.button.width / 2) &&
+      mousePosition.y >= canvas.height / 2 - this.frame.height / 2 + this.frame.height &&
+      mousePosition.y <= canvas.height / 2 - this.frame.height / 2
+        + this.frame.height + this.button.height;
 
-    const insideX: boolean = mousePosition.x >= canvas.width / 2 - this.buttonWidth / 2
-      && mousePosition.x <= canvas.width / 2 - this.buttonWidth / 2 + this.buttonWidth;
-    const insideY: boolean = mousePosition.y >= infoScreenY + this.frame.height
-      && mousePosition.y <= infoScreenY + this.frame.height + this.buttonHeight;
-
-    const insideButton: boolean = insideX && insideY;
-
-    if (insideButton) {
-      canvas.style.cursor = 'pointer';
-    } else {
-      canvas.style.cursor = 'default';
-    }
+    canvas.style.cursor = insideButton ? 'pointer' : 'default';
 
     if (clicked && insideButton) {
       canvas.style.cursor = 'default';
@@ -72,28 +71,24 @@ export default class InstructionScene extends StatusScene {
    * @returns return de button
    */
   public override render(canvas: HTMLCanvasElement): void {
-    const buttonImage: HTMLImageElement = CanvasRenderer.loadNewImage('../../../assets/sci-fi/buttons/OK.png');
-
-    const infoScreenX: number = canvas.width / 2 - this.frame.width / 2;
-    const infoScreenY: number = canvas.height / 2 - this.frame.height / 2;
-
     CanvasRenderer.writeText(canvas, 'instructies', canvas.width / 2,
-      infoScreenY + 20, 'center', 'Starjedi', 28, '#00ffff');
+      canvas.height / 2 - this.frame.height / 2 + 20, 'center', 'Starjedi', 28, '#00ffff');
 
-    CanvasRenderer.drawImage(canvas, buttonImage, canvas.width / 2 - this.buttonWidth / 2,
-      infoScreenY + this.frame.height);
+    CanvasRenderer.drawImage(canvas, this.button, canvas.width / 2 - 75,
+      canvas.height / 2 - this.frame.height / 2 + this.frame.height);
 
-    CanvasRenderer.drawImage(canvas, this.frame, infoScreenX, infoScreenY);
+    CanvasRenderer.drawImage(canvas, this.frame, canvas.width / 2 - this.frame.width / 2,
+      canvas.height / 2 - this.frame.height / 2);
 
     CanvasRenderer.writeInstructions(
       canvas,
       this.instructionText,
-      infoScreenX + 20,
-      infoScreenY + 50,
-      'left',
-      'sans-serif',
+      canvas.width / 2 - this.frame.width / 2 + this.frame.width / 10,
+      canvas.height / 2 - this.frame.height / 2 + 120,
+      'start',
+      'Starjedi',
       20,
-      'white'
+      '#C9C9C9'
     );
   }
 }
