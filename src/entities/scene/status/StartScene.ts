@@ -42,8 +42,6 @@ export default class StartScene extends StatusScene {
       mousePosition.y >= (canvas.height / 2) - (this.button.height / 2) &&
       mousePosition.y <= (canvas.height / 2) + (this.button.height / 2);
 
-    console.log(mousePosition.x >= (canvas.width / 2) - (this.button.width / 2));
-
     if (insideButton) {
       canvas.style.cursor = 'pointer';
     } else {

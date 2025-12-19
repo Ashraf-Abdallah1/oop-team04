@@ -179,6 +179,34 @@ export default class CanvasRenderer {
     ctx.stroke();
   }
 
+    /**
+   * Draw a circle outline on the canvas REVERSED
+   *
+   * @param canvas the canvas to draw to
+   * @param centerX the x-coordinate of the center of the circle
+   * @param centerY the y-coordinate of the center of the circle
+   * @param radius the radius of the circle
+   * @param color the color of the circle outline
+   */
+
+    public static drawReverseCircle(
+      canvas: HTMLCanvasElement,
+      centerX: number,
+      centerY: number,
+      radius: number,
+      color: string = 'red',
+    ): void {
+      const ctx: CanvasRenderingContext2D = CanvasRenderer.getCanvasContext(canvas);
+      ctx.save();
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.rect(0, 0, canvas.width, canvas.height);
+      ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, true);
+      ctx.closePath();
+      ctx.fill('evenodd');
+      ctx.restore();
+    }
+
   /**
    * Draw a rectangle outline to the canvas
    *

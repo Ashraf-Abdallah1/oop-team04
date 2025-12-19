@@ -1,7 +1,5 @@
 import KeyListener from '../../../input/KeyListener.js';
 import SceneLevel from './SceneLevel.js';
-import Planet from '../../movingItems/Planet.js';
-import OnPlanetScene from '../OnPlanetScene.js';
 import Player from '../../movingItems/Player.js';
 import Alien from '../../Alien.js';
 
@@ -13,7 +11,7 @@ export default class LevelOneScene extends SceneLevel {
   /**
    * clear next scene
    */
-  public clearScene(): void {
+  public override clearScene(): void {
     this.nextScene = null;
   }
 
@@ -33,28 +31,5 @@ export default class LevelOneScene extends SceneLevel {
    * */
   public override processInput(keyListener: KeyListener): void {
     super.processInput(keyListener);
-
-    const closestPlanetData: { planet: Planet | null; distance: number } = this.getClosestPlanet();
-    const closestPlanet: Planet | null = closestPlanetData.planet;
-    const closestDistance: number = closestPlanetData.distance;
-
-    if (closestPlanet) {
-      const playerRadius: number = Math.max(this.player.getWidth(), this.player.getHeight()) / 2;
-      const planetRadius: number = closestPlanet.getHeight() / 2;
-      const collisionDistance: number = closestDistance -
-      (playerRadius + 67 /** SIX SEVEN */ + planetRadius);
-
-      if (collisionDistance <= planetRadius && keyListener.isKeyDown(KeyListener.KEY_E)) {
-        if (this.player.getPlanetToGo()?.toString() === closestPlanet.getName().toString()) {
-          this.player.setOnCorrectPlanet(true);
-          this.nextScene = new OnPlanetScene(this.getCanvas(),
-            this.player, closestPlanet, this.alien, this);
-        } else {
-          this.nextScene = new OnPlanetScene(this.getCanvas(),
-            this.player, closestPlanet, this.alien, this);
-          this.player.setOnCorrectPlanet(false);
-        }
-      }
-    }
   }
 }

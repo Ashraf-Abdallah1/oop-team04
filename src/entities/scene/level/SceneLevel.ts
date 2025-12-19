@@ -7,9 +7,16 @@ import CanvasRenderer from '../../../rendering/CanvasRenderer.js';
 import Player from '../../movingItems/Player.js';
 import Alien from '../../Alien.js';
 import Speedometer from '../../Speedometer.js';
+import OnPlanetScene from '../OnPlanetScene.js';
 
 export default abstract class SceneLevel extends Scene {
   protected planets: Planet[];
+
+  private marioRadius: number = 0;
+
+  private closestPlanetData: { planet: Planet | null; distance: number };
+
+  private isMarioEffectActive: boolean = false;
 
   private sBucksHudImage: HTMLImageElement;
 
@@ -31,6 +38,8 @@ export default abstract class SceneLevel extends Scene {
 
   private miniMapBig: boolean = false;
 
+  private camera: Vector2 = new Vector2(0, 0);
+
   public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     super(canvas, player, alien);
     this.planets = [];
@@ -42,6 +51,7 @@ export default abstract class SceneLevel extends Scene {
     this.background = new Image();
     this.background = CanvasRenderer.loadNewImage('../../../../assets/BackgroundSpace.png');
     this.minimapOffsetX = canvas.width - 10;
+    this.closestPlanetData = { planet: null, distance: 0 };
   }
 
   public getClosestPlanet(): { planet: Planet | null; distance: number } {
@@ -58,6 +68,12 @@ export default abstract class SceneLevel extends Scene {
     });
 
     return { planet: closestPlanet, distance: closestDistance };
+  }
+
+  private renderExtensions(canvas: HTMLCanvasElement): void {
+    if (this.isMarioEffectActive && this.closestPlanetData.planet) {
+      CanvasRenderer.drawReverseCircle(canvas, this.closestPlanetData.planet.getPosition().x - this.camera.x, this.closestPlanetData.planet.getPosition().y - this.camera.y, this.marioRadius, 'black');
+    }
   }
 
   /**
@@ -107,41 +123,50 @@ export default abstract class SceneLevel extends Scene {
    *  @param delta time in ms elapsed from the GameLoop
    * */
   public update(delta: number): void {
-    this.player.update(delta);
+    this.closestPlanetData = this.getClosestPlanet();
+    const closestPlanet: Planet | null = this.closestPlanetData.planet;
+    const closestDistance: number = this.closestPlanetData.distance;
 
-    const playerRadius: number = Math.max(this.player.getWidth(), this.player.getHeight()) / 2;
+    if (this.isMarioEffectActive && closestPlanet) {
+      this.marioRadius -= this.marioRadius / 200 * delta;
+      if (this.marioRadius <= 1) {
+        this.marioRadius = 0;
 
-    this.planets.forEach((planet: Planet) => {
-      planet.update(delta);
-      planet.setShowInteractionKey(false);
-      planet.setShowPointOfInterest(false);
-    });
+        this.nextScene = new OnPlanetScene(this.getCanvas(), this.player,
+          closestPlanet, this.alien, this);
 
-    const closestPlanetData: { planet: Planet | null; distance: number } = this.getClosestPlanet();
-    const closestPlanet: Planet | null = closestPlanetData.planet;
-    const closestDistance: number = closestPlanetData.distance;
-
-    this.planets.forEach((planet: Planet) => {
-      if (planet.getName() === this.player.getPlanetToGo()) {
-        planet.setShowPointOfInterest(true);
+        this.isMarioEffectActive = false;
       }
+    } else {
+      this.player.update(delta);
 
-      if (closestPlanet) {
-        const planetRadius: number = closestPlanet.getHeight() / 2;
-        const collisionDistance: number = closestDistance -
-        (playerRadius + 67 /** SIX SEVEN */ + planetRadius);
+      this.planets.forEach((planet: Planet) => {
+        planet.update(delta);
+        planet.setShowInteractionKey(false);
+        planet.setShowPointOfInterest(false);
 
-        if (collisionDistance <= 0) {
-          closestPlanet.setShowInteractionKey(true);
+        if (planet.getName() === this.player.getPlanetToGo()) {
+          planet.setShowPointOfInterest(true);
         }
-      }
 
-      if (planet.getName() === 'Sun') {
-        this.player.isCollidingWithSun(planet);
-      }
-    });
+        if (closestPlanet) {
+          const planetRadius: number = closestPlanet.getHeight() / 2;
+          const collisionDistance: number = closestDistance -
+          (Math.max(this.player.getWidth(),
+            this.player.getHeight()) / 2 + 67 /** SIX SEVEN */ + planetRadius);
 
-    this.speedometer.setSpeed(Math.round(this.player.getAcceleration() * 10000));
+          if (collisionDistance <= 0) {
+            closestPlanet.setShowInteractionKey(true);
+          }
+        }
+
+        if (planet.getName() === 'Sun') {
+          this.player.isCollidingWithSun(planet);
+        }
+      });
+
+      this.speedometer.setSpeed(Math.round(this.player.getAcceleration() * 10000));
+    }
   }
 
   /**
@@ -155,6 +180,31 @@ export default abstract class SceneLevel extends Scene {
 
     if (keyListener.keyPressed(KeyListener.KEY_M)) {
       this.changeMiniMapSize();
+    }
+
+    this.handleSceneSwitch(keyListener);
+  }
+
+  private handleSceneSwitch(keyListener: KeyListener): void {
+    this.closestPlanetData = this.getClosestPlanet();
+    const closestPlanet: Planet | null = this.closestPlanetData.planet;
+    const closestDistance: number = this.closestPlanetData.distance;
+
+    if (closestPlanet) {
+      const planetRadius: number = closestPlanet.getHeight() / 2;
+      const collisionDistance: number = closestDistance - (Math.max(this.player.getWidth(),
+        this.player.getHeight()) / 2 + 67 /** SIX SEVEN */ + planetRadius);
+
+      if (collisionDistance <= planetRadius && keyListener.isKeyDown(KeyListener.KEY_E)) {
+        this.isMarioEffectActive = true;
+        this.marioRadius = Math.max(this.getCanvas().width, this.getCanvas().height);
+
+        if (this.player.getPlanetToGo()?.toString() !== closestPlanet.getName().toString()) {
+          this.player.setOnCorrectPlanet(false);
+        } else {
+          this.player.setOnCorrectPlanet(true);
+        }
+      }
     }
   }
 
@@ -192,7 +242,7 @@ export default abstract class SceneLevel extends Scene {
     CanvasRenderer.fillCircle(canvas, centerMap.x, centerMap.y, this.miniMapRadius, 'rgba(0, 0, 0, 0.74)');
 
     const sun: Planet | undefined = this.planets.find(
-      (p: Planet): boolean => p.getName() === 'Sun'
+      (planet: Planet): boolean => planet.getName() === 'Sun'
     );
 
     if (!sun) {
@@ -246,38 +296,46 @@ export default abstract class SceneLevel extends Scene {
   }
 
   /**
+   * Clears the scene by resetting the next scene to null
+   */
+  public clearScene(): void {
+    this.nextScene = null;
+  }
+
+  /**
    * Renders al of elements in level1 on the canvas
    *
    * @param canvas the canvas to render on
    * */
   public override render(canvas: HTMLCanvasElement): void {
-    const cameraX: number = this.player.getPosition().x - canvas.width / 2;
-    const cameraY: number = this.player.getPosition().y - canvas.height / 2;
+    this.camera.x = this.player.getPosition().x - canvas.width / 2;
+    this.camera.y = this.player.getPosition().y - canvas.height / 2;
 
     if (this.background.width > 0) {
       for (let x: number = -5000; x < 10000; x += this.background.width) {
         for (let y: number = -5000; y < 10000; y += this.background.height) {
-          CanvasRenderer.drawImage(canvas, this.background, x - cameraX, y - cameraY);
+          CanvasRenderer.drawImage(canvas, this.background, x - this.camera.x, y - this.camera.y);
         }
       }
     }
 
     this.planets.forEach((planet: Planet) => {
-      planet.render(canvas, cameraX, cameraY);
+      planet.render(canvas, this.camera.x, this.camera.y);
     });
 
     this.speedometer.render(canvas);
 
     CanvasRenderer.drawCircle(
       canvas,
-      this.getCanvasCenter().x - cameraX,
-      this.getCanvasCenter().y - cameraY,
+      this.getCanvasCenter().x - this.camera.x,
+      this.getCanvasCenter().y - this.camera.y,
       this.borderRadius,
       'red'
     );
 
-    this.player.render(canvas, this.player.getRotation(), cameraX, cameraY);
-    this.player.getFlame().render(canvas, this.player.getFlame().getRotation(), cameraX, cameraY);
+    this.player.render(canvas, this.player.getRotation(), this.camera.x, this.camera.y);
+    this.player.getFlame().render(canvas, this.player.getFlame().getRotation(),
+      this.camera.x, this.camera.y);
 
     CanvasRenderer.writeText(canvas, `${this.player.getSBucks()}`, this.sBucksImage.width + 30, 52, 'left', 'sans-serif', 30, '#C9C9C9');
 
@@ -287,6 +345,9 @@ export default abstract class SceneLevel extends Scene {
     if (this.sBucksImage.complete) {
       CanvasRenderer.drawImage(canvas, this.sBucksImage, 30, 40 - this.sBucksImage.height / 2);
     }
+
     this.renderMinimap(canvas);
+
+    this.renderExtensions(canvas);
   }
 }
