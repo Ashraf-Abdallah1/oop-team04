@@ -134,7 +134,7 @@ export default class OnPlanetScene extends Scene {
   public override render(canvas: HTMLCanvasElement): void {
     const centerX: number = canvas.width / 2;
     const canvasHeight: number = canvas.height;
-    
+
     CanvasRenderer.drawImage(canvas, this.planetImage, 0, canvasHeight - canvas.height / 3);
 
     if (this.player.isOnCorrectPlanet()) {

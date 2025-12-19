@@ -1,14 +1,8 @@
 import MovingItem from './MovingItem.js';
 
 export default class Astroid extends MovingItem {
-  private size: number;
-
-  private score: number;
-
-  public constructor(size: number, score: number) {
+  public constructor() {
     super();
-    this.size = size;
-    this.score = score;
   }
 
   public override move(delta: number): void {
