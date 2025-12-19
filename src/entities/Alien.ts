@@ -1,20 +1,17 @@
 import CanvasItem from './CanvasItem.js';
+import CanvasRenderer from '../rendering/CanvasRenderer.js';
+import Vector2 from '../utils/Vector2.js';
 
 export default class Alien extends CanvasItem {
-  private name: string;
+  private delivered: boolean;
 
-  private destination: string;
+  private planetsToGo: string[] = ['Mercury', 'Neptune', 'Uranus', 'Mars', 'Venus', 'Jupiter', 'Saturn'];
 
-  private isDelivered: boolean;
-
-  private score: number;
-
-  public constructor(name: string, destination: string, score: number) {
+  public constructor(canvas: HTMLCanvasElement) {
     super();
-    this.name = name;
-    this.destination = destination;
-    this.score = score;
-    this.isDelivered = false;
+    this.image = CanvasRenderer.loadNewImage('../../assets/Alien.png');
+    this.position = new Vector2(240, (canvas.height - (canvas.height / 3)) - this.image.height + 30);
+    this.delivered = false;
   }
 
   /**
@@ -22,27 +19,27 @@ export default class Alien extends CanvasItem {
    * @param delta number
    */
   public update(delta: number): void {
-    // is ff voor het testen want anders gaat linterr af
-    console.log(delta, this.score);
+    if(this.delivered) {
+      this.delivered = false;
+    }
   }
 
-  public getIsDelivered(): boolean {
-    return this.isDelivered;
+  public getDelivered(): boolean {
+    return this.delivered;
   }
 
   /**
    * sets the isDelivered state to true
    */
-  public deliver(): void {
-    this.isDelivered = true;
+  public setDelivered(): void {
+    this.delivered = true;
   }
 
-  /**
-   * prints the message above the alien
-   * @param message string
-   */
-  public sayMessage(message: string): void {
-    // is ff voor het testen want anders gaat linterr af
-    console.log(message, this.score);
+  public getPlanetsToGo(): string[] {
+    return this.planetsToGo;
+  }
+
+  public setPlanetsToGo(planetsToGo: string[]): void {
+    this.planetsToGo = planetsToGo;
   }
 }

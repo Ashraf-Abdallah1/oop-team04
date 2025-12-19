@@ -1,23 +1,20 @@
-import StatusScene from './StatusScene.js';
-import KeyListener from './../../KeyListener.js';
-import MouseListener from './../../MouseListener.js';
-import LevelOneScene from './LevelOneScene.js';
-import Player from './../Player.js';
-import CanvasRenderer from './../../CanvasRenderer.js';
+import StatusScene from './status/StatusScene.js';
+import KeyListener from '../../input/KeyListener.js';
+import MouseListener from '../../input/MouseListener.js';
+import LevelOneScene from './level/LevelOneScene.js';
+import Player from '../movingItems/Player.js';
+import CanvasRenderer from '../../rendering/CanvasRenderer.js';
+import Alien from '../Alien.js';
 
 export default class InstructionScene extends StatusScene {
-  private buttonWidth: number = 150;
+  private frame: HTMLImageElement = new Image();
 
-  private buttonHeight: number = 50;
-
-  private infoScreenWidth: number = 500;
-
-  private infoScreenHeight: number = 500;
+  private button: HTMLImageElement = new Image();
 
   private instructionText: string = [
     'Welkom bij space taxi',
-    'Beweeg de ruimte schip met de pijltjes',
-    'ga naar de aarde en daar staat een passagier',
+    'Beweeg het ruimte schip met de pijltjes of WASD',
+    'ga naar de rode planeet op de minimap, er wacht daar een passagier',
     'deze passagier moet naar zijn bestemming toe',
     'breng deze alien naar de juiste planeet',
     'bij deze planeet krijg je een vraag',
@@ -26,18 +23,10 @@ export default class InstructionScene extends StatusScene {
     .map((line: string) => line.trim() ? `- ${line}` : '')
     .join('\n');
 
-
-  public constructor(canvas: HTMLCanvasElement, player: Player) {
-    super(canvas, player);
-  }
-
-  /**
-   * update method
-   * @param delta elapsed time
-   * @returns Scene or null
-   */
-  public override update(delta: number): void {
-    super.update(delta);
+  public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
+    super(canvas, player, alien);
+    this.frame = CanvasRenderer.loadNewImage('../../../assets/sci-fi/info-frame.png');
+    this.button = CanvasRenderer.loadNewImage('../../../assets/sci-fi/buttons/OK.png');
   }
 
   /**
@@ -48,25 +37,31 @@ export default class InstructionScene extends StatusScene {
    */
   public override processInput(
     keyListener: KeyListener,
-    mouseListener: MouseListener): void {
-    const mousePosition: { x: number; y: number } = mouseListener.getMousePosition();
+    mouseListener: MouseListener
+  ): void {
+    this.checkButtonClick(mouseListener);
+  }
+
+  /**
+   * checks if the button is clicked
+   * @param mouseListener mouse listener
+   */
+  private checkButtonClick(mouseListener: MouseListener): void {
+    const mousePosition: { x: number, y: number} = mouseListener.getMousePosition();
     const clicked: boolean = mouseListener.buttonPressed();
-
     const canvas: HTMLCanvasElement = this.getCanvas();
-    const buttonX: number = canvas.width / 2 - this.buttonWidth / 2;
-    const buttonY: number = canvas.height / 2 - this.infoScreenHeight / 2
-    + this.infoScreenHeight + 30;
 
-    const insideX : boolean = mousePosition.x >=
-    buttonX && mousePosition.x <= buttonX + this.buttonWidth;
-    const insideY : boolean = mousePosition.y >=
-    buttonY && mousePosition.y <= buttonY + this.buttonHeight;
+    const insideButton: boolean = mousePosition.x >= (canvas.width / 2) - (this.button.width / 2) &&
+      mousePosition.x <= (canvas.width / 2) + (this.button.width / 2) &&
+      mousePosition.y >= canvas.height / 2 - this.frame.height / 2 + this.frame.height &&
+      mousePosition.y <= canvas.height / 2 - this.frame.height / 2
+        + this.frame.height + this.button.height;
 
-    const insideButton: boolean = insideX && insideY;
-
+    canvas.style.cursor = insideButton ? 'pointer' : 'default';
 
     if (clicked && insideButton) {
-      this.nextScene = new LevelOneScene(this.getCanvas(), this.player);
+      canvas.style.cursor = 'default';
+      this.nextScene = new LevelOneScene(canvas, this.player, this.alien);
     }
   }
 
@@ -76,47 +71,24 @@ export default class InstructionScene extends StatusScene {
    * @returns return de button
    */
   public override render(canvas: HTMLCanvasElement): void {
-    const infoScreenX: number = canvas.width / 2 - this.infoScreenWidth / 2;
-    const infoScreenY: number = canvas.height / 2 - this.infoScreenHeight / 2;
-    const buttonX: number = canvas.width / 2 - this.buttonWidth / 2;
-    const buttonY: number = infoScreenY + this.infoScreenHeight + 30;
-    CanvasRenderer.drawButton(
-      canvas,
-      buttonX,
-      buttonY,
-      this.buttonWidth,
-      this.buttonHeight,
-      'Ok',
-      '#ffffffff',
-      '#000000ff'
-    );
-    CanvasRenderer.drawRectangle(
-      canvas,
-      infoScreenX,
-      infoScreenY,
-      this.infoScreenWidth,
-      this.infoScreenHeight,
-      '#ffffffff'
-    );
+    CanvasRenderer.writeText(canvas, 'instructies', canvas.width / 2,
+      canvas.height / 2 - this.frame.height / 2 + 20, 'center', 'Starjedi', 28, '#00ffff');
+
+    CanvasRenderer.drawImage(canvas, this.button, canvas.width / 2 - 75,
+      canvas.height / 2 - this.frame.height / 2 + this.frame.height);
+
+    CanvasRenderer.drawImage(canvas, this.frame, canvas.width / 2 - this.frame.width / 2,
+      canvas.height / 2 - this.frame.height / 2);
+
     CanvasRenderer.writeInstructions(
       canvas,
       this.instructionText,
-      infoScreenX + 20,
-      infoScreenY + 50,
-      'left',
-      'sans-serif',
+      canvas.width / 2 - this.frame.width / 2 + this.frame.width / 10,
+      canvas.height / 2 - this.frame.height / 2 + 120,
+      'start',
+      'Starjedi',
       20,
-      'white'
-    );
-    CanvasRenderer.writeText(
-      canvas,
-      'Instructies',
-      canvas.width / 2,
-      infoScreenY - 50,
-      'center',
-      'sans-serif',
-      50,
-      'white'
+      '#C9C9C9'
     );
   }
 }

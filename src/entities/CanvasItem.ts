@@ -1,5 +1,5 @@
-import Vector2 from '../Vector2.js';
-import CanvasRenderer from '../CanvasRenderer.js';
+import Vector2 from '../utils/Vector2.js';
+import CanvasRenderer from '../rendering/CanvasRenderer.js';
 
 export default abstract class CanvasItem {
   protected boardSize: Vector2;
@@ -18,6 +18,7 @@ export default abstract class CanvasItem {
    * render the canvas
    *
    * @param canvas de canvas
+   * @param angle side that the item locks at
    * */
   public render(canvas: HTMLCanvasElement, angle?: number): void {
     CanvasRenderer.drawImage(canvas, this.image, this.position.x, this.position.y, angle);

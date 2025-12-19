@@ -1,10 +1,12 @@
-import Player from '../Player.js';
-import KeyListener from '../../KeyListener.js';
-import Vector2 from '../../Vector2.js';
-import MouseListener from '../../MouseListener.js';
+import Player from '../movingItems/Player.js';
+import KeyListener from '../../input/KeyListener.js';
+import MouseListener from '../../input/MouseListener.js';
+import Alien from '../Alien.js';
 
 export default abstract class Scene {
   protected player: Player;
+
+  protected alien: Alien;
 
   protected level: number;
 
@@ -12,25 +14,25 @@ export default abstract class Scene {
 
   protected nextScene: Scene | null = null;
 
-  private canvas: HTMLCanvasElement;
+  private readonly canvas: HTMLCanvasElement;
 
-  public constructor(canvas: HTMLCanvasElement, player: Player) {
+  public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     this.canvas = canvas;
     this.canvas.height = window.innerHeight;
     this.canvas.width = window.innerWidth;
     this.player = player;
     this.level = 1;
     this.sBucket = 0;
+    this.alien = alien;
   }
 
   public getCanvas(): HTMLCanvasElement {
     return this.canvas;
   }
-  public abstract update(delta: number): void;
 
   public abstract processInput(
     keyListener: KeyListener,
-    mouseListener: MouseListener
+    mouseListener?: MouseListener
   ): void;
 
   public abstract render(canvas: HTMLCanvasElement): void;

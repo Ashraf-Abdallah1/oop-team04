@@ -1,4 +1,4 @@
-import CanvasRenderer from '../CanvasRenderer.js';
+import CanvasRenderer from '../rendering/CanvasRenderer.js';
 import CanvasItem from './CanvasItem.js';
 
 export default class Flame extends CanvasItem {
@@ -10,6 +10,28 @@ export default class Flame extends CanvasItem {
     super();
     this.rotation = 0;
     this.currentImageIndex = 0;
+  }
+
+  /**
+   * render the canvas
+   *
+   * @param canvas de canvas
+   * @param angle side that the item locks at
+   * @param cameraX  view x
+   * @param cameraY view y
+   * */
+  public override render(
+    canvas: HTMLCanvasElement,
+    angle?: number,
+    cameraX: number = 0,
+    cameraY: number = 0
+  ): void {
+    CanvasRenderer.drawImage(canvas,
+      this.image,
+      this.position.x - cameraX - this.image.width / 2,
+      this.position.y - cameraY - this.image.height / 2,
+      angle
+    );
   }
 
   public setRotation(newRotation: number): void {

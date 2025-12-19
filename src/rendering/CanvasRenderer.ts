@@ -106,7 +106,7 @@ export default class CanvasRenderer {
     xCoordinate: number,
     yCoordinate: number,
     alignment: CanvasTextAlign = 'center',
-    fontFamily: string = 'sans-serif',
+    fontFamily: string = 'starjedi-fill',
     fontSize: number = 20,
     color: string = 'red',
   ): void {
@@ -319,5 +319,292 @@ export default class CanvasRenderer {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(text, x + width / 2, y + height / 2);
+  }
+
+  /**
+   * Draw a rounded rectangle with shadow
+   *
+   * @param canvas the canvas to draw to
+   * @param x the x-coordinate
+   * @param y the y-coordinate
+   * @param width the width
+   * @param height the height
+   * @param radius the border radius
+   * @param fillColor the fill color
+   * @param shadowColor the shadow color
+   */
+  public static drawRoundedRect(
+    canvas: HTMLCanvasElement,
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    radius: number,
+    fillColor: string,
+    shadowColor?: string,
+  ): void {
+    const ctx: CanvasRenderingContext2D = CanvasRenderer.getCanvasContext(canvas);
+
+    ctx.save();
+
+    if (shadowColor) {
+      ctx.shadowColor = shadowColor;
+      ctx.shadowBlur = 10;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 4;
+    }
+
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + width - radius, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+    ctx.lineTo(x + width, y + height - radius);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+    ctx.lineTo(x + radius, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
+
+    ctx.fillStyle = fillColor;
+    ctx.fill();
+
+    ctx.restore();
+  }
+
+  /**
+   * Draw text with shadow for better readability
+   *
+   * @param canvas the canvas to draw to
+   * @param text the text to display
+   * @param x the x-coordinate
+   * @param y the y-coordinate
+   * @param fontSize the font size
+   * @param color the text color
+   * @param fontFamily the font family
+   * @param alignment the text alignment
+   * @param shadowColor the shadow color (optional)
+   */
+  public static drawTextWithShadow(
+    canvas: HTMLCanvasElement,
+    text: string,
+    x: number,
+    y: number,
+    fontSize: number,
+    color: string,
+    fontFamily: string = 'Arial',
+    alignment: CanvasTextAlign = 'center',
+    shadowColor?: string,
+  ): void {
+    const ctx: CanvasRenderingContext2D = CanvasRenderer.getCanvasContext(canvas);
+
+    ctx.save();
+    ctx.font = `bold ${fontSize}px ${fontFamily}`;
+    ctx.textAlign = alignment;
+    ctx.textBaseline = 'middle';
+
+    if (shadowColor) {
+      ctx.shadowColor = shadowColor;
+      ctx.shadowBlur = 4;
+      ctx.shadowOffsetX = 2;
+      ctx.shadowOffsetY = 2;
+    }
+
+    ctx.fillStyle = color;
+    ctx.fillText(text, x, y);
+
+    ctx.restore();
+  }
+
+  /**
+   * Draw a speech bubble (for alien dialogue)
+   *
+   * @param canvas the canvas to draw to
+   * @param x the x-coordinate
+   * @param y the y-coordinate
+   * @param width the width
+   * @param height the height
+   * @param fillColor the fill color
+   * @param text the text to display
+   */
+  public static drawSpeechBubble(
+    canvas: HTMLCanvasElement,
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    fillColor: string,
+    text: string,
+  ): void {
+    const ctx: CanvasRenderingContext2D = CanvasRenderer.getCanvasContext(canvas);
+    const radius: number = 20;
+
+    ctx.save();
+
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
+    ctx.shadowBlur = 10;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 4;
+
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + width - radius, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+    ctx.lineTo(x + width, y + height - radius);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+    ctx.lineTo(x + radius, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
+
+    ctx.fillStyle = fillColor;
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(x + 40, y + height);
+    ctx.lineTo(x + 20, y + height + 20);
+    ctx.lineTo(x + 60, y + height);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.restore();
+
+    ctx.fillStyle = '#333333';
+    ctx.font = 'bold 24px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, x + width / 2, y + height / 2);
+  }
+
+  /**
+   * Draw an interactive answer button
+   *
+   * @param canvas the canvas to draw to
+   * @param x the x-coordinate
+   * @param y the y-coordinate
+   * @param width the width
+   * @param height the height
+   * @param letter the answer letter (A, B, C)
+   * @param text the answer text
+   * @param color the button color
+   * @param isHovered whether the button is being hovered
+   */
+  public static drawAnswerButton(
+    canvas: HTMLCanvasElement,
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    letter: string,
+    text: string,
+    color: string,
+    isHovered: boolean,
+  ): void {
+    const ctx: CanvasRenderingContext2D = CanvasRenderer.getCanvasContext(canvas);
+    const radius: number = 15;
+    const scale: number = isHovered ? 1.05 : 1;
+    const adjustedWidth: number = width * scale;
+    const adjustedHeight: number = height * scale;
+    const adjustedX: number = x - (adjustedWidth - width) / 2;
+    const adjustedY: number = y - (adjustedHeight - height) / 2;
+
+    ctx.save();
+
+    ctx.shadowColor = isHovered ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.2)';
+    ctx.shadowBlur = isHovered ? 15 : 10;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 4;
+
+    ctx.beginPath();
+    ctx.moveTo(adjustedX + radius, adjustedY);
+    ctx.lineTo(adjustedX + adjustedWidth - radius, adjustedY);
+    ctx.quadraticCurveTo(adjustedX + adjustedWidth, adjustedY, adjustedX + adjustedWidth, adjustedY + radius);
+    ctx.lineTo(adjustedX + adjustedWidth, adjustedY + adjustedHeight - radius);
+    ctx.quadraticCurveTo(
+      adjustedX + adjustedWidth,
+      adjustedY + adjustedHeight,
+      adjustedX + adjustedWidth - radius,
+      adjustedY + adjustedHeight,
+    );
+    ctx.lineTo(adjustedX + radius, adjustedY + adjustedHeight);
+    ctx.quadraticCurveTo(adjustedX, adjustedY + adjustedHeight, adjustedX, adjustedY + adjustedHeight - radius);
+    ctx.lineTo(adjustedX, adjustedY + radius);
+    ctx.quadraticCurveTo(adjustedX, adjustedY, adjustedX + radius, adjustedY);
+    ctx.closePath();
+
+    ctx.fillStyle = color;
+    ctx.fill();
+
+    ctx.restore();
+
+    const circleX: number = adjustedX + 30;
+    const circleY: number = adjustedY + adjustedHeight / 2;
+    const circleRadius: number = 20;
+
+    ctx.beginPath();
+    ctx.arc(circleX, circleY, circleRadius, 0, 2 * Math.PI);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+    ctx.fill();
+
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = 'bold 24px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(letter, circleX, circleY);
+
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = '18px Arial';
+    ctx.textAlign = 'left';
+    ctx.fillText(text, adjustedX + 65, adjustedY + adjustedHeight / 2);
+  }
+
+  /**
+   * Draw a decorative star
+   *
+   * @param canvas the canvas to draw to
+   * @param cx the center x-coordinate
+   * @param cy the center y-coordinate
+   * @param spikes the number of spikes
+   * @param outerRadius the outer radius
+   * @param innerRadius the inner radius
+   * @param color the star color
+   */
+  public static drawStar(
+    canvas: HTMLCanvasElement,
+    cx: number,
+    cy: number,
+    spikes: number,
+    outerRadius: number,
+    innerRadius: number,
+    color: string,
+  ): void {
+    const ctx: CanvasRenderingContext2D = CanvasRenderer.getCanvasContext(canvas);
+    let rot: number = (Math.PI / 2) * 3;
+    let x: number = cx;
+    let y: number = cy;
+    const step: number = Math.PI / spikes;
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - outerRadius);
+
+    for (let i: number = 0; i < spikes; i++) {
+      x = cx + Math.cos(rot) * outerRadius;
+      y = cy + Math.sin(rot) * outerRadius;
+      ctx.lineTo(x, y);
+      rot += step;
+
+      x = cx + Math.cos(rot) * innerRadius;
+      y = cy + Math.sin(rot) * innerRadius;
+      ctx.lineTo(x, y);
+      rot += step;
+    }
+
+    ctx.lineTo(cx, cy - outerRadius);
+    ctx.closePath();
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.restore();
   }
 }

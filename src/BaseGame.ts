@@ -1,12 +1,14 @@
 import Game from './Game.js';
 
-import CanvasRenderer from './CanvasRenderer.js';
-import KeyListener from './KeyListener.js';
-import MouseListener from './MouseListener.js';
+import CanvasRenderer from './rendering/CanvasRenderer.js';
+import KeyListener from './input/KeyListener.js';
+import MouseListener from './input/MouseListener.js';
 import Scene from './entities/scene/Scene.js';
 import StartScene from './entities/scene/status/StartScene.js';
-import Player from './entities/Player.js';
-import Vector2 from './Vector2.js';
+import Player from './entities/movingItems/Player.js';
+import Vector2 from './utils/Vector2.js';
+import Alien from './entities/Alien.js';
+import SceneLevel from './entities/scene/level/SceneLevel.js';
 
 export default class BaseGame extends Game {
   private canvas: HTMLCanvasElement;
@@ -19,6 +21,8 @@ export default class BaseGame extends Game {
 
   private player: Player;
 
+  private alien : Alien;
+
   public constructor(canvas: HTMLCanvasElement) {
     super();
     this.canvas = canvas;
@@ -27,7 +31,8 @@ export default class BaseGame extends Game {
     this.keyListener = new KeyListener();
     this.mouseListener = new MouseListener(canvas);
     this.player = new Player(new Vector2(100, 100));
-    this.currentScene = new StartScene(this.canvas, this.player);
+    this.alien = new Alien(canvas);
+    this.currentScene = new StartScene(this.canvas, this.player, this.alien);
     if (this.currentScene instanceof StartScene){
       this.canvas.style.cursor ='default';
     } else {
@@ -56,7 +61,9 @@ export default class BaseGame extends Game {
         this.currentScene = this.currentScene.getNextScene();
       }
     }
-    this.currentScene?.update(delta);
+    if(this.currentScene instanceof SceneLevel){
+      this.currentScene.update(delta);
+    }
     return true;
   }
 
