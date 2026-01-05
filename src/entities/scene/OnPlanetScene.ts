@@ -7,6 +7,7 @@ import LevelOneScene from './level/LevelOneScene.js';
 import Player from '../movingItems/Player.js';
 import Question from '../Question.js';
 import Alien from '../Alien.js';
+import LevelTwoScene from './level/LevelTwoScene.js';
 
 
 export default class OnPlanetScene extends Scene {
@@ -20,16 +21,22 @@ export default class OnPlanetScene extends Scene {
 
   protected levelOneScene: LevelOneScene;
 
+  protected levelTwoScene: LevelTwoScene | undefined;
+
   protected planetImage: HTMLImageElement;
 
-  public constructor(canvas: HTMLCanvasElement,
+  public constructor(
+    canvas: HTMLCanvasElement,
     player: Player,
     planet: Planet,
     alien: Alien,
-    levelOneScene: LevelOneScene) {
+    levelOneScene: LevelOneScene,
+    levelTwoScene ?: LevelTwoScene,
+  ) {
     super(canvas, player, alien);
     this.onPlanet = planet;
     this.levelOneScene = levelOneScene;
+    this.levelTwoScene = levelTwoScene;
 
     this.planetImage = new Image();
     this.planetImage = CanvasRenderer.loadNewImage(`../../../assets/planets/onPlanet/On${planet.getName()}.png`);
@@ -134,7 +141,7 @@ export default class OnPlanetScene extends Scene {
   public override render(canvas: HTMLCanvasElement): void {
     const centerX: number = canvas.width / 2;
     const canvasHeight: number = canvas.height;
-    
+
     CanvasRenderer.drawImage(canvas, this.planetImage, 0, canvasHeight - canvas.height / 3);
 
     if (this.player.isOnCorrectPlanet()) {
@@ -279,7 +286,10 @@ export default class OnPlanetScene extends Scene {
           }
         }
       } else {
-        CanvasRenderer.drawMessage(canvas, 'Level 1 is klaar.', '#2196F3');
+        CanvasRenderer.drawMessage(canvas, 'Level 2 💪', '#2196F3');
+        if (this.levelTwoScene instanceof Scene){
+          this.nextScene = this.levelTwoScene;
+        }
       }
     } else {
       if (this.player.getPlanetToGo() !== null) {
