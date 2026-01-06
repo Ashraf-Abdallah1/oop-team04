@@ -7,38 +7,37 @@ import CanvasRenderer from '../../../rendering/CanvasRenderer.js';
 import Player from '../../movingItems/Player.js';
 import Alien from '../../Alien.js';
 import Speedometer from '../../Speedometer.js';
-import OnPlanetScene from '../OnPlanetScene.js';
 
 export default abstract class SceneLevel extends Scene {
   protected planets: Planet[];
 
-  private marioRadius: number = 0;
+  protected marioRadius: number = 0;
 
-  private closestPlanetData: { planet: Planet | null; distance: number };
+  protected closestPlanetData: { planet: Planet | null; distance: number };
 
-  private isMarioEffectActive: boolean = false;
+  protected isMarioEffectActive: boolean = false;
 
-  private sBucksHudImage: HTMLImageElement;
+  protected sBucksHudImage: HTMLImageElement;
 
-  private sBucksImage: HTMLImageElement;
+  protected sBucksImage: HTMLImageElement;
 
-  private borderRadius: number;
+  protected borderRadius: number;
 
-  private speedometer: Speedometer;
+  protected speedometer: Speedometer;
 
-  private background: HTMLImageElement;
+  protected background: HTMLImageElement;
 
-  private miniMapRadius: number = 153;
+  protected miniMapRadius: number = 153;
 
-  private scale: number = 0.034;
+  protected scale: number = 0.034;
 
-  private minimapOffsetX: number;
+  protected minimapOffsetX: number;
 
-  private minimapOffsetY: number = 10;
+  protected minimapOffsetY: number = 10;
 
-  private miniMapBig: boolean = false;
+  protected miniMapBig: boolean = false;
 
-  private camera: Vector2 = new Vector2(0, 0);
+  protected camera: Vector2 = new Vector2(0, 0);
 
   public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     super(canvas, player, alien);
@@ -53,6 +52,8 @@ export default abstract class SceneLevel extends Scene {
     this.minimapOffsetX = canvas.width - 10;
     this.closestPlanetData = { planet: null, distance: 0 };
   }
+
+  public abstract update(delta: number): void;
 
   public getClosestPlanet(): { planet: Planet | null; distance: number } {
     let closestPlanet: Planet | null = null;
@@ -84,89 +85,47 @@ export default abstract class SceneLevel extends Scene {
     this.planets = [
       new Planet(this.getCanvasCenter(), 'Sun', 30, 0, 0, [
         new Question('Wat is de Zon?', 'A', ['Een ster', 'Een planeet', 'Een rots']),
+        new Question('Wat is de Zon?', 'A', ['Een ster', 'Een planeet', 'Een rots']),
       ]),
       new Planet(this.getCanvasCenter(), 'Mercury', 10, 850, 0.00004, [
+        new Question('Welke planeet staat het dichtst bij de Zon?', 'B', ['Aarde', 'Mercurius', 'Mars']),
         new Question('Welke planeet staat het dichtst bij de Zon?', 'B', ['Aarde', 'Mercurius', 'Mars']),
       ]),
       new Planet(this.getCanvasCenter(), 'Venus', 14, 1100, 0.00003, [
         new Question('Welke planeet is het warmst?', 'C', ['Mars', 'Jupiter', 'Venus']),
+        new Question('is het venus', 'C', ['Mars', 'Jupiter', 'Venus']),
       ]),
       new Planet(this.getCanvasCenter(), 'Earth', 16, 1400, 0.00002, [
         new Question('Hoeveel manen heeft de Aarde?', 'B', ['Twee', 'Eén', 'Drie']),
+        new Question('is het aarde?', 'B', ['Twee', 'Eén', 'Drie']),
       ]),
       new Planet(this.getCanvasCenter(), 'Mars', 12, 1700, 0.000013, [
         new Question('Welke kleur heeft Mars door het ijzer stof?', 'B', ['Blauw', 'Rood', 'Geel']),
+        new Question('is het mars?', 'B', ['Blauw', 'Rood', 'Geel']),
       ]),
       new Planet(this.getCanvasCenter(), 'Jupiter', 22, 2200, 0.00001, [
         new Question('Wat is de grootste planeet in ons zonnestelsel?', 'C', ['Mars', 'Venus', 'Jupiter']),
+        new Question('is het jupiter?', 'C', ['Mars', 'Venus', 'Jupiter']),
       ]),
       new Planet(this.getCanvasCenter(), 'Saturn', 20, 2750, 0.000007, [
         new Question('Wat heeft Saturnus rondom zijn planeet?', 'B', ['Grote Vlekken', 'Ringen', 'Rivieren']),
+        new Question('is het Saturnus ?', 'B', ['Grote Vlekken', 'Ringen', 'Rivieren']),
       ]),
 
       new Planet(this.getCanvasCenter(), 'Uranus', 18, 3200, 0.000005, [
         new Question('Hoe draait Uranus, anders dan de andere planeten?', 'A', ['Op zijn zijkant', 'Heel snel', 'Achteruit']),
+        new Question('is het Uranus', 'A', ['Op zijn zijkant', 'Heel snel', 'Achteruit']),
       ]),
 
       new Planet(this.getCanvasCenter(), 'Neptune', 18, 3600, 0.000004, [
         new Question('Welke planeet staat het verst van de Zon?', 'A', ['Neptunus', 'Uranus', 'Venus']),
+        new Question('is het Neptune', 'A', ['Neptunus', 'Uranus', 'Venus']),
       ]),
     ];
   }
 
   private getCanvasCenter(): Vector2 {
     return new Vector2(this.getCanvas().width / 2, this.getCanvas().height / 2);
-  }
-
-  /**
-   * update the scene
-   *  @param delta time in ms elapsed from the GameLoop
-   * */
-  public update(delta: number): void {
-    this.closestPlanetData = this.getClosestPlanet();
-    const closestPlanet: Planet | null = this.closestPlanetData.planet;
-    const closestDistance: number = this.closestPlanetData.distance;
-
-    if (this.isMarioEffectActive && closestPlanet) {
-      this.marioRadius -= this.marioRadius / 200 * delta;
-      if (this.marioRadius <= 1) {
-        this.marioRadius = 0;
-
-        this.nextScene = new OnPlanetScene(this.getCanvas(), this.player,
-          closestPlanet, this.alien, this);
-
-        this.isMarioEffectActive = false;
-      }
-    } else {
-      this.player.update(delta);
-
-      this.planets.forEach((planet: Planet) => {
-        planet.update(delta);
-        planet.setShowInteractionKey(false);
-        planet.setShowPointOfInterest(false);
-
-        if (planet.getName() === this.player.getPlanetToGo()) {
-          planet.setShowPointOfInterest(true);
-        }
-
-        if (closestPlanet) {
-          const planetRadius: number = closestPlanet.getHeight() / 2;
-          const collisionDistance: number = closestDistance -
-          (Math.max(this.player.getWidth(),
-            this.player.getHeight()) / 2 + 67 /** SIX SEVEN */ + planetRadius);
-
-          if (collisionDistance <= 0) {
-            closestPlanet.setShowInteractionKey(true);
-          }
-        }
-
-        if (planet.getName() === 'Sun') {
-          this.player.isCollidingWithSun(planet);
-        }
-      });
-
-      this.speedometer.setSpeed(Math.round(this.player.getAcceleration() * 10000));
-    }
   }
 
   /**
