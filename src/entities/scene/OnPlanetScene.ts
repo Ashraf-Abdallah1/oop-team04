@@ -301,8 +301,6 @@ export default class OnPlanetScene extends Scene {
           return;
         }
 
-
-
         setTimeout(() => {
           this.player.setLevel(2);
           this.alien.setPlanetsToGo(['Mercury', 'Neptune']);
