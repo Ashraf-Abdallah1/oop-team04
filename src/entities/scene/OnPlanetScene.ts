@@ -297,13 +297,20 @@ export default class OnPlanetScene extends Scene {
         if(level < 2){
           CanvasRenderer.drawMessage(canvas, `Level: ${this.player.getLevel() + 1}💪`, '#2196F3');
         } else {
-          CanvasRenderer.drawMessage(canvas, 'Gewonnen ', '#2196F3');
+          //max 12
+          const countCorrectAnswers: number = this.player.getSBucks() /100;
+          if(countCorrectAnswers > 6 ){
+            CanvasRenderer.drawMessage(canvas, `Goed Gedaan  ${countCorrectAnswers} vragen zijn goed`, '#2196F3', 1000);
+          } else{
+            CanvasRenderer.drawMessage(canvas, `Kan beter, ${countCorrectAnswers} vragen zijn goed van 12 `, '#2196F3', 1000);
+          }
+
           return;
         }
 
         setTimeout(() => {
           this.player.setLevel(2);
-          this.alien.setPlanetsToGo(['Mercury', 'Neptune']);
+          this.alien.setPlanetsToGo(['Mercury', 'Neptune', 'Uranus', 'Mars', 'Venus', 'Jupiter', 'Saturn']);
           this.assignNextPlanet();
           this.levelOneScene.clearScene();
           this.nextScene = this.levelOneScene;
