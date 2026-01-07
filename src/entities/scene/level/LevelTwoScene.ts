@@ -9,8 +9,6 @@ export default class LevelTwoScene extends SceneLevel {
   public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     super(canvas, player, alien);
     this.alien.setPlanetsToGo(['Mercury', 'Neptune', 'Uranus', 'Mars', 'Venus', 'Jupiter', 'Saturn']);
-    console.log(this.alien.getPlanetsToGo());
-    console.log("dsdsdsd");
   }
 
   /**

@@ -17,27 +17,27 @@ export default abstract class SceneLevel extends Scene {
 
   protected isMarioEffectActive: boolean = false;
 
-  protected sBucksHudImage: HTMLImageElement;
+  private readonly sBucksHudImage: HTMLImageElement;
 
-  protected sBucksImage: HTMLImageElement;
+  private readonly sBucksImage: HTMLImageElement;
 
-  protected borderRadius: number;
+  private readonly borderRadius: number;
 
   protected speedometer: Speedometer;
 
-  protected background: HTMLImageElement;
+  private readonly background: HTMLImageElement;
 
-  protected miniMapRadius: number = 153;
+  private miniMapRadius: number = 153;
 
-  protected scale: number = 0.034;
+  private scale: number = 0.034;
 
-  protected minimapOffsetX: number;
+  private minimapOffsetX: number;
 
-  protected minimapOffsetY: number = 10;
+  private minimapOffsetY: number = 10;
 
-  protected miniMapBig: boolean = false;
+  private miniMapBig: boolean = false;
 
-  protected camera: Vector2 = new Vector2(0, 0);
+  private camera: Vector2 = new Vector2(0, 0);
 
   public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     super(canvas, player, alien);
