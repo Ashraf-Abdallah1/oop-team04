@@ -5,7 +5,7 @@ import Vector2 from '../utils/Vector2.js';
 export default class Alien extends CanvasItem {
   private delivered: boolean;
 
-  private planetsToGo: string[] = ['Mercury', 'Neptune', 'Uranus', 'Mars', 'Venus', 'Jupiter', 'Saturn', 'Earth'];
+  private planetsToGo: string[] = ['Mercury', 'Neptune', 'Uranus', 'Mars', 'Venus', 'Jupiter', 'Saturn'];
 
   public constructor(canvas: HTMLCanvasElement) {
     super();
