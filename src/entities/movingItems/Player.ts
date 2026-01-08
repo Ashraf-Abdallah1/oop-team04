@@ -30,6 +30,8 @@ export default class Player extends MovingItem {
 
   private moveType: 'brake' | 'accelerate' | 'none';
 
+  private level: number = 1;
+
   private playerRadius: number;
 
   public constructor(boardSize: Vector2) {
@@ -252,5 +254,13 @@ export default class Player extends MovingItem {
 
   public setShowFlame(value: boolean): void {
     this.showFlame = value;
+  }
+
+  public getLevel(): number{
+    return this.level;
+  }
+
+  public setLevel(level: number): void{
+    this.level = level;
   }
 }
