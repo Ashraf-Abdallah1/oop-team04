@@ -7,11 +7,11 @@ import InstructionScene from '../InstructionScene.js';
 import Alien from '../../Alien.js';
 
 export default class StartScene extends StatusScene {
-  private button: HTMLImageElement = new Image();
+  private startButton: HTMLImageElement = new Image();
 
   public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     super(canvas, player, alien);
-    this.button = CanvasRenderer.loadNewImage('../../../../assets/sci-fi/buttons/Start.png');
+    this.startButton = CanvasRenderer.loadNewImage('../../../../assets/sci-fi/buttons/Start.png');
   }
 
   /**
@@ -21,9 +21,11 @@ export default class StartScene extends StatusScene {
    * @returns Returns the Scene
    */
   public override processInput(
-    keyListener: KeyListener,
-    mouseListener: MouseListener): void {
-    this.checkButtonClick(mouseListener);
+    keyListener?: KeyListener,
+    mouseListener?: MouseListener | undefined): void {
+    if (mouseListener) {
+      this.checkButtonClick(mouseListener);
+    }
   }
 
   /**
@@ -37,10 +39,11 @@ export default class StartScene extends StatusScene {
     const clicked: boolean = mouseListener.buttonPressed();
     const canvas: HTMLCanvasElement = this.getCanvas();
 
-    const insideButton: boolean = mousePosition.x >= (canvas.width / 2) - (this.button.width / 2) &&
-      mousePosition.x <= (canvas.width / 2) + (this.button.width / 2) &&
-      mousePosition.y >= (canvas.height / 2) - (this.button.height / 2) &&
-      mousePosition.y <= (canvas.height / 2) + (this.button.height / 2);
+    const insideButton: boolean = mousePosition.x >=
+      (canvas.width / 2) - (this.startButton.width / 2) &&
+      mousePosition.x <= (canvas.width / 2) + (this.startButton.width / 2) &&
+      mousePosition.y >= (canvas.height / 2) - (this.startButton.height / 2) &&
+      mousePosition.y <= (canvas.height / 2) + (this.startButton.height / 2);
 
     if (insideButton) {
       canvas.style.cursor = 'pointer';
@@ -60,7 +63,7 @@ export default class StartScene extends StatusScene {
    * @returns return de button
    */
   public override render(canvas: HTMLCanvasElement): void {
-    CanvasRenderer.drawImage(canvas, CanvasRenderer.loadNewImage('../../../../assets/sci-fi/buttons/Start.png'), canvas.width / 2 - this.button.width / 2, canvas.height / 2 - this.button.height / 2);
+    CanvasRenderer.drawImage(canvas, CanvasRenderer.loadNewImage('../../../../assets/sci-fi/buttons/Start.png'), canvas.width / 2 - this.startButton.width / 2, canvas.height / 2 - this.startButton.height / 2);
     CanvasRenderer.writeText(
       canvas,
       'Space Game',

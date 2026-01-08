@@ -10,19 +10,14 @@ export default abstract class Scene {
 
   protected level: number;
 
-  protected sBucket: number;
-
   protected nextScene: Scene | null = null;
 
   private readonly canvas: HTMLCanvasElement;
 
   public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     this.canvas = canvas;
-    this.canvas.height = window.innerHeight;
-    this.canvas.width = window.innerWidth;
     this.player = player;
     this.level = 1;
-    this.sBucket = 0;
     this.alien = alien;
   }
 

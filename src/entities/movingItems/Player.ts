@@ -10,7 +10,7 @@ export default class Player extends MovingItem {
 
   private dead: boolean;
 
-  private planetToGo: string = 'Earth';
+  private planetToGo: string;
 
   protected onCorrectPlanet: boolean = false;
 
@@ -30,6 +30,8 @@ export default class Player extends MovingItem {
 
   private moveType: 'brake' | 'accelerate' | 'none';
 
+  private playerRadius: number;
+
   public constructor(boardSize: Vector2) {
     super();
 
@@ -46,6 +48,8 @@ export default class Player extends MovingItem {
     this.sBucks = 0;
     this.turnDirection = 'none';
     this.moveType = 'none';
+    this.planetToGo = 'Earth';
+    this.playerRadius = Math.max(this.image.width, this.image.height) / 2;
   }
 
   /**
@@ -55,34 +59,6 @@ export default class Player extends MovingItem {
   public override update(delta: number): void {
     this.move(delta);
     this.keepPlayerWithinMap();
-  }
-
-  /**
-   * Accelerates the player forward.
-   */
-  public accelerate(): void {
-    this.moveType = 'accelerate';
-  }
-
-  /**
-   * Slows down the player (but not achterruit).
-   */
-  public brake(): void {
-    this.moveType = 'brake';
-  }
-
-  /**
-   * Rotates the player to the left.
-   */
-  public turnLeft(): void {
-    this.turnDirection = 'left';
-  }
-
-  /**
-   * Rotates the player to the right.
-   */
-  public turnRight(): void {
-    this.turnDirection = 'right';
   }
 
   /**
@@ -116,12 +92,10 @@ export default class Player extends MovingItem {
 
     this.flame.setRotation(this.rotation);
 
-    const flameOffset: Vector2 = new Vector2(
+    const flamePosition: Vector2 = this.position.add(new Vector2(
       -Math.cos(this.rotation) * (this.image.width / 2 + 50),
       -Math.sin(this.rotation) * (this.image.width / 2 + 50)
-    );
-
-    const flamePosition: Vector2 = this.position.add(flameOffset);
+    ));
 
     this.flame.getPosition().x = flamePosition.x;
     this.flame.getPosition().y = flamePosition.y;
@@ -143,7 +117,6 @@ export default class Player extends MovingItem {
    * */
   private keepPlayerWithinMap(): void {
     const mapCenter: Vector2 = new Vector2(window.innerWidth / 2, window.innerHeight / 2);
-    const mapRadius: number = 4500;
 
     const playerCenter: Vector2 = new Vector2(
       this.position.x + this.image.width / 2,
@@ -155,7 +128,7 @@ export default class Player extends MovingItem {
     const distance: number = Math.sqrt(dx * dx + dy * dy);
 
     const playerRadius: number = Math.max(this.image.width, this.image.height) / 2;
-    const maxDistance: number = mapRadius - playerRadius + this.image.height / 2;
+    const maxDistance: number = 4500 - playerRadius + this.image.height / 2;
 
     if (distance > maxDistance) {
       const nx: number = dx / distance;
@@ -176,12 +149,8 @@ export default class Player extends MovingItem {
    * @returns false or true base on of player colliding with sun
    * */
   public isCollidingWithSun(sun: Planet): boolean {
-    const playerRadius: number = Math.max(this.image.width, this.image.height) / 2;
-    const sunRadius: number = sun.getHeight() / 2 - 120;
-    const distanceToSun: number = this.getPosition().distanceTo(sun.getPosition());
-    const collisionDistanceSun: number = distanceToSun - (playerRadius + sunRadius);
-
-    return collisionDistanceSun <= 0;
+    return this.getPosition().distanceTo(sun.getPosition()) -
+      (this.playerRadius + sun.getHeight() / 2 - 120) <= 0;
   }
 
   /**
@@ -193,20 +162,20 @@ export default class Player extends MovingItem {
     this.setShowFlame(false);
 
     if (keyListener.isKeyDown(KeyListener.KEY_UP) || keyListener.isKeyDown(KeyListener.KEY_W)) {
-      this.accelerate();
+      this.moveType = 'accelerate';
       this.setShowFlame(true);
     }
 
     if (keyListener.isKeyDown(KeyListener.KEY_LEFT) || keyListener.isKeyDown(KeyListener.KEY_A)) {
-      this.turnLeft();
+      this.turnDirection = 'left';
     }
 
     if (keyListener.isKeyDown(KeyListener.KEY_DOWN) || keyListener.isKeyDown(KeyListener.KEY_S)) {
-      this.brake();
+      this.moveType = 'brake';
     }
 
     if (keyListener.isKeyDown(KeyListener.KEY_RIGHT) || keyListener.isKeyDown(KeyListener.KEY_D)) {
-      this.turnRight();
+      this.turnDirection = 'right';
     }
   }
 
@@ -249,7 +218,7 @@ export default class Player extends MovingItem {
     this.sBucks = bucks;
   }
 
-  public getPlanetToGo(): string | null {
+  public getPlanetToGo(): string | undefined {
     return this.planetToGo;
   }
 
@@ -257,10 +226,10 @@ export default class Player extends MovingItem {
     return this.acceleration;
   }
 
-  public setPlanetToGo(planet: string): void {
-    this.planetToGo = planet;
-  }
-
+  /**
+   * Checks if on correct planet
+   * @returns if is on correct planet
+   */
   public isOnCorrectPlanet(): boolean {
     return this.onCorrectPlanet;
   }
@@ -275,6 +244,10 @@ export default class Player extends MovingItem {
 
   public getFlame(): Flame {
     return this.flame;
+  }
+
+  public setPlanetToGo(planet: string): void {
+    this.planetToGo = planet;
   }
 
   public setShowFlame(value: boolean): void {
