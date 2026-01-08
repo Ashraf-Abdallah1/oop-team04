@@ -2,20 +2,12 @@ import KeyListener from '../../../input/KeyListener.js';
 import Scene from '../Scene.js';
 import Planet from '../../movingItems/Planet.js';
 import Vector2 from '../../../utils/Vector2.js';
-import Question from '../../Question.js';
 import CanvasRenderer from '../../../rendering/CanvasRenderer.js';
 import Player from '../../movingItems/Player.js';
 import Alien from '../../Alien.js';
 import Speedometer from '../../Speedometer.js';
 
 export default abstract class SceneLevel extends Scene {
-  protected planets: Planet[];
-
-  protected marioRadius: number = 0;
-
-  protected closestPlanetData: { planet: Planet | null; distance: number };
-
-  protected isMarioEffectActive: boolean = false;
 
   private readonly sBucksHudImage: HTMLImageElement;
 
@@ -41,8 +33,6 @@ export default abstract class SceneLevel extends Scene {
 
   public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     super(canvas, player, alien);
-    this.planets = [];
-    this.initializePlanets();
     this.sBucksImage = CanvasRenderer.loadNewImage('../../assets/s-bucks/S-bucks.png');
     this.sBucksHudImage = CanvasRenderer.loadNewImage('../../assets/s-bucks/S-bucksHud.png');
     this.borderRadius = 4500;
@@ -50,82 +40,14 @@ export default abstract class SceneLevel extends Scene {
     this.background = new Image();
     this.background = CanvasRenderer.loadNewImage('../../../../assets/BackgroundSpace.png');
     this.minimapOffsetX = canvas.width - 10;
-    this.closestPlanetData = { planet: null, distance: 0 };
   }
 
   public abstract update(delta: number): void;
-
-  public getClosestPlanet(): { planet: Planet | null; distance: number } {
-    let closestPlanet: Planet | null = null;
-    let closestDistance: number = Infinity;
-
-    this.planets.forEach((planet: Planet) => {
-      const distance : number = this.player.getPosition().distanceTo(planet.getPosition());
-
-      if (distance < closestDistance) {
-        closestDistance = distance;
-        closestPlanet = planet;
-      }
-    });
-
-    return { planet: closestPlanet, distance: closestDistance };
-  }
 
   private renderExtensions(canvas: HTMLCanvasElement): void {
     if (this.isMarioEffectActive && this.closestPlanetData.planet) {
       CanvasRenderer.drawReverseCircle(canvas, this.closestPlanetData.planet.getPosition().x - this.camera.x, this.closestPlanetData.planet.getPosition().y - this.camera.y, this.marioRadius, 'black');
     }
-  }
-
-  /**
-   * fills the planets array with planets
-   * */
-  private initializePlanets(): void {
-    // betere vragen en answers  bedenken TODO
-    this.planets = [
-      new Planet(this.getCanvasCenter(), 'Sun', 0, 0, [
-        new Question('Wat is de Zon?', 'A', ['Een ster', 'Een planeet', 'Een rots']),
-        new Question('Waarom is de Zon belangrijk voor het leven op Aarde?', 'A', ['Omdat hij licht en warmte geeft', 'Omdat hij koud is', 'Omdat hij water maakt']),
-      ]),
-      new Planet(this.getCanvasCenter(), 'Mercury', 850, 0.00004, [
-        new Question('Welke planeet staat het dichtst bij de Zon?', 'B', ['Aarde', 'Mercurius', 'Mars']),
-        new Question('Waarom is Mercurius overdag heel heet?', 'B', ['Omdat hij groot is', 'Omdat hij dicht bij de Zon staat', 'Omdat hij veel water heeft']),
-      ]),
-      new Planet(this.getCanvasCenter(), 'Venus', 1100, 0.00003, [
-        new Question('Welke planeet is het warmst?', 'C', ['Mars', 'Jupiter', 'Venus']),
-        new Question('Waarom is Venus zo heet?', 'C', ['Door ijs', 'Door regen', 'Door een dikke atmosfeer']),
-      ]),
-      new Planet(this.getCanvasCenter(), 'Earth', 1400, 0.00002, [
-        new Question('Hoeveel manen heeft de Aarde?', 'B', ['Twee', 'Eén', 'Drie']),
-        new Question('Waarom kan er leven zijn op Aarde?', 'B', ['Omdat het altijd donker is', 'Omdat er water en lucht is', 'Omdat er geen zwaartekracht is']),
-      ]),
-      new Planet(this.getCanvasCenter(), 'Mars', 1700, 0.000013, [
-        new Question('Welke kleur heeft Mars door het ijzer stof?', 'B', ['Blauw', 'Rood', 'Geel']),
-        new Question('Waarom wordt Mars de rode planeet genoemd?', 'B', ['Door lava', 'Door rood stof', 'Door vuur']),
-      ]),
-      new Planet(this.getCanvasCenter(), 'Jupiter', 2200, 0.00001, [
-        new Question('Wat is de grootste planeet in ons zonnestelsel?', 'C', ['Mars', 'Venus', 'Jupiter']),
-        new Question('Wat is bijzonder aan Jupiter?', 'C', ['Hij heeft ringen', 'Hij is klein', 'Hij is de grootste planeet']),
-      ]),
-      new Planet(this.getCanvasCenter(), 'Saturn', 2750, 0.000007, [
-        new Question('Wat heeft Saturnus rondom zijn planeet?', 'B', ['Grote Vlekken', 'Ringen', 'Rivieren']),
-        new Question('Waar bestaan de ringen van Saturnus uit?', 'B', ['Gas', 'IJs en steen', 'Water']),
-      ]),
-
-      new Planet(this.getCanvasCenter(), 'Uranus', 3200, 0.000005, [
-        new Question('Hoe draait Uranus, anders dan de andere planeten?', 'A', ['Op zijn zijkant', 'Heel snel', 'Achteruit']),
-        new Question('Wat maakt Uranus anders dan andere planeten?', 'A', ['Hij ligt op zijn zij', 'Hij is rood', 'Hij heeft lava']),
-      ]),
-
-      new Planet(this.getCanvasCenter(), 'Neptune', 3600, 0.000004, [
-        new Question('Welke planeet staat het verst van de Zon?', 'A', ['Neptunus', 'Uranus', 'Venus']),
-        new Question('Waarom is Neptunus zo koud?', 'A', ['Omdat hij ver van de Zon staat', 'Omdat hij vuur heeft', 'Omdat hij dicht bij de Zon staat']),
-      ]),
-    ];
-  }
-
-  private getCanvasCenter(): Vector2 {
-    return new Vector2(this.getCanvas().width / 2, this.getCanvas().height / 2);
   }
 
   /**
@@ -144,28 +66,6 @@ export default abstract class SceneLevel extends Scene {
     this.handleSceneSwitch(keyListener);
   }
 
-  private handleSceneSwitch(keyListener: KeyListener): void {
-    this.closestPlanetData = this.getClosestPlanet();
-    const closestPlanet: Planet | null = this.closestPlanetData.planet;
-    const closestDistance: number = this.closestPlanetData.distance;
-
-    if (closestPlanet) {
-      const planetRadius: number = closestPlanet.getHeight() / 2;
-      const collisionDistance: number = closestDistance - (Math.max(this.player.getWidth(),
-        this.player.getHeight()) / 2 + 67 /** SIX SEVEN */ + planetRadius);
-
-      if (collisionDistance <= planetRadius && keyListener.isKeyDown(KeyListener.KEY_E)) {
-        this.isMarioEffectActive = true;
-        this.marioRadius = Math.max(this.getCanvas().width, this.getCanvas().height);
-
-        if (this.player.getPlanetToGo()?.toString() !== closestPlanet.getName().toString()) {
-          this.player.setOnCorrectPlanet(false);
-        } else {
-          this.player.setOnCorrectPlanet(true);
-        }
-      }
-    }
-  }
 
   /**
    * Changes the minimap size
