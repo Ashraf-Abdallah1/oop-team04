@@ -6,8 +6,6 @@ import Question from '../Question.js';
 export default class Planet extends MovingItem {
   private readonly name: string;
 
-  private size: number;
-
   private readonly orbitRadius: number;
 
   private midpoint: Vector2;
@@ -27,14 +25,12 @@ export default class Planet extends MovingItem {
   public constructor(
     midpoint: Vector2,
     name: string,
-    size: number,
     orbitRadius: number,
     speed: number,
     question: Question[],
   ) {
     super();
     this.name = name;
-    this.size = size;
     this.orbitRadius = orbitRadius;
     this.midpoint = midpoint;
     this.question = [];
@@ -54,6 +50,8 @@ export default class Planet extends MovingItem {
    */
   public override update(delta: number): void {
     this.move(delta);
+    //todo add rotate
+    //todo add moon
   }
 
   /**
@@ -70,8 +68,7 @@ export default class Planet extends MovingItem {
   }
 
   public setPlanetImage(): void {
-    const imagePath: string = `../../assets/planets/${this.name}.png`;
-    this.image = CanvasRenderer.loadNewImage(imagePath);
+    this.image = CanvasRenderer.loadNewImage(`../../assets/planets/${this.name}.png`);
 
     this.image.onload = (): void => {
       this.position = new Vector2(
@@ -92,19 +89,22 @@ export default class Planet extends MovingItem {
     cameraX: number = 0,
     cameraY: number = 0
   ): void {
-    const drawX: number = this.position.x - this.image.width / 2 - cameraX;
-    const drawY: number = this.position.y - this.image.height / 2 - cameraY;
-
     CanvasRenderer.drawCircle(canvas, this.midpoint.x - cameraX, this.midpoint.y - cameraY, this.orbitRadius, 'rgba(211, 211, 211, 0.15)');
 
-    CanvasRenderer.drawImage(canvas, this.image, drawX, drawY);
+    CanvasRenderer.drawImage(canvas, this.image, this.position.x - this.image.width / 2 - cameraX,
+      this.position.y - this.image.height / 2 - cameraY);
 
-    if (this.showInteractionKey) {
-      this.renderInteractionKey(canvas, cameraX, cameraY);
+    if (this.showInteractionKey && this.name !== 'Sun') {
+      CanvasRenderer.drawImage(canvas, this.interactionKeyE,
+        this.position.x + this.image.width / 2 - cameraX,
+        this.position.y - 5 - this.image.width / 2 - cameraY);
     }
 
-    if (this.showPointOfIntrest) {
-      this.renderPointOfInterestKey(canvas, cameraX, cameraY);
+    console.log(this.showPointOfIntrest);
+    if (this.showPointOfIntrest && this.name !== 'Sun') {
+      CanvasRenderer.drawImage(canvas, this.pointOfInterest,
+        this.position.x - this.image.width / 2 - cameraX,
+        this.position.y - this.image.height / 2 - cameraY);
     }
   }
 
@@ -124,49 +124,11 @@ export default class Planet extends MovingItem {
     return this.question;
   }
 
-  /**
-   * Renders the interaction key on the planet
-   * @param canvas the canvas to render on
-   * @param cameraX the camera x offset
-   * @param cameraY the camera y offset
-   */
-  public renderInteractionKey(
-    canvas: HTMLCanvasElement,
-    cameraX: number = 0,
-    cameraY: number = 0
-  ): void {
-    const keyX: number = this.position.x + this.image.width / 2 - cameraX;
-    const keyY: number = this.position.y - 5 - this.image.width / 2 - cameraY;
-
-    if (this.name !== 'Sun') {
-      CanvasRenderer.drawImage(canvas, this.interactionKeyE, keyX, keyY);
-    }
-  }
-
-  /**
-   * Renders the point of interest indicator at (0,0) of the planet image
-   * @param canvas the canvas to render on
-   * @param cameraX the camera x offset
-   * @param cameraY the camera y offset
-   */
-  public renderPointOfInterestKey(
-    canvas: HTMLCanvasElement,
-    cameraX: number = 0,
-    cameraY: number = 0
-  ): void {
-    const keyX: number = this.position.x - this.image.width / 2 - cameraX;
-    const keyY: number = this.position.y - this.image.height / 2 - cameraY;
-
-    if (this.name !== 'Sun') {
-      CanvasRenderer.drawImage(canvas, this.pointOfInterest, keyX, keyY);
-    }
-  }
-
   public getName(): string {
     return this.name;
   }
 
-  public getRadius(): number {
+  public getOrbitRadius(): number {
     return this.orbitRadius;
   }
 
