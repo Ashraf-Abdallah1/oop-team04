@@ -10,6 +10,8 @@
         "outDir": "build/",
         "noEmitOnError": true,
         "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "esModuleInterop": true
     },
     "include": [
         "src/**/*"
