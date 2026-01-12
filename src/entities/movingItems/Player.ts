@@ -8,17 +8,13 @@ import KeyListener from '../../input/KeyListener.js';
 export default class Player extends MovingItem {
   private acceleration: number;
 
-  private dead: boolean;
-
   private planetToGo: string;
 
-  protected onCorrectPlanet: boolean = false;
-
-  private onPlanet: boolean;
+  private onCorrectPlanet: boolean = false;
 
   private rotation: number;
 
-  private flame: Flame;
+  private readonly flame: Flame;
 
   private showFlame: boolean;
 
@@ -32,18 +28,15 @@ export default class Player extends MovingItem {
 
   private level: number = 1;
 
-  private playerRadius: number;
+  private readonly playerRadius: number;
 
   public constructor(boardSize: Vector2) {
     super();
-
     this.image = CanvasRenderer.loadNewImage('../../assets/rockets/Rocket.png');
     this.boardSize = boardSize;
     this.position = new Vector2(0, 0);
     this.acceleration = 0;
     this.rotation = 0;
-    this.dead = false;
-    this.onPlanet = false;
     this.flame = new Flame();
     this.timeToNextFlame = Math.random() * 100;
     this.showFlame = false;
@@ -89,8 +82,9 @@ export default class Player extends MovingItem {
       Math.sin(this.rotation)
     ).scale(delta);
 
-    this.position = this.position.add(new Vector2(direction.x * this.acceleration,
-      direction.y * this.acceleration));
+    this.position = this.position.add(
+      new Vector2(direction.x * this.acceleration, direction.y * this.acceleration)
+    );
 
     this.flame.setRotation(this.rotation);
 
@@ -122,7 +116,7 @@ export default class Player extends MovingItem {
 
     const playerCenter: Vector2 = new Vector2(
       this.position.x + this.image.width / 2,
-      this.position.y + this.image.height / 2
+      this.position.y + this.image.height / 2,
     );
 
     const dx: number = playerCenter.x - mapCenter.x;
@@ -204,14 +198,6 @@ export default class Player extends MovingItem {
     );
   }
 
-  /**
-   * is it dead or not
-   * @returns boolean
-   */
-  public isDead(): boolean {
-    return this.dead;
-  }
-
   public getSBucks(): number {
     return this.sBucks;
   }
@@ -256,11 +242,11 @@ export default class Player extends MovingItem {
     this.showFlame = value;
   }
 
-  public getLevel(): number{
+  public getLevel(): number {
     return this.level;
   }
 
-  public setLevel(level: number): void{
+  public setLevel(level: number): void {
     this.level = level;
   }
 }

@@ -31,7 +31,13 @@ export default class LevelOneScene extends SceneLevel {
       if (this.marioRadius <= 1) {
         this.marioRadius = 0;
 
-        this.nextScene = new OnPlanetScene(this.getCanvas(), this.player, closestPlanet, this.alien, this);
+        this.nextScene = new OnPlanetScene(
+          this.getCanvas(),
+          this.player,
+          closestPlanet,
+          this.alien,
+          this,
+        );
 
         this.isMarioEffectActive = false;
       }

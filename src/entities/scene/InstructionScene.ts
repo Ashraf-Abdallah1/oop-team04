@@ -7,9 +7,9 @@ import CanvasRenderer from '../../rendering/CanvasRenderer.js';
 import Alien from '../Alien.js';
 
 export default class InstructionScene extends StatusScene {
-  private frame: HTMLImageElement = new Image();
+  private readonly frame: HTMLImageElement;
 
-  private button: HTMLImageElement = new Image();
+  private readonly button: HTMLImageElement;
 
   private instructionText: string = [
     'Welkom bij space taxi',

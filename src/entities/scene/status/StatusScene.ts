@@ -5,7 +5,7 @@ import Player from '../../movingItems/Player.js';
 import Alien from '../../Alien.js';
 
 export default abstract class StatusScene extends Scene {
-  public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
+  protected constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     super(canvas, player, alien);
   }
 

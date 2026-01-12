@@ -27,7 +27,16 @@ export default class Speedometer extends CanvasItem {
    * */
   public override render(canvas: HTMLCanvasElement): void {
     CanvasRenderer.drawImage(canvas, this.image, this.position.x, this.position.y);
-    CanvasRenderer.writeText(canvas, String(this.speed), this.position.x + this.image.width / 2, this.position.y + this.image.height / 2 + 20, 'center', 'arial', 48, '#00ffff');
+    CanvasRenderer.writeText(
+      canvas,
+      String(this.speed),
+      this.position.x + this.image.width / 2,
+      this.position.y + this.image.height / 2 + 20,
+      'center',
+      'arial',
+      48,
+      '#00ffff',
+    );
   }
 
   public setSpeed(newValue: number): void {

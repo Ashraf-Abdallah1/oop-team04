@@ -12,13 +12,13 @@ export default class Planet extends MovingItem {
 
   private rotation: number;
 
-  private question: Question[];
+  private readonly question: Question[];
 
-  private interactionKeyE: HTMLImageElement;
+  private readonly interactionKeyE: HTMLImageElement;
 
   private showInteractionKey: boolean;
 
-  private pointOfInterest: HTMLImageElement;
+  private readonly pointOfInterest: HTMLImageElement;
 
   private showPointOfIntrest: boolean;
 
@@ -87,7 +87,7 @@ export default class Planet extends MovingItem {
   public override render(
     canvas: HTMLCanvasElement,
     cameraX: number = 0,
-    cameraY: number = 0
+    cameraY: number = 0,
   ): void {
     CanvasRenderer.drawCircle(canvas, this.midpoint.x - cameraX, this.midpoint.y - cameraY, this.orbitRadius, 'rgba(211, 211, 211, 0.15)');
 
@@ -114,10 +114,6 @@ export default class Planet extends MovingItem {
 
   public setShowPointOfInterest(state: boolean): void {
     this.showPointOfIntrest = state;
-  }
-
-  public getShowInteractionKey(): boolean {
-    return this.showInteractionKey;
   }
 
   public getQuestions(): Question[] {

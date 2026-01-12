@@ -65,6 +65,7 @@ export default class OnPlanetScene extends Scene {
       }
     }
   }
+
   /**
    * process input for the scene
    *  @param keyListener the keylistener to get input from
