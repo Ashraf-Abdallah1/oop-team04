@@ -63,7 +63,11 @@ export default class StartScene extends StatusScene {
    * @returns return de button
    */
   public override render(canvas: HTMLCanvasElement): void {
-    CanvasRenderer.drawImage(canvas, CanvasRenderer.loadNewImage('../../../../assets/sci-fi/buttons/Start.png'), canvas.width / 2 - this.startButton.width / 2, canvas.height / 2 - this.startButton.height / 2);
+    CanvasRenderer.drawImage(
+      canvas, this.startButton,
+      canvas.width / 2 - this.startButton.width / 2,
+      canvas.height / 2 - this.startButton.height / 2);
+
     CanvasRenderer.writeText(
       canvas,
       'Space Game',
