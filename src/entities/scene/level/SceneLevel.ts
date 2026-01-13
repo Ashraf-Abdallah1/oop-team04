@@ -8,7 +8,6 @@ import Alien from '../../Alien.js';
 import Speedometer from '../../Speedometer.js';
 
 export default abstract class SceneLevel extends Scene {
-
   private readonly sBucksHudImage: HTMLImageElement;
 
   private readonly sBucksImage: HTMLImageElement;

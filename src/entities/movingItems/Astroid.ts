@@ -5,10 +5,16 @@ export default class Astroid extends MovingItem {
     super();
   }
 
+  /** move the astroid
+   * @param delta time in ms
+   */
   public override move(delta: number): void {
 
   }
 
+  /** update the astroid
+   * @param delta time in ms
+   */
   public override update(delta: number): void {
 
   }
