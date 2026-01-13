@@ -286,15 +286,17 @@ export default class CanvasRenderer {
    * @param canvas the canvas to draw to
    * @param text the text to display in the message box
    * @param color the color of the message box
+   * @param boxWidth width of the box
    * */
   public static drawMessage(
     canvas: HTMLCanvasElement,
     text: string,
     color: string,
+    boxWidth: number = 600
   ): void {
     const ctx: CanvasRenderingContext2D = CanvasRenderer.getCanvasContext(canvas);
 
-    const boxWidth: number = 600;
+    // const boxWidth: number = 600;
     const boxHeight: number = 200;
     const x: number = canvas.width / 2 - boxWidth / 2;
     const y: number = canvas.height / 2 - boxHeight / 2;

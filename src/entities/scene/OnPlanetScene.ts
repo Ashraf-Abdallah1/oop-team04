@@ -40,7 +40,10 @@ export default class OnPlanetScene extends Scene {
 
     this.planetImage = new Image();
     this.planetImage = CanvasRenderer.loadNewImage(`../../../assets/planets/onPlanet/On${planet.getName()}.png`);
+    this.assignNextPlanet();
+  }
 
+  private assignNextPlanet(): void {
     if (this.player.isOnCorrectPlanet()) {
       const planets: string[] = this.alien.getPlanetsToGo();
       let randomIndex: number = Math.floor(Math.random() * planets.length);
@@ -62,7 +65,6 @@ export default class OnPlanetScene extends Scene {
       }
     }
   }
-
   /**
    * process input for the scene
    *  @param keyListener the keylistener to get input from
@@ -211,8 +213,13 @@ export default class OnPlanetScene extends Scene {
           );
 
           if (this.alien.getDelivered()) {
+            let firstQuestion: Question | undefined;
             const questions: Question[] = this.onPlanet.getQuestions();
-            const firstQuestion: Question | undefined = questions[0];
+            if(this.player.getLevel() === 1) {
+              firstQuestion = questions[0];
+            }else if(this.player.getLevel() === 2){
+              firstQuestion = questions[1];
+            }
 
             if (firstQuestion) {
               const questionBoxY: number = 280;
@@ -286,10 +293,29 @@ export default class OnPlanetScene extends Scene {
           }
         }
       } else {
-        CanvasRenderer.drawMessage(canvas, 'Level 2 💪', '#2196F3');
-        if (this.levelTwoScene instanceof Scene){
-          this.nextScene = this.levelTwoScene;
+        const level: number = this.player.getLevel();
+        if(level < 2){
+          CanvasRenderer.drawMessage(canvas, `Level: ${this.player.getLevel() + 1}💪`, '#2196F3');
+        } else {
+          //max 12
+          const countCorrectAnswers: number = this.player.getSBucks() /100;
+          if(countCorrectAnswers > 6 ){
+            CanvasRenderer.drawMessage(canvas, `Goed Gedaan  ${countCorrectAnswers} vragen zijn goed`, '#2196F3', 1000);
+          } else{
+            CanvasRenderer.drawMessage(canvas, `Kan beter, ${countCorrectAnswers} vragen zijn goed van 12 `, '#2196F3', 1000);
+          }
+
+          return;
         }
+
+        setTimeout(() => {
+          this.player.setLevel(2);
+          this.alien.setPlanetsToGo(['Mercury', 'Neptune', 'Uranus', 'Mars', 'Venus', 'Jupiter', 'Saturn']);
+          this.assignNextPlanet();
+          this.levelOneScene.clearScene();
+          this.nextScene = this.levelOneScene;
+          this.hasNextPlanet = true;
+        }, 3000);
       }
     } else {
       if (this.player.getPlanetToGo() !== null) {
