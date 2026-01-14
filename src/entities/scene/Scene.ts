@@ -2,11 +2,11 @@ import Player from '../movingItems/Player.js';
 import KeyListener from '../../input/KeyListener.js';
 import MouseListener from '../../input/MouseListener.js';
 import Alien from '../Alien.js';
-import Planet from '../movingItems/Planet';
+import Planet from '../movingItems/Planet.js';
 import Vector2 from '../../utils/Vector2.js';
 import Question from '../Question.js';
-import planetData from '../../../assets/data/planets.json';
-import { PlanetData, QuestionData } from '../../../assets/data/PlanetData.js';
+import {planetData} from '../../data/planets.js';
+import { PlanetData, QuestionData } from '../../data/PlanetData.js';
 
 export default abstract class Scene {
   protected planets: Planet[] = [];
@@ -99,7 +99,7 @@ export default abstract class Scene {
    * */
   private initializePlanets(): void {
     const center: Vector2 = this.getCanvasCenter();
-    this.planets = (planetData as PlanetData[]).map((data: PlanetData) =>
+    this.planets = planetData.map((data: PlanetData) =>
       new Planet(
         center,
         data.name,
