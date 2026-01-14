@@ -1,8 +1,10 @@
 name: Build game and publish to GitHub Pages
 
 on:
+  # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
+
   workflow_dispatch:
 
 permissions:
@@ -19,48 +21,37 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup Node.js 22.x
+      - name: Use Node.js 22.x
         uses: actions/setup-node@v4
         with:
           node-version: 22.x
-          cache: npm
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build project
-        run: npm run build
-
-      - name: Copy assets to dist
-        run: |
-          mkdir -p dist/assets
-          cp -R assets/* dist/assets/
-
-      - name: Setup GitHub Pages
+      - run: npm install --save-dev
+      - run: npm run build --if-present
+      - name: Setup Pages
         uses: actions/configure-pages@v4
-
-      - name: Create Pages artifact
+      - name: Archive artifact
+        shell: bash
         run: |
           tar \
             --dereference --hard-dereference \
-            --directory dist \
-            -cvf $RUNNER_TEMP/artifact.tar \
+            --directory "." \
+            -cvf "$RUNNER_TEMP/artifact.tar" \
+            --exclude=.git \
+            --exclude=.github \
+            --exclude=src \
+            --exclude=assets \
+            --exclude=node_modules \
             .
-
-      - name: Upload Pages artifact
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: github-pages
           path: ${{ runner.temp }}/artifact.tar
           retention-days: 1
-
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
