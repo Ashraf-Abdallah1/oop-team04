@@ -3,6 +3,7 @@ import { PlanetData } from './PlanetData.js';
 export const planetData: PlanetData[] = [
   {
     name: 'Sun',
+    description: 'SUN',
     orbitRadius: 0,
     orbitSpeed: 0,
     questions: [
@@ -24,6 +25,7 @@ export const planetData: PlanetData[] = [
   },
   {
     name: 'Mercury',
+    description: 'Je moet naar de planet die het dichtst bij de zon stat.',
     orbitRadius: 850,
     orbitSpeed: 0.00004,
     questions: [
@@ -45,6 +47,7 @@ export const planetData: PlanetData[] = [
   },
   {
     name: 'Venus',
+    description: 'Je moet naar de de heetste planeet van allemaal',
     orbitRadius: 1100,
     orbitSpeed: 0.00003,
     questions: [
@@ -62,6 +65,7 @@ export const planetData: PlanetData[] = [
   },
   {
     name: 'Earth',
+    description: 'Je moet naar planet waar mensen en dieren leven .',
     orbitRadius: 1400,
     orbitSpeed: 0.00002,
     questions: [
@@ -83,6 +87,7 @@ export const planetData: PlanetData[] = [
   },
   {
     name: 'Mars',
+    description: 'Je moet naar de rode en  die op de aarde lijk.',
     orbitRadius: 1700,
     orbitSpeed: 0.000013,
     questions: [
@@ -100,6 +105,7 @@ export const planetData: PlanetData[] = [
   },
   {
     name: 'Jupiter',
+    description: 'Je moet naar de grootste planeet van allemaal.',
     orbitRadius: 2200,
     orbitSpeed: 0.00001,
     questions: [
@@ -121,6 +127,7 @@ export const planetData: PlanetData[] = [
   },
   {
     name: 'Saturn',
+    description: 'Je moet naar de planet met een grote ring om heen.',
     orbitRadius: 2750,
     orbitSpeed: 0.000007,
     questions: [
@@ -138,6 +145,7 @@ export const planetData: PlanetData[] = [
   },
   {
     name: 'Uranus',
+    description: 'Je moet naar de lichtblauw planet.',
     orbitRadius: 3200,
     orbitSpeed: 0.000005,
     questions: [
@@ -155,6 +163,7 @@ export const planetData: PlanetData[] = [
   },
   {
     name: 'Neptune',
+    description: 'Je moet naar de koudste planet.',
     orbitRadius: 3600,
     orbitSpeed: 0.000004,
     questions: [

@@ -189,7 +189,7 @@ export default class OnPlanetScene extends Scene {
             canvas,
             `Locatie: ${this.onPlanet.getName()}`,
             centerX,
-            headerY + headerHeight / 2 + 5,
+            headerY + headerHeight / 2 - 30,
             18,
             '#FFFFFF',
             'sans-serif',
@@ -213,10 +213,10 @@ export default class OnPlanetScene extends Scene {
               const speechBubbleHeight: number = 100;
               const speechBubbleX: number = centerX - 250;
               // Instellingen voor het Mission Paneel
-              const cardWidth: number = 250;
+              const cardWidth: number = 900;
               const cardHeight: number = 120;
               const cardX: number = canvas.width - cardWidth - 200;
-              const cardY: number = 120;
+              const cardY: number = 65;
 
               CanvasRenderer.drawRoundedRect(
                 canvas,
@@ -250,17 +250,37 @@ export default class OnPlanetScene extends Scene {
                 'Arial',
                 'center'
               );
+              if (this.player.getLevel() === 1) {
+                CanvasRenderer.drawTextWithShadow(
+                  canvas,
+                  `${this.player.getPlanetToGo()}?`,
+                  cardX + cardWidth / 2,
+                  cardY + 95,
+                  22,
+                  '#FFD93D', // Geel/Goud voor de focus
+                  'Arial',
+                  'center'
+                );
+              } else {
+                let planetDescription: string = '';
+                this.planets.forEach((planet: Planet) => {
+                  if (this.player.getPlanetToGo() == planet.getName()) {
+                    planetDescription = planet.getDescription();
+                  }
+                });
 
-              CanvasRenderer.drawTextWithShadow(
-                canvas,
-                `${this.player.getPlanetToGo()}?`,
-                cardX + cardWidth / 2,
-                cardY + 95,
-                22,
-                '#FFD93D', // Geel/Goud voor de focus
-                'Arial',
-                'center'
-              );
+                CanvasRenderer.drawTextWithShadow(
+                  canvas,
+                  `${planetDescription}?`,
+                  cardX + cardWidth / 2,
+                  cardY + 95,
+                  22,
+                  '#FFD93D', // Geel/Goud voor de focus
+                  'Arial',
+                  'center'
+                );
+              }
+
 
               CanvasRenderer.drawSpeechBubble(
                 canvas,
@@ -350,10 +370,10 @@ export default class OnPlanetScene extends Scene {
         );
 
         // Popup afmetingen
-        const popupWidth : number = 840;
-        const popupHeight : number = 220;
-        const popupX : number = centerX - popupWidth / 2;
-        const popupY : number = canvas.height / 2 - popupHeight / 2;
+        const popupWidth: number = 840;
+        const popupHeight: number = 220;
+        const popupX: number = centerX - popupWidth / 2;
+        const popupY: number = canvas.height / 2 - popupHeight / 2;
 
         // Popup container
         CanvasRenderer.drawRoundedRect(
@@ -379,10 +399,10 @@ export default class OnPlanetScene extends Scene {
         );
 
         // Button
-        const buttonWidth : number = 260;
-        const buttonHeight : number = 56;
-        const buttonX : number = centerX - buttonWidth / 2;
-        const buttonY : number = popupY + popupHeight - buttonHeight - 18;
+        const buttonWidth: number = 260;
+        const buttonHeight: number = 56;
+        const buttonX: number = centerX - buttonWidth / 2;
+        const buttonY: number = popupY + popupHeight - buttonHeight - 18;
 
         CanvasRenderer.drawRoundedRect(
           canvas,

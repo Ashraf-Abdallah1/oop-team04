@@ -228,5 +228,24 @@ export default abstract class SceneLevel extends Scene {
     this.renderExtensions(canvas);
 
     CanvasRenderer.writeText(canvas, `Time left: ${Math.ceil(this.timeToFinish / 1000)}s`, 10, 110, 'left', 'Starjedi', 24, 'white');
+
+    if(this.player.getLevel() === 2){
+      let planetDescription: string = '';
+      this.planets.forEach((planet: Planet) => {
+        if (this.player.getPlanetToGo() == planet.getName()) {
+          planetDescription = planet.getDescription();
+        }
+      });
+      CanvasRenderer.writeText(
+        canvas,
+        planetDescription,
+        canvas.width / 2,
+        25,
+        'center',
+        'Starjedi',
+        24,
+        'white'
+      );
+    }
   }
 }

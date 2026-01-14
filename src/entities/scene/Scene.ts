@@ -107,6 +107,7 @@ export default abstract class Scene {
       new Planet(
         center,
         data.name,
+        data.description,
         data.orbitRadius,
         data.orbitSpeed,
         data.questions.map(

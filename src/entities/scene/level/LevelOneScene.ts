@@ -57,7 +57,7 @@ export default class LevelOneScene extends SceneLevel {
         planet.setShowInteractionKey(false);
         planet.setShowPointOfInterest(false);
 
-        if (planet.getName() === this.player.getPlanetToGo()) {
+        if (planet.getName() === this.player.getPlanetToGo() && this.player.getLevel() === 1) {
           planet.setShowPointOfInterest(true);
         }
 
