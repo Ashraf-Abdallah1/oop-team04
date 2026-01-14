@@ -43,7 +43,6 @@ export default class Flame extends CanvasItem {
   }
 
   public setNewImage(noImage: boolean): void {
-
     if (noImage) {
       this.image = CanvasRenderer.loadNewImage('./assets/flames/0.png');
     } else {

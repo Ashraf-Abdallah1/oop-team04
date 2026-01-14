@@ -179,6 +179,34 @@ export default class CanvasRenderer {
     ctx.stroke();
   }
 
+    /**
+   * Draw a circle outline on the canvas REVERSED
+   *
+   * @param canvas the canvas to draw to
+   * @param centerX the x-coordinate of the center of the circle
+   * @param centerY the y-coordinate of the center of the circle
+   * @param radius the radius of the circle
+   * @param color the color of the circle outline
+   */
+
+    public static drawReverseCircle(
+      canvas: HTMLCanvasElement,
+      centerX: number,
+      centerY: number,
+      radius: number,
+      color: string = 'red',
+    ): void {
+      const ctx: CanvasRenderingContext2D = CanvasRenderer.getCanvasContext(canvas);
+      ctx.save();
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.rect(0, 0, canvas.width, canvas.height);
+      ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, true);
+      ctx.closePath();
+      ctx.fill('evenodd');
+      ctx.restore();
+    }
+
   /**
    * Draw a rectangle outline to the canvas
    *
@@ -258,15 +286,17 @@ export default class CanvasRenderer {
    * @param canvas the canvas to draw to
    * @param text the text to display in the message box
    * @param color the color of the message box
+   * @param boxWidth width of the box
    * */
   public static drawMessage(
     canvas: HTMLCanvasElement,
     text: string,
     color: string,
+    boxWidth: number = 600
   ): void {
     const ctx: CanvasRenderingContext2D = CanvasRenderer.getCanvasContext(canvas);
 
-    const boxWidth: number = 600;
+    // const boxWidth: number = 600;
     const boxHeight: number = 200;
     const x: number = canvas.width / 2 - boxWidth / 2;
     const y: number = canvas.height / 2 - boxHeight / 2;

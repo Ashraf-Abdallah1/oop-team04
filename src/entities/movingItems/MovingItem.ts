@@ -3,7 +3,7 @@ import CanvasItem from '../CanvasItem.js';
 export default abstract class MovingItem extends CanvasItem {
   protected speed: number;
 
-  public constructor() {
+  protected constructor() {
     super();
     this.speed = 0;
   }

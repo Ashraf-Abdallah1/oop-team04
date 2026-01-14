@@ -7,6 +7,7 @@ import LevelOneScene from './level/LevelOneScene.js';
 import Player from '../movingItems/Player.js';
 import Question from '../Question.js';
 import Alien from '../Alien.js';
+import LevelTwoScene from './level/LevelTwoScene.js';
 
 
 export default class OnPlanetScene extends Scene {
@@ -20,20 +21,29 @@ export default class OnPlanetScene extends Scene {
 
   protected levelOneScene: LevelOneScene;
 
+  protected levelTwoScene: LevelTwoScene | undefined;
+
   protected planetImage: HTMLImageElement;
 
-  public constructor(canvas: HTMLCanvasElement,
+  public constructor(
+    canvas: HTMLCanvasElement,
     player: Player,
     planet: Planet,
     alien: Alien,
-    levelOneScene: LevelOneScene) {
+    levelOneScene: LevelOneScene,
+    levelTwoScene ?: LevelTwoScene,
+  ) {
     super(canvas, player, alien);
     this.onPlanet = planet;
     this.levelOneScene = levelOneScene;
+    this.levelTwoScene = levelTwoScene;
 
     this.planetImage = new Image();
     this.planetImage = CanvasRenderer.loadNewImage(`../../../assets/planets/onPlanet/On${planet.getName()}.png`);
+    this.assignNextPlanet();
+  }
 
+  private assignNextPlanet(): void {
     if (this.player.isOnCorrectPlanet()) {
       const planets: string[] = this.alien.getPlanetsToGo();
       let randomIndex: number = Math.floor(Math.random() * planets.length);
@@ -100,20 +110,22 @@ export default class OnPlanetScene extends Scene {
    *
    * */
   public checkMouseClick(mouseListener: MouseListener): void {
+    const canvas: HTMLCanvasElement = this.getCanvas();
+    const centerX: number = canvas.width / 2;
 
-    const centerX: number = this.getCanvas().width / 2;
+    // Popup afmetingen
+    const popupHeight: number = 220;
+    const popupY: number = canvas.height / 2 - popupHeight / 2;
 
-    const boxY: number = 140;
-    const boxHeight: number = 100;
-
-    const buttonWidth: number = 320;
-    const buttonHeight: number = 60;
+    // Button afmetingen
+    const buttonWidth: number = 260;
+    const buttonHeight: number = 56;
     const buttonX: number = centerX - buttonWidth / 2;
-    const buttonY: number = boxY + boxHeight + 30;
+    const buttonY: number = popupY + popupHeight - buttonHeight - 24;
 
-    const mousePos: { x: number; y: number } = mouseListener.getMousePosition();
+    const mousePos: { x: number; y: number }
+    = mouseListener.getMousePosition();
     const clicked: boolean = mouseListener.buttonPressed();
-
     const insideButton: boolean =
       mousePos.x >= buttonX &&
       mousePos.x <= buttonX + buttonWidth &&
@@ -134,7 +146,7 @@ export default class OnPlanetScene extends Scene {
   public override render(canvas: HTMLCanvasElement): void {
     const centerX: number = canvas.width / 2;
     const canvasHeight: number = canvas.height;
-    
+
     CanvasRenderer.drawImage(canvas, this.planetImage, 0, canvasHeight - canvas.height / 3);
 
     if (this.player.isOnCorrectPlanet()) {
@@ -157,7 +169,6 @@ export default class OnPlanetScene extends Scene {
           CanvasRenderer.drawMessage(canvas, 'Helaas fout antwoord', '#F44336');
         } else {
           this.alien.render(canvas);
-
           const headerY: number = 50;
           const headerWidth: number = 600;
           const headerHeight: number = 60;
@@ -169,77 +180,102 @@ export default class OnPlanetScene extends Scene {
             headerY,
             headerWidth,
             headerHeight,
-            15,
-            '#2196F3',
-            'rgba(0, 0, 0, 0.3)'
+            20,
+            'rgba(0, 0, 0, 0.5)',
+            'rgba(0, 0, 0, 0)'
           );
 
           CanvasRenderer.drawTextWithShadow(
             canvas,
-            `Je bent geland op ${this.onPlanet.getName()}`,
+            `Locatie: ${this.onPlanet.getName()}`,
             centerX,
-            headerY + headerHeight / 2,
-            28,
+            headerY + headerHeight / 2 + 5,
+            18,
             '#FFFFFF',
-            'Arial',
-            'center',
-            'rgba(0, 0, 0, 0.5)'
+            'sans-serif',
+            'center'
           );
-
           this.alien.setDelivered();
 
-          const speechBubbleY: number = 150;
-          const speechBubbleWidth: number = 550;
-          const speechBubbleHeight: number = 70;
-          const speechBubbleX: number = centerX - speechBubbleWidth / 2;
-
-          CanvasRenderer.drawSpeechBubble(
-            canvas,
-            speechBubbleX,
-            speechBubbleY,
-            speechBubbleWidth,
-            speechBubbleHeight,
-            '#FFFFFF',
-            `Kan je mij brengen naar ${this.player.getPlanetToGo()}?`
-          );
 
           if (this.alien.getDelivered()) {
+            let firstQuestion: Question | undefined;
             const questions: Question[] = this.onPlanet.getQuestions();
-            const firstQuestion: Question | undefined = questions[0];
+            if(this.player.getLevel() === 1) {
+              firstQuestion = questions[0];
+            }else if(this.player.getLevel() === 2){
+              firstQuestion = questions[1];
+            }
 
             if (firstQuestion) {
-              const questionBoxY: number = 280;
-              const questionBoxWidth: number = 700;
-              const questionBoxHeight: number = 80;
-              const questionBoxX: number = centerX - questionBoxWidth / 2;
+              const speechBubbleY: number = 200;
+              const speechBubbleWidth: number = 500;
+              const speechBubbleHeight: number = 100;
+              const speechBubbleX: number = centerX - 250;
+              // Instellingen voor het Mission Paneel
+              const cardWidth: number = 250;
+              const cardHeight: number = 120;
+              const cardX: number = canvas.width - cardWidth - 200;
+              const cardY: number = 120;
 
               CanvasRenderer.drawRoundedRect(
                 canvas,
-                questionBoxX,
-                questionBoxY,
-                questionBoxWidth,
-                questionBoxHeight,
-                15,
-                '#673AB7',
-                'rgba(0, 0, 0, 0.3)'
+                cardX,
+                cardY,
+                cardWidth,
+                cardHeight,
+                20,
+                'rgba(255, 255, 255, 0.1)',
+                'rgba(255, 255, 255, 0.2)'
               );
 
               CanvasRenderer.drawTextWithShadow(
                 canvas,
-                firstQuestion.getTekst(),
-                centerX,
-                questionBoxY + questionBoxHeight / 2,
-                22,
+                'MISSIE STATUS',
+                cardX + cardWidth / 2,
+                cardY + 30,
+                14,
+                '#4ECDC4', // Gebruik een accentkleur zoals turquoise
+                'Arial',
+                'center'
+              );
+
+              CanvasRenderer.drawTextWithShadow(
+                canvas,
+                'Volgende stop:',
+                cardX + cardWidth / 2,
+                cardY + 65,
+                18,
                 '#FFFFFF',
                 'Arial',
-                'center',
-                'rgba(0, 0, 0, 0.3)'
+                'center'
+              );
+
+              CanvasRenderer.drawTextWithShadow(
+                canvas,
+                `${this.player.getPlanetToGo()}?`,
+                cardX + cardWidth / 2,
+                cardY + 95,
+                22,
+                '#FFD93D', // Geel/Goud voor de focus
+                'Arial',
+                'center'
+              );
+
+              CanvasRenderer.drawSpeechBubble(
+                canvas,
+                speechBubbleX,
+                speechBubbleY,
+                speechBubbleWidth,
+                speechBubbleHeight,
+                '#FFFFFF',
+                firstQuestion.getTekst(),
               );
 
               const instructionY: number = 380;
               CanvasRenderer.writeText(
                 canvas,
-                'Klik de letter om een antwoord te kiezen',
+                'Klik a, b of c op het toetsenbord om antwoord te geven.',
                 centerX,
                 instructionY,
                 'center',
@@ -248,21 +284,20 @@ export default class OnPlanetScene extends Scene {
                 'rgba(255, 255, 255, 0.8)'
               );
 
-              // Answer buttons
               const answers: string[] = firstQuestion.getAnswers();
               const letters: string[] = ['A', 'B', 'C'];
-              const buttonColors: string[] = ['#FF6B6B', '#4ECDC4', '#FFD93D'];
-              const buttonWidth: number = 400;
-              const buttonHeight: number = 60;
-              const buttonSpacing: number = 20;
+
+              const idleButtonColor: string = 'rgba(255, 255, 255, 0.2)';
+              const buttonWidth: number = 450;
+              const buttonHeight: number = 55;
+              const buttonSpacing: number = 15;
               const startY: number = 420;
 
               answers.forEach((answer: string, index: number) => {
                 const buttonX: number = centerX - buttonWidth / 2;
                 const buttonY: number = startY + index * (buttonHeight + buttonSpacing);
-
                 const letter: string = letters[index] ?? '';
-                const button: string = buttonColors[index] ?? '';
+
                 CanvasRenderer.drawAnswerButton(
                   canvas,
                   buttonX,
@@ -271,49 +306,83 @@ export default class OnPlanetScene extends Scene {
                   buttonHeight,
                   letter,
                   answer,
-                  button,
-                  false
+                  idleButtonColor, // Alle buttons nu dezelfde rustige kleur
+                  false // IsSelected/IsHovered
                 );
               });
             }
           }
         }
       } else {
-        CanvasRenderer.drawMessage(canvas, 'Level 1 is klaar.', '#2196F3');
+        const level: number = this.player.getLevel();
+        if(level < 2){
+          CanvasRenderer.drawMessage(canvas, `Level: ${this.player.getLevel() + 1}💪`, '#2196F3');
+        } else {
+          //max 12
+          const countCorrectAnswers: number = this.player.getSBucks() /100;
+          if(countCorrectAnswers > 6 ){
+            CanvasRenderer.drawMessage(canvas, `Goed Gedaan  ${countCorrectAnswers} vragen zijn goed`, '#2196F3', 1000);
+          } else{
+            CanvasRenderer.drawMessage(canvas, `Kan beter, ${countCorrectAnswers} vragen zijn goed van 12 `, '#2196F3', 1000);
+          }
+
+          return;
+        }
+
+        setTimeout(() => {
+          this.player.setLevel(2);
+          this.alien.setPlanetsToGo(['Mercury', 'Neptune', 'Uranus', 'Mars', 'Venus', 'Jupiter', 'Saturn']);
+          this.assignNextPlanet();
+          this.levelOneScene.clearScene();
+          this.nextScene = this.levelOneScene;
+          this.hasNextPlanet = true;
+        }, 3000);
       }
     } else {
       if (this.player.getPlanetToGo() !== null) {
-        const boxWidth: number = 900;
-        const boxHeight: number = 100;
-        const boxX: number = centerX - boxWidth / 2;
-        const boxY: number = 140;
+        CanvasRenderer.drawRectangle(
+          canvas,
+          0,
+          0,
+          canvas.width,
+          canvas.height,
+          'rgba(0, 0, 0, 0.6)'
+        );
 
+        // Popup afmetingen
+        const popupWidth : number = 840;
+        const popupHeight : number = 220;
+        const popupX : number = centerX - popupWidth / 2;
+        const popupY : number = canvas.height / 2 - popupHeight / 2;
+
+        // Popup container
         CanvasRenderer.drawRoundedRect(
           canvas,
-          boxX,
-          boxY,
-          boxWidth,
-          boxHeight,
-          12,
-          '#FF9800',
-          'rgba(0, 0, 0, 0.2)'
+          popupX,
+          popupY,
+          popupWidth,
+          popupHeight,
+          20,
+          '#1E1E2E',
+          'rgba(0, 0, 0, 0.5)'
         );
 
         CanvasRenderer.drawTextWithShadow(
           canvas,
-          `Dit is niet de juiste planeet. Je moet naar de ${this.player.getPlanetToGo()}, maar je bent nu op ${this.onPlanet.getName()}.`,
+          `Dit is niet de juiste planeet. Je moet naar ${this.player.getPlanetToGo()}, maar je bent nu op ${this.onPlanet.getName()}.`,
           centerX,
-          boxY + boxHeight / 2 + 8,
-          24,
+          popupY + 90,
+          21,
           '#FFFFFF',
           'Arial',
           'center'
         );
 
-        const buttonWidth: number = 320;
-        const buttonHeight: number = 60;
-        const buttonX: number = centerX - buttonWidth / 2;
-        const buttonY: number = boxY + boxHeight + 30;
+        // Button
+        const buttonWidth : number = 260;
+        const buttonHeight : number = 56;
+        const buttonX : number = centerX - buttonWidth / 2;
+        const buttonY : number = popupY + popupHeight - buttonHeight - 18;
 
         CanvasRenderer.drawRoundedRect(
           canvas,
@@ -321,17 +390,16 @@ export default class OnPlanetScene extends Scene {
           buttonY,
           buttonWidth,
           buttonHeight,
-          15,
-          '#9C27B0',
-          'rgba(0, 0, 0, 0.3)'
+          12,
+          '#A83DC2',
+          'rgba(0, 0, 0, 0.45)'
         );
-
         CanvasRenderer.drawTextWithShadow(
           canvas,
-          'Klik om verder te zoeken',
+          'Verder zoeken',
           centerX,
-          buttonY + buttonHeight / 2 + 7,
-          22,
+          buttonY + buttonHeight / 2 + 6,
+          19,
           '#FFFFFF',
           'Arial',
           'center'

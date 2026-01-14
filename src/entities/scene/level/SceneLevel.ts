@@ -2,24 +2,21 @@ import KeyListener from '../../../input/KeyListener.js';
 import Scene from '../Scene.js';
 import Planet from '../../movingItems/Planet.js';
 import Vector2 from '../../../utils/Vector2.js';
-import Question from '../../Question.js';
 import CanvasRenderer from '../../../rendering/CanvasRenderer.js';
 import Player from '../../movingItems/Player.js';
 import Alien from '../../Alien.js';
 import Speedometer from '../../Speedometer.js';
 
 export default abstract class SceneLevel extends Scene {
-  protected planets: Planet[];
+  private readonly sBucksHudImage: HTMLImageElement;
 
-  private sBucksHudImage: HTMLImageElement;
+  private readonly sBucksImage: HTMLImageElement;
 
-  private sBucksImage: HTMLImageElement;
+  private readonly borderRadius: number;
 
-  private borderRadius: number;
+  protected speedometer: Speedometer;
 
-  private speedometer: Speedometer;
-
-  private background: HTMLImageElement;
+  private readonly background: HTMLImageElement;
 
   private miniMapRadius: number = 153;
 
@@ -31,10 +28,14 @@ export default abstract class SceneLevel extends Scene {
 
   private miniMapBig: boolean = false;
 
-  public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
+  private camera: Vector2 = new Vector2(0, 0);
+
+  protected timeToFinish: number;
+
+  protected gameOver: boolean = false;
+
+  protected constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     super(canvas, player, alien);
-    this.planets = [];
-    this.initializePlanets();
     this.sBucksImage = CanvasRenderer.loadNewImage('../../assets/s-bucks/S-bucks.png');
     this.sBucksHudImage = CanvasRenderer.loadNewImage('../../assets/s-bucks/S-bucksHud.png');
     this.borderRadius = 4500;
@@ -42,106 +43,15 @@ export default abstract class SceneLevel extends Scene {
     this.background = new Image();
     this.background = CanvasRenderer.loadNewImage('../../../../assets/BackgroundSpace.png');
     this.minimapOffsetX = canvas.width - 10;
+    this.timeToFinish = 500000;
   }
 
-  public getClosestPlanet(): { planet: Planet | null; distance: number } {
-    let closestPlanet: Planet | null = null;
-    let closestDistance: number = Infinity;
+  public abstract update(delta: number): void;
 
-    this.planets.forEach((planet: Planet) => {
-      const distance : number = this.player.getPosition().distanceTo(planet.getPosition());
-
-      if (distance < closestDistance) {
-        closestDistance = distance;
-        closestPlanet = planet;
-      }
-    });
-
-    return { planet: closestPlanet, distance: closestDistance };
-  }
-
-  /**
-   * fills the planets array with planets
-   * */
-  private initializePlanets(): void {
-    // betere vragen en answers  bedenken TODO
-    this.planets = [
-      new Planet(this.getCanvasCenter(), 'Sun', 30, 0, 0, [
-        new Question('Wat is de Zon?', 'A', ['Een ster', 'Een planeet', 'Een rots']),
-      ]),
-      new Planet(this.getCanvasCenter(), 'Mercury', 10, 850, 0.00004, [
-        new Question('Welke planeet staat het dichtst bij de Zon?', 'B', ['Aarde', 'Mercurius', 'Mars']),
-      ]),
-      new Planet(this.getCanvasCenter(), 'Venus', 14, 1100, 0.00003, [
-        new Question('Welke planeet is het warmst?', 'C', ['Mars', 'Jupiter', 'Venus']),
-      ]),
-      new Planet(this.getCanvasCenter(), 'Earth', 16, 1400, 0.00002, [
-        new Question('Hoeveel manen heeft de Aarde?', 'B', ['Twee', 'Eén', 'Drie']),
-      ]),
-      new Planet(this.getCanvasCenter(), 'Mars', 12, 1700, 0.000013, [
-        new Question('Welke kleur heeft Mars door het ijzer stof?', 'B', ['Blauw', 'Rood', 'Geel']),
-      ]),
-      new Planet(this.getCanvasCenter(), 'Jupiter', 22, 2200, 0.00001, [
-        new Question('Wat is de grootste planeet in ons zonnestelsel?', 'C', ['Mars', 'Venus', 'Jupiter']),
-      ]),
-      new Planet(this.getCanvasCenter(), 'Saturn', 20, 2750, 0.000007, [
-        new Question('Wat heeft Saturnus rondom zijn planeet?', 'B', ['Grote Vlekken', 'Ringen', 'Rivieren']),
-      ]),
-
-      new Planet(this.getCanvasCenter(), 'Uranus', 18, 3200, 0.000005, [
-        new Question('Hoe draait Uranus, anders dan de andere planeten?', 'A', ['Op zijn zijkant', 'Heel snel', 'Achteruit']),
-      ]),
-
-      new Planet(this.getCanvasCenter(), 'Neptune', 18, 3600, 0.000004, [
-        new Question('Welke planeet staat het verst van de Zon?', 'A', ['Neptunus', 'Uranus', 'Venus']),
-      ]),
-    ];
-  }
-
-  private getCanvasCenter(): Vector2 {
-    return new Vector2(this.getCanvas().width / 2, this.getCanvas().height / 2);
-  }
-
-  /**
-   * update the scene
-   *  @param delta time in ms elapsed from the GameLoop
-   * */
-  public update(delta: number): void {
-    this.player.update(delta);
-
-    const playerRadius: number = Math.max(this.player.getWidth(), this.player.getHeight()) / 2;
-
-    this.planets.forEach((planet: Planet) => {
-      planet.update(delta);
-      planet.setShowInteractionKey(false);
-      planet.setShowPointOfInterest(false);
-    });
-
-    const closestPlanetData: { planet: Planet | null; distance: number } = this.getClosestPlanet();
-    const closestPlanet: Planet | null = closestPlanetData.planet;
-    const closestDistance: number = closestPlanetData.distance;
-
-    this.planets.forEach((planet: Planet) => {
-      if (planet.getName() === this.player.getPlanetToGo()) {
-        planet.setShowPointOfInterest(true);
-      }
-
-      if (closestPlanet) {
-        const planetRadius: number = closestPlanet.getHeight() / 2;
-        const collisionDistance: number = closestDistance -
-        (playerRadius + 67 /** SIX SEVEN */ + planetRadius);
-
-        if (collisionDistance <= 0) {
-          closestPlanet.setShowInteractionKey(true);
-        }
-      }
-
-      if (planet.getName() === 'Sun') {
-        this.player.isCollidingWithSun(planet);
-      }
-    });
-
-    this.speedometer.setSpeed(Math.round(this.player.getAcceleration() * 10000));
+  private renderExtensions(canvas: HTMLCanvasElement): void {
+    if (this.isMarioEffectActive && this.closestPlanetData.planet) {
+      CanvasRenderer.drawReverseCircle(canvas, this.closestPlanetData.planet.getPosition().x - this.camera.x, this.closestPlanetData.planet.getPosition().y - this.camera.y, this.marioRadius, 'black');
+    }
   }
 
   /**
@@ -156,7 +66,10 @@ export default abstract class SceneLevel extends Scene {
     if (keyListener.keyPressed(KeyListener.KEY_M)) {
       this.changeMiniMapSize();
     }
+
+    this.handleSceneSwitch(keyListener);
   }
+
 
   /**
    * Changes the minimap size
@@ -192,7 +105,7 @@ export default abstract class SceneLevel extends Scene {
     CanvasRenderer.fillCircle(canvas, centerMap.x, centerMap.y, this.miniMapRadius, 'rgba(0, 0, 0, 0.74)');
 
     const sun: Planet | undefined = this.planets.find(
-      (p: Planet): boolean => p.getName() === 'Sun'
+      (planet: Planet): boolean => planet.getName() === 'Sun'
     );
 
     if (!sun) {
@@ -212,7 +125,7 @@ export default abstract class SceneLevel extends Scene {
         canvas,
         centerMap.x,
         centerMap.y,
-        planet.getRadius() * this.scale,
+        planet.getOrbitRadius() * this.scale,
         'rgba(255, 255, 255, 0.23)'
       );
 
@@ -246,38 +159,60 @@ export default abstract class SceneLevel extends Scene {
   }
 
   /**
+   * Clears the scene by resetting the next scene to null
+   */
+  public clearScene(): void {
+    this.nextScene = null;
+  }
+
+  /**
    * Renders al of elements in level1 on the canvas
    *
    * @param canvas the canvas to render on
    * */
   public override render(canvas: HTMLCanvasElement): void {
-    const cameraX: number = this.player.getPosition().x - canvas.width / 2;
-    const cameraY: number = this.player.getPosition().y - canvas.height / 2;
+    if (this.timeToFinish <= 0) {
+      CanvasRenderer.fillCanvas(canvas, 'black');
+      CanvasRenderer.writeText(canvas, 'Tijd is om!', canvas.width / 2, canvas.height / 2, 'center', 'Starjedi', 72, 'white');
+
+      if (!this.gameOver) {
+        this.gameOver = true;
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      }
+      return;
+    }
+
+    this.camera.x = this.player.getPosition().x - canvas.width / 2;
+    this.camera.y = this.player.getPosition().y - canvas.height / 2;
 
     if (this.background.width > 0) {
       for (let x: number = -5000; x < 10000; x += this.background.width) {
         for (let y: number = -5000; y < 10000; y += this.background.height) {
-          CanvasRenderer.drawImage(canvas, this.background, x - cameraX, y - cameraY);
+          CanvasRenderer.drawImage(canvas, this.background, x - this.camera.x, y - this.camera.y);
         }
       }
     }
 
     this.planets.forEach((planet: Planet) => {
-      planet.render(canvas, cameraX, cameraY);
+      planet.render(canvas, this.camera.x, this.camera.y);
     });
 
     this.speedometer.render(canvas);
 
     CanvasRenderer.drawCircle(
       canvas,
-      this.getCanvasCenter().x - cameraX,
-      this.getCanvasCenter().y - cameraY,
+      this.getCanvasCenter().x - this.camera.x,
+      this.getCanvasCenter().y - this.camera.y,
       this.borderRadius,
       'red'
     );
 
-    this.player.render(canvas, this.player.getRotation(), cameraX, cameraY);
-    this.player.getFlame().render(canvas, this.player.getFlame().getRotation(), cameraX, cameraY);
+    this.player.render(canvas, this.player.getRotation(), this.camera.x, this.camera.y);
+    this.player.getFlame().render(canvas, this.player.getFlame().getRotation(),
+      this.camera.x, this.camera.y);
 
     CanvasRenderer.writeText(canvas, `${this.player.getSBucks()}`, this.sBucksImage.width + 30, 52, 'left', 'sans-serif', 30, '#C9C9C9');
 
@@ -287,6 +222,11 @@ export default abstract class SceneLevel extends Scene {
     if (this.sBucksImage.complete) {
       CanvasRenderer.drawImage(canvas, this.sBucksImage, 30, 40 - this.sBucksImage.height / 2);
     }
+
     this.renderMinimap(canvas);
+
+    this.renderExtensions(canvas);
+
+    CanvasRenderer.writeText(canvas, `Time left: ${Math.ceil(this.timeToFinish / 1000)}s`, 10, 110, 'left', 'Starjedi', 24, 'white');
   }
 }
