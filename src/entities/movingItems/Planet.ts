@@ -100,7 +100,6 @@ export default class Planet extends MovingItem {
         this.position.y - 5 - this.image.width / 2 - cameraY);
     }
 
-    console.log(this.showPointOfIntrest);
     if (this.showPointOfIntrest && this.name !== 'Sun') {
       CanvasRenderer.drawImage(canvas, this.pointOfInterest,
         this.position.x - this.image.width / 2 - cameraX,

@@ -30,7 +30,11 @@ export default abstract class SceneLevel extends Scene {
 
   private camera: Vector2 = new Vector2(0, 0);
 
-  public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
+  protected timeToFinish: number;
+
+  protected gameOver: boolean = false;
+
+  protected constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     super(canvas, player, alien);
     this.sBucksImage = CanvasRenderer.loadNewImage('../../assets/s-bucks/S-bucks.png');
     this.sBucksHudImage = CanvasRenderer.loadNewImage('../../assets/s-bucks/S-bucksHud.png');
@@ -39,6 +43,7 @@ export default abstract class SceneLevel extends Scene {
     this.background = new Image();
     this.background = CanvasRenderer.loadNewImage('../../../../assets/BackgroundSpace.png');
     this.minimapOffsetX = canvas.width - 10;
+    this.timeToFinish = 500000;
   }
 
   public abstract update(delta: number): void;
@@ -166,6 +171,20 @@ export default abstract class SceneLevel extends Scene {
    * @param canvas the canvas to render on
    * */
   public override render(canvas: HTMLCanvasElement): void {
+    if (this.timeToFinish <= 0) {
+      CanvasRenderer.fillCanvas(canvas, 'black');
+      CanvasRenderer.writeText(canvas, 'Tijd is om!', canvas.width / 2, canvas.height / 2, 'center', 'Starjedi', 72, 'white');
+
+      if (!this.gameOver) {
+        this.gameOver = true;
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      }
+      return;
+    }
+
     this.camera.x = this.player.getPosition().x - canvas.width / 2;
     this.camera.y = this.player.getPosition().y - canvas.height / 2;
 
@@ -207,9 +226,7 @@ export default abstract class SceneLevel extends Scene {
     this.renderMinimap(canvas);
 
     this.renderExtensions(canvas);
-  }
 
-  public getPlanets(): Planet[] {
-    return this.planets;
+    CanvasRenderer.writeText(canvas, `Time left: ${Math.ceil(this.timeToFinish / 1000)}s`, 10, 110, 'left', 'Starjedi', 24, 'white');
   }
 }

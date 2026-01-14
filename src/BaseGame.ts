@@ -11,17 +11,17 @@ import Alien from './entities/Alien.js';
 import SceneLevel from './entities/scene/level/SceneLevel.js';
 
 export default class BaseGame extends Game {
-  private canvas: HTMLCanvasElement;
+  private readonly canvas: HTMLCanvasElement;
 
-  private keyListener: KeyListener;
+  private readonly keyListener: KeyListener;
 
-  private mouseListener: MouseListener;
+  private readonly mouseListener: MouseListener;
 
   private currentScene: Scene | null;
 
-  private player: Player;
+  private readonly player: Player;
 
-  private alien : Alien;
+  private readonly alien : Alien;
 
   public constructor(canvas: HTMLCanvasElement) {
     super();

@@ -8,6 +8,7 @@ import OnPlanetScene from '../OnPlanetScene.js';
 export default class LevelOneScene extends SceneLevel {
   public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     super(canvas, player, alien);
+    this.timeToFinish = 500000;
   }
 
   /**
@@ -22,6 +23,13 @@ export default class LevelOneScene extends SceneLevel {
    * @param delta time elapsed
    */
   public override update(delta: number): void {
+    if(this.timeToFinish > 0){
+      this.timeToFinish -= delta;
+      if(this.timeToFinish <= 0){
+        return;
+      }
+    }
+
     this.closestPlanetData = this.getClosestPlanet();
     const closestPlanet: Planet | null = this.closestPlanetData.planet;
     const closestDistance: number = this.closestPlanetData.distance;
