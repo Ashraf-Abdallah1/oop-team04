@@ -1,9 +1,4 @@
-export interface QuestionData {
-  question: string
-  correctAnswer: string
-  answers: string[]
-}
-
+import { QuestionData } from './QuestionData.js';
 export interface PlanetData {
   name: string
   description: string
