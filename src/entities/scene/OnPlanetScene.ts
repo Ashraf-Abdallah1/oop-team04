@@ -113,11 +113,9 @@ export default class OnPlanetScene extends Scene {
     const canvas: HTMLCanvasElement = this.getCanvas();
     const centerX: number = canvas.width / 2;
 
-    // Popup afmetingen
     const popupHeight: number = 220;
     const popupY: number = canvas.height / 2 - popupHeight / 2;
 
-    // Button afmetingen
     const buttonWidth: number = 260;
     const buttonHeight: number = 56;
     const buttonX: number = centerX - buttonWidth / 2;
@@ -139,6 +137,49 @@ export default class OnPlanetScene extends Scene {
   }
 
   /**
+   * get the right question based on Level
+   *
+   * @returns Question or undefined
+   * */
+  public getQuestion(): Question | undefined {
+    let firstQuestion: Question | undefined;
+    const questions: Question[] = this.onPlanet.getQuestions();
+    if(this.player.getLevel() === 1) {
+      firstQuestion = questions[0];
+    }else if(this.player.getLevel() === 2){
+      firstQuestion = questions[1];
+    }
+    return firstQuestion;
+  }
+
+  /**
+   * get description of the planet to go to
+   *
+   * @returns description of the planet
+   * */
+  public getPlanetDescription(): string {
+    let planetDescription: string = '';
+    this.planets.forEach((planet: Planet) => {
+      if (this.player.getPlanetToGo() == planet.getName()) {
+        planetDescription = planet.getDescription();
+      }
+    });
+    return planetDescription;
+  }
+
+  /**
+ * level two setup
+ * */
+  public initializeLevelTwo(): void {
+    this.player.setLevel(2);
+    this.alien.setPlanetsToGo(['Mercury', 'Neptune', 'Uranus', 'Mars', 'Venus', 'Jupiter', 'Saturn']);
+    this.assignNextPlanet();
+    this.levelOneScene.clearScene();
+    this.nextScene = this.levelOneScene;
+    this.hasNextPlanet = true;
+  }
+
+  /**
    * Renders al of elements in level1 on the canvas
    *
    * @param canvas the canvas to render on
@@ -152,7 +193,6 @@ export default class OnPlanetScene extends Scene {
     if (this.player.isOnCorrectPlanet()) {
       if (this.hasNextPlanet) {
         if (this.showSuccessMessage) {
-          // Success message with stars
           CanvasRenderer.drawMessage(canvas, 'Goed gedaan! +100 Bucks', '#4CAF50');
 
           const starPositions: Array<{ x: number; y: number; size: number }> = [
@@ -197,21 +237,14 @@ export default class OnPlanetScene extends Scene {
           );
           this.alien.setDelivered();
 
-
           if (this.alien.getDelivered()) {
-            let firstQuestion: Question | undefined;
-            const questions: Question[] = this.onPlanet.getQuestions();
-            if(this.player.getLevel() === 1) {
-              firstQuestion = questions[0];
-            }else if(this.player.getLevel() === 2){
-              firstQuestion = questions[1];
-            }
-
+            const firstQuestion: Question | undefined = this.getQuestion();
             if (firstQuestion) {
               const speechBubbleY: number = 200;
               const speechBubbleWidth: number = 500;
               const speechBubbleHeight: number = 100;
               const speechBubbleX: number = centerX - 250;
+
               // Instellingen voor het Mission Paneel
               const cardWidth: number = 900;
               const cardHeight: number = 120;
@@ -235,7 +268,7 @@ export default class OnPlanetScene extends Scene {
                 cardX + cardWidth / 2,
                 cardY + 30,
                 14,
-                '#4ECDC4', // Gebruik een accentkleur zoals turquoise
+                '#4ECDC4',
                 'Arial',
                 'center'
               );
@@ -257,17 +290,12 @@ export default class OnPlanetScene extends Scene {
                   cardX + cardWidth / 2,
                   cardY + 95,
                   22,
-                  '#FFD93D', // Geel/Goud voor de focus
+                  '#FFD93D',
                   'Arial',
                   'center'
                 );
               } else {
-                let planetDescription: string = '';
-                this.planets.forEach((planet: Planet) => {
-                  if (this.player.getPlanetToGo() == planet.getName()) {
-                    planetDescription = planet.getDescription();
-                  }
-                });
+                const planetDescription: string = this.getPlanetDescription();
 
                 CanvasRenderer.drawTextWithShadow(
                   canvas,
@@ -275,7 +303,7 @@ export default class OnPlanetScene extends Scene {
                   cardX + cardWidth / 2,
                   cardY + 95,
                   22,
-                  '#FFD93D', // Geel/Goud voor de focus
+                  '#FFD93D',
                   'Arial',
                   'center'
                 );
@@ -327,7 +355,7 @@ export default class OnPlanetScene extends Scene {
                   letter,
                   answer,
                   idleButtonColor, // Alle buttons nu dezelfde rustige kleur
-                  false // IsSelected/IsHovered
+                  false,
                 );
               });
             }
@@ -345,17 +373,11 @@ export default class OnPlanetScene extends Scene {
           } else{
             CanvasRenderer.drawMessage(canvas, `Kan beter, ${countCorrectAnswers} vragen zijn goed van 12 `, '#2196F3', 1000);
           }
-
           return;
         }
 
         setTimeout(() => {
-          this.player.setLevel(2);
-          this.alien.setPlanetsToGo(['Mercury', 'Neptune', 'Uranus', 'Mars', 'Venus', 'Jupiter', 'Saturn']);
-          this.assignNextPlanet();
-          this.levelOneScene.clearScene();
-          this.nextScene = this.levelOneScene;
-          this.hasNextPlanet = true;
+          this.initializeLevelTwo();
         }, 3000);
       }
     } else {
@@ -369,13 +391,11 @@ export default class OnPlanetScene extends Scene {
           'rgba(0, 0, 0, 0.6)'
         );
 
-        // Popup afmetingen
         const popupWidth: number = 840;
         const popupHeight: number = 220;
         const popupX: number = centerX - popupWidth / 2;
         const popupY: number = canvas.height / 2 - popupHeight / 2;
 
-        // Popup container
         CanvasRenderer.drawRoundedRect(
           canvas,
           popupX,
@@ -398,7 +418,6 @@ export default class OnPlanetScene extends Scene {
           'center'
         );
 
-        // Button
         const buttonWidth: number = 260;
         const buttonHeight: number = 56;
         const buttonX: number = centerX - buttonWidth / 2;
