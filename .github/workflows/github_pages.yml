@@ -41,7 +41,7 @@ jobs:
       - name: Copy assets to dist
         run: |
           mkdir -p dist/assets
-          cp -R src/assets/* dist/assets/
+          cp -R assets/* dist/assets/
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v4
