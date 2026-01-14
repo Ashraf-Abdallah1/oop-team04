@@ -1,4 +1,4 @@
-import { PlanetData } from './PlanetData.js';
+import { PlanetData } from './dto/PlanetData.js';
 
 export const planetData: PlanetData[] = [
   {
