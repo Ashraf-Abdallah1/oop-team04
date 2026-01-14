@@ -61,7 +61,11 @@ export default abstract class Scene {
       const collisionDistance: number = closestDistance - (Math.max(this.player.getWidth(),
         this.player.getHeight()) / 2 + 67 /** SIX SEVEN */ + planetRadius);
 
-      if (collisionDistance <= planetRadius && keyListener.isKeyDown(KeyListener.KEY_E)) {
+      if (collisionDistance <= planetRadius
+        && keyListener.isKeyDown(KeyListener.KEY_E)
+        && !this.isMarioEffectActive
+        && closestPlanet.getName() !== 'Sun'
+      ) {
         this.isMarioEffectActive = true;
         this.marioRadius = Math.max(this.getCanvas().width, this.getCanvas().height);
 
