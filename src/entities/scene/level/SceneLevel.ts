@@ -173,7 +173,7 @@ export default abstract class SceneLevel extends Scene {
   public override render(canvas: HTMLCanvasElement): void {
     if (this.timeToFinish <= 0) {
       CanvasRenderer.fillCanvas(canvas, 'black');
-      CanvasRenderer.writeText(canvas, 'Tijd is op!', canvas.width / 2, canvas.height / 2, 'center', 'Starjedi', 72, 'white');
+      CanvasRenderer.writeText(canvas, 'Tijd is om!', canvas.width / 2, canvas.height / 2, 'center', 'Starjedi', 72, 'white');
 
       if (!this.gameOver) {
         this.gameOver = true;
