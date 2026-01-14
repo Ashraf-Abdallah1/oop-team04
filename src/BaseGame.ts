@@ -23,8 +23,6 @@ export default class BaseGame extends Game {
 
   private readonly alien : Alien;
 
-  private timeToFinish: number = 500000; // 5 minutes in milliseconds
-
   public constructor(canvas: HTMLCanvasElement) {
     super();
     this.canvas = canvas;
@@ -58,11 +56,6 @@ export default class BaseGame extends Game {
    * @returns true if the game should continue
    */
   public update(delta: number): boolean {
-
-    this.timeToFinish -= delta;
-    if(this.timeToFinish <= 0){
-      return false;
-    }
     if( this.currentScene !== null) {
       if(this.currentScene.getNextScene() !== null ) {
         this.currentScene = this.currentScene.getNextScene();
@@ -82,7 +75,5 @@ export default class BaseGame extends Game {
     if( this.currentScene !== null ) {
       this.currentScene.render(this.canvas);
     }
-    console.log('ggggg');
-    CanvasRenderer.writeText(this.canvas, `Time left: ${Math.ceil(this.timeToFinish / 1000)}s`, 200, 300, 'left', 'Starjedi', 24, 'white');
   }
 }
