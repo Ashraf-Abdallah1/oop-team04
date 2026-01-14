@@ -32,6 +32,8 @@ export default abstract class SceneLevel extends Scene {
 
   protected timeToFinish: number;
 
+  protected gameOver: boolean = false;
+
   protected constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     super(canvas, player, alien);
     this.sBucksImage = CanvasRenderer.loadNewImage('../../assets/s-bucks/S-bucks.png');
@@ -169,9 +171,17 @@ export default abstract class SceneLevel extends Scene {
    * @param canvas the canvas to render on
    * */
   public override render(canvas: HTMLCanvasElement): void {
-    if(this.timeToFinish <= 0) {
+    if (this.timeToFinish <= 0) {
       CanvasRenderer.fillCanvas(canvas, 'black');
       CanvasRenderer.writeText(canvas, 'Tijd is op!', canvas.width / 2, canvas.height / 2, 'center', 'Starjedi', 72, 'white');
+
+      if (!this.gameOver) {
+        this.gameOver = true;
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      }
       return;
     }
 
@@ -218,9 +228,5 @@ export default abstract class SceneLevel extends Scene {
     this.renderExtensions(canvas);
 
     CanvasRenderer.writeText(canvas, `Time left: ${Math.ceil(this.timeToFinish / 1000)}s`, 10, 110, 'left', 'Starjedi', 24, 'white');
-  }
-
-  public getPlanets(): Planet[] {
-    return this.planets;
   }
 }
