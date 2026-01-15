@@ -6,6 +6,7 @@ import CanvasRenderer from '../../../rendering/CanvasRenderer.js';
 import Player from '../../movingItems/Player.js';
 import Alien from '../../Alien.js';
 import Speedometer from '../../Speedometer.js';
+import Notifications from '../../Notifications.js';
 
 export default abstract class SceneLevel extends Scene {
   private readonly sBucksHudImage: HTMLImageElement;
@@ -34,6 +35,8 @@ export default abstract class SceneLevel extends Scene {
 
   protected gameOver: boolean = false;
 
+  private notification: Notifications;
+
   protected constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     super(canvas, player, alien);
     this.sBucksImage = CanvasRenderer.loadNewImage('../../assets/s-bucks/S-bucks.png');
@@ -44,6 +47,7 @@ export default abstract class SceneLevel extends Scene {
     this.background = CanvasRenderer.loadNewImage('../../../../assets/BackgroundSpace.png');
     this.minimapOffsetX = canvas.width - 10;
     this.timeToFinish = 500000;
+    this.notification = new Notifications('', new Vector2(0, 0));
   }
 
   public abstract update(delta: number): void;
@@ -212,7 +216,7 @@ export default abstract class SceneLevel extends Scene {
 
     this.player.render(canvas, this.player.getRotation(), this.camera.x, this.camera.y);
     this.player.getFlame().render(canvas, this.player.getFlame().getRotation(),
-      this.camera.x, this.camera.y);
+    this.camera.x, this.camera.y);
 
     CanvasRenderer.writeText(canvas, `${this.player.getSBucks()}`, this.sBucksImage.width + 30, 52, 'left', 'sans-serif', 30, '#C9C9C9');
 
@@ -228,5 +232,15 @@ export default abstract class SceneLevel extends Scene {
     this.renderExtensions(canvas);
 
     CanvasRenderer.writeText(canvas, `Time left: ${Math.ceil(this.timeToFinish / 1000)}s`, 10, 110, 'left', 'Starjedi', 24, 'white');
+    this.showNotifications(canvas);
+  }
+
+  public showNotifications(canvas: HTMLCanvasElement): void {
+    if (this.timeToFinish < 498000 && this.timeToFinish > 493000) {
+      this.notification.openMinimap(canvas);
+    }
+    if (this.timeToFinish < 60000 && this.timeToFinish > 55000) {
+      this.notification.sixtySecondsleft(canvas);
+    }
   }
 }
