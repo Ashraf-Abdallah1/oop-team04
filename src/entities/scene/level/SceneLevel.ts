@@ -72,6 +72,18 @@ export default abstract class SceneLevel extends Scene {
 
 
   /**
+   * reload the game
+   * */
+  public reloadGame(): void {
+    if (!this.isGameOVer()) {
+      this.setGameOver(true);
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
+    }
+  }
+
+  /**
    * Changes the minimap size
    */
   public changeMiniMapSize(): void {
@@ -86,8 +98,8 @@ export default abstract class SceneLevel extends Scene {
       this.miniMapRadius *= scaleChange;
       this.scale *= scaleChange;
       this.miniMapBig = true;
-      this.minimapOffsetX = this.getCanvas().width/2 + this.miniMapRadius;
-      this.minimapOffsetY = this.getCanvas().height/2 - this.miniMapRadius;
+      this.minimapOffsetX = this.getCanvas().width / 2 + this.miniMapRadius;
+      this.minimapOffsetY = this.getCanvas().height / 2 - this.miniMapRadius;
     }
   }
 
@@ -166,6 +178,19 @@ export default abstract class SceneLevel extends Scene {
   }
 
   /**
+   *  game status
+   *
+   * @return boolean game over status
+   * */
+  public isGameOVer(): boolean {
+    return this.gameOver;
+  }
+
+  public setGameOver(state: boolean): void {
+    this.gameOver = state;
+  }
+
+  /**
    * Renders al of elements in level1 on the canvas
    *
    * @param canvas the canvas to render on
@@ -175,13 +200,8 @@ export default abstract class SceneLevel extends Scene {
       CanvasRenderer.fillCanvas(canvas, 'black');
       CanvasRenderer.writeText(canvas, 'Tijd is om!', canvas.width / 2, canvas.height / 2, 'center', 'Starjedi', 72, 'white');
 
-      if (!this.gameOver) {
-        this.gameOver = true;
+      this.reloadGame();
 
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-      }
       return;
     }
 
@@ -229,7 +249,7 @@ export default abstract class SceneLevel extends Scene {
 
     CanvasRenderer.writeText(canvas, `Time left: ${Math.ceil(this.timeToFinish / 1000)}s`, 10, 110, 'left', 'Starjedi', 24, 'white');
 
-    if(this.player.getLevel() === 2){
+    if (this.player.getLevel() === 2) {
       let planetDescription: string = '';
       this.planets.forEach((planet: Planet) => {
         if (this.player.getPlanetToGo() == planet.getName()) {

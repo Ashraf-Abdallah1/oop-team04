@@ -122,7 +122,7 @@ export default class OnPlanetScene extends Scene {
     const buttonY: number = popupY + popupHeight - buttonHeight - 24;
 
     const mousePos: { x: number; y: number }
-    = mouseListener.getMousePosition();
+      = mouseListener.getMousePosition();
     const clicked: boolean = mouseListener.buttonPressed();
     const insideButton: boolean =
       mousePos.x >= buttonX &&
@@ -144,9 +144,9 @@ export default class OnPlanetScene extends Scene {
   public getQuestion(): Question | undefined {
     let firstQuestion: Question | undefined;
     const questions: Question[] = this.onPlanet.getQuestions();
-    if(this.player.getLevel() === 1) {
+    if (this.player.getLevel() === 1) {
       firstQuestion = questions[0];
-    }else if(this.player.getLevel() === 2){
+    } else if (this.player.getLevel() === 2) {
       firstQuestion = questions[1];
     }
     return firstQuestion;
@@ -168,8 +168,8 @@ export default class OnPlanetScene extends Scene {
   }
 
   /**
- * level two setup
- * */
+   * level two setup
+   * */
   public initializeLevelTwo(): void {
     this.player.setLevel(2);
     this.alien.setPlanetsToGo(['Mercury', 'Neptune', 'Uranus', 'Mars', 'Venus', 'Jupiter', 'Saturn']);
@@ -367,12 +367,13 @@ export default class OnPlanetScene extends Scene {
           CanvasRenderer.drawMessage(canvas, `Level: ${this.player.getLevel() + 1}💪`, '#2196F3');
         } else {
           //max 12
-          const countCorrectAnswers: number = this.player.getSBucks() /100;
-          if(countCorrectAnswers > 6 ){
+          const countCorrectAnswers: number = this.player.getSBucks() / 100;
+          if (countCorrectAnswers > 6) {
             CanvasRenderer.drawMessage(canvas, `Goed Gedaan  ${countCorrectAnswers} vragen zijn goed`, '#2196F3', 1000);
-          } else{
+          } else {
             CanvasRenderer.drawMessage(canvas, `Kan beter, ${countCorrectAnswers} vragen zijn goed van 12 `, '#2196F3', 1000);
           }
+          this.levelOneScene.reloadGame();
           return;
         }
 
