@@ -6,7 +6,7 @@ import CanvasRenderer from '../../../rendering/CanvasRenderer.js';
 import Player from '../../movingItems/Player.js';
 import Alien from '../../Alien.js';
 import Speedometer from '../../Speedometer.js';
-import Notifications from '../../Notifications.js';
+import NotificationManager from '../../NotificationManager.js';
 
 export default abstract class SceneLevel extends Scene {
   private readonly sBucksHudImage: HTMLImageElement;
@@ -35,7 +35,7 @@ export default abstract class SceneLevel extends Scene {
 
   protected gameOver: boolean = false;
 
-  private notification: Notifications;
+  protected notificationManager: NotificationManager;
 
   protected constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     super(canvas, player, alien);
@@ -47,7 +47,7 @@ export default abstract class SceneLevel extends Scene {
     this.background = CanvasRenderer.loadNewImage('../../../../assets/BackgroundSpace.png');
     this.minimapOffsetX = canvas.width - 10;
     this.timeToFinish = 500000;
-    this.notification = new Notifications('', new Vector2(0, 0));
+    this.notificationManager = new NotificationManager();
   }
 
   public abstract update(delta: number): void;
@@ -232,15 +232,26 @@ export default abstract class SceneLevel extends Scene {
     this.renderExtensions(canvas);
 
     CanvasRenderer.writeText(canvas, `Time left: ${Math.ceil(this.timeToFinish / 1000)}s`, 10, 110, 'left', 'Starjedi', 24, 'white');
-    this.showNotifications(canvas);
+
+    this.showNotifications();
+    this.notificationManager.updateAndRender(canvas);
   }
 
-  public showNotifications(canvas: HTMLCanvasElement): void {
-    if (this.timeToFinish < 498000 && this.timeToFinish > 493000) {
-      this.notification.openMinimap(canvas);
+  public showNotifications(): void {
+    if (this.timeToFinish < 498000 && this.timeToFinish > 496000) {
+      this.notificationManager.show('Tip! Druk op M om de minimap te openen', 'info');
     }
-    if (this.timeToFinish < 60000 && this.timeToFinish > 55000) {
-      this.notification.sixtySecondsleft(canvas);
+
+    if (this.speedometer.getSpeed() >= 6000) {
+      this.notificationManager.show('Let op! Verminder snelheid om goed te kunnen sturen', 'warning');
+    }
+
+    if (this.timeToFinish <= 60000 && this.timeToFinish >= 56000) {
+      this.notificationManager.show('Je hebt nog 60 seconden over', 'warning');
+    }
+
+    if (this.timeToFinish <= 30000 && this.timeToFinish >= 26000) {
+      this.notificationManager.show('Je hebt nog 30 seconden over', 'warning');
     }
   }
 }
