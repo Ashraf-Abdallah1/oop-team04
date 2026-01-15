@@ -8,6 +8,7 @@ import Player from '../movingItems/Player.js';
 import Question from '../Question.js';
 import Alien from '../Alien.js';
 import LevelTwoScene from './level/LevelTwoScene.js';
+import NotificationManager from '../../managers/NotificationManager.js';
 
 
 export default class OnPlanetScene extends Scene {
@@ -25,6 +26,8 @@ export default class OnPlanetScene extends Scene {
 
   protected planetImage: HTMLImageElement;
 
+  private notificationManager: NotificationManager;
+
   public constructor(
     canvas: HTMLCanvasElement,
     player: Player,
@@ -41,6 +44,7 @@ export default class OnPlanetScene extends Scene {
     this.planetImage = new Image();
     this.planetImage = CanvasRenderer.loadNewImage(`../../../assets/planets/onPlanet/On${planet.getName()}.png`);
     this.assignNextPlanet();
+    this.notificationManager = new NotificationManager();
   }
 
   private assignNextPlanet(): void {
@@ -87,19 +91,13 @@ export default class OnPlanetScene extends Scene {
     if (keyListener.keyPressed(key)) {
       this.player.setSBucks(this.player.getSBucks() + 100);
       this.showSuccessMessage = true;
-      setTimeout(() => {
-        this.levelOneScene.clearScene();
-        this.nextScene = this.levelOneScene;
-      }, 2000);
+      this.getLevelOneSceneAgain(2000);
     } else if (
       keyListener.keyPressed(KeyListener.KEY_B) ||
       keyListener.keyPressed(KeyListener.KEY_C) ||
       keyListener.keyPressed(KeyListener.KEY_A)) {
       this.showFailureMessage = true;
-      setTimeout(() => {
-        this.levelOneScene.clearScene();
-        this.nextScene = this.levelOneScene;
-      }, 2000);
+      this.getLevelOneSceneAgain(3500);
     }
   }
 
@@ -168,6 +166,16 @@ export default class OnPlanetScene extends Scene {
   }
 
   /**
+    * * level one setup
+   * */
+  public getLevelOneSceneAgain(time: number): void {
+    setTimeout(() => {
+      this.levelOneScene.clearScene();
+      this.nextScene = this.levelOneScene;
+    }, time);
+  }
+
+  /**
    * level two setup
    * */
   public initializeLevelTwo(): void {
@@ -177,6 +185,27 @@ export default class OnPlanetScene extends Scene {
     this.levelOneScene.clearScene();
     this.nextScene = this.levelOneScene;
     this.hasNextPlanet = true;
+  }
+
+  /**
+   * show notifications in the scene onPlanet
+   * */
+  public handleNotifications(): void {
+    if (this.showFailureMessage) {
+      const goodAnswer: string | undefined = this.onPlanet.getQuestions()[0]?.
+        getGoodAnswer().toString();
+
+      let goodAnswerText: string = '';
+
+      if (goodAnswer === 'A') {
+        goodAnswerText = this.onPlanet.getQuestions()[0]?.getAnswers()[0] ?? '';
+      } else if (goodAnswer === 'B') {
+        goodAnswerText = this.onPlanet.getQuestions()[0]?.getAnswers()[1] ?? '';
+      } else {
+        goodAnswerText = this.onPlanet.getQuestions()[0]?.getAnswers()[2] ?? '';
+      }
+      this.notificationManager.show(`Goede Antwoord was:  ${goodAnswerText}`, 'warning', 400);
+    }
   }
 
   /**
@@ -207,6 +236,8 @@ export default class OnPlanetScene extends Scene {
           });
         } else if (this.showFailureMessage) {
           CanvasRenderer.drawMessage(canvas, 'Helaas fout antwoord', '#F44336');
+          this.handleNotifications();
+          this.notificationManager.updateAndRender(canvas);
         } else {
           this.alien.render(canvas);
           const headerY: number = 50;
@@ -363,7 +394,7 @@ export default class OnPlanetScene extends Scene {
         }
       } else {
         const level: number = this.player.getLevel();
-        if(level < 2){
+        if (level < 2) {
           CanvasRenderer.drawMessage(canvas, `Level: ${this.player.getLevel() + 1}💪`, '#2196F3');
         } else {
           //max 12
