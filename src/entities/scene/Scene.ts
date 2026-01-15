@@ -6,7 +6,7 @@ import Planet from '../movingItems/Planet.js';
 import Vector2 from '../../utils/Vector2.js';
 import Question from '../Question.js';
 import {planetData} from '../../data/planets.js';
-import { PlanetData, QuestionData } from '../../data/PlanetData.js';
+import { PlanetData, QuestionData } from '../../data/dto/PlanetData.js';
 
 export default abstract class Scene {
   protected planets: Planet[] = [];
@@ -107,6 +107,7 @@ export default abstract class Scene {
       new Planet(
         center,
         data.name,
+        data.description,
         data.orbitRadius,
         data.orbitSpeed,
         data.questions.map(
