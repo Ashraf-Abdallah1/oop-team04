@@ -54,6 +54,19 @@ export default class Player extends MovingItem {
   public override update(delta: number): void {
     this.move(delta);
     this.keepPlayerWithinMap();
+    this.changeSkins();
+  }
+
+  private changeSkins(): void {
+      if (this.sBucks < 500) {
+        this.image = CanvasRenderer.loadNewImage('../../assets/rockets/Rocket.png');
+      } if (this.sBucks >= 500) {
+        this.image = CanvasRenderer.loadNewImage('../../assets/rockets/Rocket1.png');
+      } if (this.sBucks >= 1000) {
+        this.image = CanvasRenderer.loadNewImage('../../assets/rockets/Rocket2.png');
+      } if (this.sBucks >= 1500) {
+        this.image = CanvasRenderer.loadNewImage('../../assets/rockets/Rocket3.png');
+      }
   }
 
   /**
