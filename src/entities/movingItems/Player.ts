@@ -43,7 +43,7 @@ export default class Player extends MovingItem {
     this.flame = new Flame();
     this.timeToNextFlame = Math.random() * 100;
     this.showFlame = false;
-    this.sBucks = 500;
+    this.sBucks = 0;
     this.turnDirection = 'none';
     this.moveType = 'none';
     this.planetToGo = 'Earth';
