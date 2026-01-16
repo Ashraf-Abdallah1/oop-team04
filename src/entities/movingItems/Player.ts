@@ -28,11 +28,14 @@ export default class Player extends MovingItem {
 
   private level: number = 1;
 
+  private rocketSkin: string;
+
   private readonly playerRadius: number;
 
   public constructor(boardSize: Vector2) {
     super();
-    this.image = CanvasRenderer.loadNewImage('../../assets/rockets/Rocket.png');
+    this.rocketSkin = 'rocket'
+    this.image = CanvasRenderer.loadNewImage(`../../assets/rockets/${this.rocketSkin}.png`);
     this.boardSize = boardSize;
     this.position = new Vector2(0, 0);
     this.acceleration = 0;
@@ -40,7 +43,7 @@ export default class Player extends MovingItem {
     this.flame = new Flame();
     this.timeToNextFlame = Math.random() * 100;
     this.showFlame = false;
-    this.sBucks = 0;
+    this.sBucks = 500;
     this.turnDirection = 'none';
     this.moveType = 'none';
     this.planetToGo = 'Earth';
@@ -55,17 +58,18 @@ export default class Player extends MovingItem {
     this.move(delta);
     this.keepPlayerWithinMap();
     this.changeSkins();
+    this.image = CanvasRenderer.loadNewImage(`../../assets/rockets/${this.rocketSkin}.png`);
   }
 
   private changeSkins(): void {
       if (this.sBucks < 500) {
-        this.image = CanvasRenderer.loadNewImage('../../assets/rockets/Rocket.png');
+        this.rocketSkin = 'Rocket'
       } if (this.sBucks >= 500) {
-        this.image = CanvasRenderer.loadNewImage('../../assets/rockets/Rocket1.png');
+        this.rocketSkin = 'Rocket1'
       } if (this.sBucks >= 1000) {
-        this.image = CanvasRenderer.loadNewImage('../../assets/rockets/Rocket2.png');
+        this.rocketSkin = 'Rocket2'
       } if (this.sBucks >= 1500) {
-        this.image = CanvasRenderer.loadNewImage('../../assets/rockets/Rocket3.png');
+        this.rocketSkin = 'Rocket3'
       }
   }
 
