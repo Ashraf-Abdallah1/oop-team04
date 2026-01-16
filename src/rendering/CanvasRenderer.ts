@@ -115,6 +115,7 @@ export default class CanvasRenderer {
     ctx.fillStyle = color;
     ctx.textAlign = alignment;
     ctx.fillText(text, xCoordinate, yCoordinate);
+    ctx.textBaseline = 'alphabetic';
   }
 
   /**
