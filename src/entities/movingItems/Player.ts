@@ -34,7 +34,7 @@ export default class Player extends MovingItem {
 
   public constructor(boardSize: Vector2) {
     super();
-    this.rocketSkin = 'rocket'
+    this.rocketSkin = 'rocket';
     this.image = CanvasRenderer.loadNewImage(`../../assets/rockets/${this.rocketSkin}.png`);
     this.boardSize = boardSize;
     this.position = new Vector2(0, 0);
@@ -43,7 +43,7 @@ export default class Player extends MovingItem {
     this.flame = new Flame();
     this.timeToNextFlame = Math.random() * 100;
     this.showFlame = false;
-    this.sBucks = 500;
+    this.sBucks = 0;
     this.turnDirection = 'none';
     this.moveType = 'none';
     this.planetToGo = 'Earth';
@@ -63,13 +63,13 @@ export default class Player extends MovingItem {
 
   private changeSkins(): void {
       if (this.sBucks < 500) {
-        this.rocketSkin = 'Rocket'
+        this.rocketSkin = 'Rocket';
       } if (this.sBucks >= 500) {
-        this.rocketSkin = 'Rocket1'
+        this.rocketSkin = 'Rocket1';
       } if (this.sBucks >= 1000) {
-        this.rocketSkin = 'Rocket2'
+        this.rocketSkin = 'Rocket2';
       } if (this.sBucks >= 1500) {
-        this.rocketSkin = 'Rocket3'
+        this.rocketSkin = 'Rocket3';
       }
   }
 
@@ -265,5 +265,9 @@ export default class Player extends MovingItem {
 
   public setLevel(level: number): void {
     this.level = level;
+  }
+
+  public getRocketSkin(): string {
+    return this.rocketSkin;
   }
 }
