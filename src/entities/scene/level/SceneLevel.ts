@@ -6,7 +6,7 @@ import CanvasRenderer from '../../../rendering/CanvasRenderer.js';
 import Player from '../../movingItems/Player.js';
 import Alien from '../../Alien.js';
 import Speedometer from '../../Speedometer.js';
-import NotificationManager from '../../NotificationManager.js';
+import NotificationManager from '../../../managers/NotificationManager.js';
 
 export default abstract class SceneLevel extends Scene {
   private readonly sBucksHudImage: HTMLImageElement;
