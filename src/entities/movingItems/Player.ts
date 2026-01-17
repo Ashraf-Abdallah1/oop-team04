@@ -28,11 +28,14 @@ export default class Player extends MovingItem {
 
   private level: number = 1;
 
+  private rocketSkin: string;
+
   private readonly playerRadius: number;
 
   public constructor(boardSize: Vector2) {
     super();
-    this.image = CanvasRenderer.loadNewImage('../../assets/rockets/Rocket.png');
+    this.rocketSkin = 'rocket';
+    this.image = CanvasRenderer.loadNewImage(`../../assets/rockets/${this.rocketSkin}.png`);
     this.boardSize = boardSize;
     this.position = new Vector2(0, 0);
     this.acceleration = 0;
@@ -54,6 +57,20 @@ export default class Player extends MovingItem {
   public override update(delta: number): void {
     this.move(delta);
     this.keepPlayerWithinMap();
+    this.changeSkins();
+    this.image = CanvasRenderer.loadNewImage(`../../assets/rockets/${this.rocketSkin}.png`);
+  }
+
+  private changeSkins(): void {
+      if (this.sBucks < 500) {
+        this.rocketSkin = 'Rocket';
+      } if (this.sBucks >= 500) {
+        this.rocketSkin = 'Rocket1';
+      } if (this.sBucks >= 1000) {
+        this.rocketSkin = 'Rocket2';
+      } if (this.sBucks >= 1500) {
+        this.rocketSkin = 'Rocket3';
+      }
   }
 
   /**
@@ -248,5 +265,9 @@ export default class Player extends MovingItem {
 
   public setLevel(level: number): void {
     this.level = level;
+  }
+
+  public getRocketSkin(): string {
+    return this.rocketSkin;
   }
 }

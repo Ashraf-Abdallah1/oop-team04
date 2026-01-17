@@ -26,6 +26,11 @@ export default class OnPlanetScene extends Scene {
 
   protected planetImage: HTMLImageElement;
 
+  private rocketImage: HTMLImageElement = new Image();
+
+  private rocketY: number = -200;
+
+  private rocketLanding: boolean = true;
   private notificationManager: NotificationManager;
 
   public constructor(
@@ -44,6 +49,7 @@ export default class OnPlanetScene extends Scene {
     this.planetImage = new Image();
     this.planetImage = CanvasRenderer.loadNewImage(`../../../assets/planets/onPlanet/On${planet.getName()}.png`);
     this.assignNextPlanet();
+    this.rocketImage.src = `../../../assets/rockets/${player.getRocketSkin()}.png`;
     this.notificationManager = new NotificationManager();
   }
 
@@ -218,6 +224,17 @@ export default class OnPlanetScene extends Scene {
     const canvasHeight: number = canvas.height;
 
     CanvasRenderer.drawImage(canvas, this.planetImage, 0, canvasHeight - canvas.height / 3);
+
+    const rocketX = centerX - this.rocketImage.width / 2 - centerX / 1.5;
+    CanvasRenderer.drawImage(canvas, this.rocketImage, rocketX, this.rocketY, -Math.PI / 2);
+
+    if (this.rocketLanding) {
+      if (this.rocketY < canvasHeight - canvas.height / 2.4) {
+          this.rocketY += 2;
+      } else {
+        this.rocketLanding = false;
+      }
+    }
 
     if (this.player.isOnCorrectPlanet()) {
       if (this.hasNextPlanet) {
