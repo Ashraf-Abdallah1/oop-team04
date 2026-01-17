@@ -260,6 +260,7 @@ export default class OnPlanetScene extends Scene {
           starPositions.forEach((star: { x: number; y: number; size: number }) => {
             CanvasRenderer.drawStar(canvas, star.x, star.y, 5, star.size, star.size / 2, '#FFD700');
           });
+          this.rocketY -= 5;
         } else if (this.showFailureMessage) {
           CanvasRenderer.drawMessage(canvas, 'Helaas fout antwoord', '#F44336');
           this.handleNotifications();
