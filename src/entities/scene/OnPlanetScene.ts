@@ -28,9 +28,10 @@ export default class OnPlanetScene extends Scene {
 
   private rocketImage: HTMLImageElement = new Image();
 
-  private rocketY: number = -200;
+  private rocketY: number;
 
   private rocketLanding: boolean = true;
+
   private notificationManager: NotificationManager;
 
   public constructor(
@@ -49,8 +50,9 @@ export default class OnPlanetScene extends Scene {
     this.planetImage = new Image();
     this.planetImage = CanvasRenderer.loadNewImage(`../../../assets/planets/onPlanet/On${planet.getName()}.png`);
     this.assignNextPlanet();
-    this.rocketImage.src = `../../../assets/rockets/${player.getRocketSkin()}.png`;
+    this.rocketImage.src = `../../../assets/rockets/BigRockets/${player.getRocketSkin()}.png`;
     this.notificationManager = new NotificationManager();
+    this.rocketY = -1500;
   }
 
   private assignNextPlanet(): void {
@@ -223,15 +225,22 @@ export default class OnPlanetScene extends Scene {
     const centerX: number = canvas.width / 2;
     const canvasHeight: number = canvas.height;
 
-    CanvasRenderer.drawImage(canvas, this.planetImage, 0, canvasHeight - canvas.height / 3);
+    CanvasRenderer.drawImage(canvas, this.planetImage, 0, canvasHeight - canvas.height / 6);
 
-    const rocketX = centerX - this.rocketImage.width / 2 - centerX / 1.5;
-    CanvasRenderer.drawImage(canvas, this.rocketImage, rocketX, this.rocketY, -Math.PI / 2);
+    const rocketX: number = centerX - this.rocketImage.width / 2 - centerX / 1.5;
+    CanvasRenderer.drawImage(canvas, this.rocketImage, rocketX, this.rocketY);
 
     if (this.rocketLanding) {
-      if (this.rocketY < canvasHeight - canvas.height / 2.4) {
-          this.rocketY += 2;
+      const targetY: number = canvasHeight - canvas.height / 6 + 30 - this.rocketImage.height;
+
+      const distance: number = targetY - this.rocketY;
+
+      const speed: number = Math.max(1, distance * 0.01);
+
+      if (distance > 0) {
+        this.rocketY += speed;
       } else {
+        this.rocketY = targetY;
         this.rocketLanding = false;
       }
     }
