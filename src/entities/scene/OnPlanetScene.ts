@@ -298,9 +298,9 @@ export default class OnPlanetScene extends Scene {
             const firstQuestion: Question | undefined = this.getQuestion();
             if (firstQuestion) {
               const speechBubbleY: number = 200;
-              const speechBubbleWidth: number = 500;
+              const speechBubbleWidth: number = 600;
               const speechBubbleHeight: number = 100;
-              const speechBubbleX: number = centerX - 250;
+              const speechBubbleX: number = centerX - (speechBubbleWidth / 2);
 
               // Instellingen voor het Mission Paneel
               const cardWidth: number = 650;
