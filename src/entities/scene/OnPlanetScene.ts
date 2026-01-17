@@ -303,9 +303,9 @@ export default class OnPlanetScene extends Scene {
               const speechBubbleX: number = centerX - 250;
 
               // Instellingen voor het Mission Paneel
-              const cardWidth: number = 900;
+              const cardWidth: number = 650;
               const cardHeight: number = 120;
-              const cardX: number = canvas.width - cardWidth - 200;
+              const cardX: number = (canvas.width / 2) - cardWidth / 2;
               const cardY: number = 65;
 
               CanvasRenderer.drawRoundedRect(
