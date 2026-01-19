@@ -9,7 +9,7 @@ export default class Alien extends CanvasItem {
 
   public constructor(canvas: HTMLCanvasElement) {
     super();
-    this.image = CanvasRenderer.loadNewImage('../../../assets/Alien.png');
+    this.image = CanvasRenderer.loadNewImage('./assets/Alien.png');
     this.image.onload = (): void => {
       this.position = new Vector2(
         canvas.width / 3.5,

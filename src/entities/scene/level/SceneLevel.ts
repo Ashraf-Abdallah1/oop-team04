@@ -44,7 +44,7 @@ export default abstract class SceneLevel extends Scene {
     this.borderRadius = 4500;
     this.speedometer = new Speedometer(new Vector2(canvas.width, canvas.height));
     this.background = new Image();
-    this.background = CanvasRenderer.loadNewImage('../../../../assets/BackgroundSpace.png');
+    this.background = CanvasRenderer.loadNewImage('.././assets/BackgroundSpace.png');
     this.minimapOffsetX = canvas.width - 10;
     this.timeToFinish = 500000;
     this.notificationManager = new NotificationManager();

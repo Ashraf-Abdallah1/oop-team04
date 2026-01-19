@@ -48,9 +48,9 @@ export default class OnPlanetScene extends Scene {
     this.levelTwoScene = levelTwoScene;
 
     this.planetImage = new Image();
-    this.planetImage = CanvasRenderer.loadNewImage(`../../../assets/planets/onPlanet/On${planet.getName()}.png`);
+    this.planetImage = CanvasRenderer.loadNewImage(`./assets/planets/onPlanet/On${planet.getName()}.png`);
     this.assignNextPlanet();
-    this.rocketImage.src = `../../../../assets/rockets/BigRockets/${player.getRocketSkin()}.png`;
+    this.rocketImage.src = `.././assets/rockets/BigRockets/${player.getRocketSkin()}.png`;
     this.notificationManager = new NotificationManager();
     this.rocketY = -1500;
   }
