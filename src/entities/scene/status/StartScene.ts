@@ -11,7 +11,7 @@ export default class StartScene extends StatusScene {
 
   public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     super(canvas, player, alien);
-    this.startButton = CanvasRenderer.loadNewImage('../../../assets/sci-fi/buttons/Start.png');
+    this.startButton = CanvasRenderer.loadNewImage('assets/sci-fi/buttons/Start.png');
   }
 
   /**
