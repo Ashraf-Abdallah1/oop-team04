@@ -60,7 +60,7 @@ export default class Player extends MovingItem {
     this.move(delta);
     this.keepPlayerWithinMap();
     this.changeSkins();
-    this.image = CanvasRenderer.loadNewImage(`../../assets/rockets/${this.rocketSkin}.png`);
+    this.image = CanvasRenderer.loadNewImage(`./assets/rockets/${this.rocketSkin}.png`);
   }
 
   private changeSkins(): void {
