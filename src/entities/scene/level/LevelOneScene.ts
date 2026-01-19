@@ -8,7 +8,7 @@ import OnPlanetScene from '../OnPlanetScene.js';
 export default class LevelOneScene extends SceneLevel {
   public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     super(canvas, player, alien);
-    this.timeToFinish = 500000;
+    this.timeToFinish = 300000;
   }
 
   /**

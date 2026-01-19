@@ -46,7 +46,7 @@ export default abstract class SceneLevel extends Scene {
     this.background = new Image();
     this.background = CanvasRenderer.loadNewImage('assets/BackgroundSpace.png');
     this.minimapOffsetX = canvas.width - 10;
-    this.timeToFinish = 500000;
+    this.timeToFinish = 300000;
     this.notificationManager = new NotificationManager();
   }
 
@@ -62,7 +62,6 @@ export default abstract class SceneLevel extends Scene {
    * process input for the scene
    *
    *  @param keyListener the keylistener to get input from
-   *  @param mouseListener the mouselistener to get input from
    * */
   public override processInput(keyListener: KeyListener): void {
     this.player.processInput(keyListener);
@@ -83,7 +82,7 @@ export default abstract class SceneLevel extends Scene {
       this.setGameOver(true);
       setTimeout(() => {
         window.location.reload();
-      }, 3000);
+      }, 3500);
     }
   }
 
@@ -184,7 +183,7 @@ export default abstract class SceneLevel extends Scene {
   /**
    *  game status
    *
-   * @return boolean game over status
+   * @returns boolean game over status
    * */
   public isGameOVer(): boolean {
     return this.gameOver;
@@ -236,7 +235,7 @@ export default abstract class SceneLevel extends Scene {
 
     this.player.render(canvas, this.player.getRotation(), this.camera.x, this.camera.y);
     this.player.getFlame().render(canvas, this.player.getFlame().getRotation(),
-    this.camera.x, this.camera.y);
+      this.camera.x, this.camera.y);
 
     CanvasRenderer.writeText(canvas, `${this.player.getSBucks()}`, this.sBucksImage.width + 30, 52, 'left', 'sans-serif', 30, '#C9C9C9');
 
@@ -276,8 +275,11 @@ export default abstract class SceneLevel extends Scene {
     this.notificationManager.updateAndRender(canvas);
   }
 
+  /**
+ * Show notifications to the player
+ **/
   public showNotifications(): void {
-    if (this.timeToFinish < 498000 && this.timeToFinish > 496000) {
+    if (this.timeToFinish < 298000 && this.timeToFinish > 296000) {
       this.notificationManager.show('Tip! Druk op M om de minimap te openen', 'info');
     }
 
