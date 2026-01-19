@@ -46,7 +46,7 @@ export default class Player extends MovingItem {
     this.sBucks = 0;
     this.turnDirection = 'none';
     this.moveType = 'none';
-    this.planetToGo = 'Earth';
+    this.planetToGo = 'Aarde';
     this.playerRadius = Math.max(this.image.width, this.image.height) / 2;
   }
 

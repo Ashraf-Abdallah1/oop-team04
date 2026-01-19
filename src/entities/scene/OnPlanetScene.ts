@@ -188,7 +188,7 @@ export default class OnPlanetScene extends Scene {
    * */
   public initializeLevelTwo(): void {
     this.player.setLevel(2);
-    this.alien.setPlanetsToGo(['Mercury', 'Neptune', 'Uranus', 'Mars', 'Venus', 'Jupiter', 'Saturn']);
+    this.alien.setPlanetsToGo(['Mercurius', 'Neptunus', 'Uranus', 'Mars', 'Venus', 'Jupiter', 'Saturnus']);
     this.assignNextPlanet();
     this.levelOneScene.clearScene();
     this.nextScene = this.levelOneScene;

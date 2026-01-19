@@ -8,7 +8,7 @@ import OnPlanetScene from '../OnPlanetScene.js';
 export default class LevelTwoScene extends SceneLevel {
   public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     super(canvas, player, alien);
-    this.alien.setPlanetsToGo(['Mercury', 'Neptune', 'Uranus', 'Mars', 'Venus', 'Jupiter', 'Saturn']);
+    this.alien.setPlanetsToGo(['Mercurius', 'Neptunus', 'Uranus', 'Mars', 'Venus', 'Jupiter', 'Saturnus']);
   }
 
   /**

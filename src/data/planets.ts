@@ -24,7 +24,7 @@ export const planetData: PlanetData[] = [
     ],
   },
   {
-    name: 'Mercury',
+    name: 'Mercurius',
     description: 'Je moet naar de planet die het dichtst bij de zon stat.',
     orbitRadius: 850,
     orbitSpeed: 0.00004,
@@ -64,7 +64,7 @@ export const planetData: PlanetData[] = [
     ],
   },
   {
-    name: 'Earth',
+    name: 'Aarde',
     description: 'Je moet naar planet waar mensen en dieren leven .',
     orbitRadius: 1400,
     orbitSpeed: 0.00002,
@@ -126,7 +126,7 @@ export const planetData: PlanetData[] = [
     ],
   },
   {
-    name: 'Saturn',
+    name: 'Saturnus',
     description: 'Je moet naar de planet met een grote ring om heen.',
     orbitRadius: 2750,
     orbitSpeed: 0.000007,
@@ -162,7 +162,7 @@ export const planetData: PlanetData[] = [
     ],
   },
   {
-    name: 'Neptune',
+    name: 'Neptunus',
     description: 'Je moet naar de koudste planet.',
     orbitRadius: 3600,
     orbitSpeed: 0.000004,
