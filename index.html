@@ -1,27 +1,34 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>TypeScript Game Template</title>
-        <style>
-            @font-face {
-                font-family: 'Starjedi';
-                src: url('assets/fonts//Starjedi.ttf'), format('TrueType');
-            }
-            html, body {
-                margin: 0;
-            }
-            canvas {
-                display: block;
-                margin: auto;
-            }
-            body {
-                background-image: url('assets/BackgroundSpace.png');
-                background-repeat: repeat;
-            }
-        </style>
-    </head>
-    <body>
-        <canvas id="game"></canvas>
-        <script src="build/app.js" type="module"></script>
-    </body>
+
+<head>
+    <title>TypeScript Game Template</title>
+    <style>
+        @font-face {
+            font-family: 'Starjedi';
+            src: url('./assets/fonts//Starjedi.ttf'), format('TrueType');
+        }
+
+        html,
+        body {
+            margin: 0;
+        }
+
+        canvas {
+            display: block;
+            margin: auto;
+        }
+
+        body {
+            background-image: url('./assets/BackgroundSpace.png');
+            background-repeat: repeat;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="game"></canvas>
+    <script src="build/app.js" type="module"></script>
+</body>
+
 </html>

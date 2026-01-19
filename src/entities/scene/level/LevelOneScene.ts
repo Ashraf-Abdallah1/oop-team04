@@ -23,9 +23,9 @@ export default class LevelOneScene extends SceneLevel {
    * @param delta time elapsed
    */
   public override update(delta: number): void {
-    if(this.timeToFinish > 0){
+    if (this.timeToFinish > 0) {
       this.timeToFinish -= delta;
-      if(this.timeToFinish <= 0){
+      if (this.timeToFinish <= 0) {
         return;
       }
     }
