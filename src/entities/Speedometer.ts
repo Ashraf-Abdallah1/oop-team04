@@ -7,7 +7,7 @@ export default class Speedometer extends CanvasItem {
 
   public constructor(boardsSize: Vector2) {
     super();
-    this.image = CanvasRenderer.loadNewImage('../../assets/Speedometer.png');
+    this.image = CanvasRenderer.loadNewImage('./assets/Speedometer.png');
     if (this.image) {
       this.image.onload = (): void => {
         this.position = new Vector2(

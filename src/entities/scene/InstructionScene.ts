@@ -25,8 +25,8 @@ export default class InstructionScene extends StatusScene {
 
   public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     super(canvas, player, alien);
-    this.frame = CanvasRenderer.loadNewImage('../../../assets/sci-fi/info-frame.png');
-    this.button = CanvasRenderer.loadNewImage('../../../assets/sci-fi/buttons/OK.png');
+    this.frame = CanvasRenderer.loadNewImage('./assets/sci-fi/info-frame.png');
+    this.button = CanvasRenderer.loadNewImage('./assets/sci-fi/buttons/OK.png');
   }
 
   /**

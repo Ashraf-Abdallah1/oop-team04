@@ -32,7 +32,7 @@ export default class Player extends MovingItem {
 
   public constructor(boardSize: Vector2) {
     super();
-    this.image = CanvasRenderer.loadNewImage('../../assets/rockets/Rocket.png');
+    this.image = CanvasRenderer.loadNewImage('./assets/rockets/Rocket.png');
     this.boardSize = boardSize;
     this.position = new Vector2(0, 0);
     this.acceleration = 0;
