@@ -424,13 +424,26 @@ export default class OnPlanetScene extends Scene {
         if (level < 2) {
           CanvasRenderer.drawMessage(canvas, `Level: ${this.player.getLevel() + 1}💪`, '#2196F3');
         } else {
-          //max 12
-          const countCorrectAnswers: number = this.player.getSBucks() / 100;
-          if (countCorrectAnswers > 6) {
-            CanvasRenderer.drawMessage(canvas, `Goed Gedaan  ${countCorrectAnswers} vragen zijn goed`, '#2196F3', 1000);
-          } else {
-            CanvasRenderer.drawMessage(canvas, `Kan beter, ${countCorrectAnswers} vragen zijn goed van 12 `, '#2196F3', 1000);
-          }
+          CanvasRenderer.writeText(
+            canvas,
+            'END GAME!',
+            centerX,
+            200,
+            'center',
+            'Starjedi',
+            55,
+            '#2196F3'
+          );
+
+          const correctAnswers: number = this.player.getSBucks() / 100;
+
+          const message: string = correctAnswers > 6
+            ? ` Goed gedaan! ${correctAnswers} vragen zijn correct.`
+            : ` Kan beter... ${correctAnswers} van 12 vragen zijn correct.`;
+
+          const messageColor: string = correctAnswers > 6 ? '#4CAF50' : '#F44336';
+
+          CanvasRenderer.drawMessage(canvas, message, messageColor, 1000);
           this.levelOneScene.reloadGame();
           return;
         }
