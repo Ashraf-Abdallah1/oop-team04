@@ -35,7 +35,7 @@ export default class Player extends MovingItem {
   public constructor(boardSize: Vector2) {
     super();
     this.rocketSkin = 'rocket';
-    this.image = CanvasRenderer.loadNewImage(`../../assets/rockets/${this.rocketSkin}.png`);
+    this.image = CanvasRenderer.loadNewImage(`../assets/rockets/${this.rocketSkin}.png`);
     this.boardSize = boardSize;
     this.position = new Vector2(0, 0);
     this.acceleration = 0;
@@ -58,7 +58,7 @@ export default class Player extends MovingItem {
     this.move(delta);
     this.keepPlayerWithinMap();
     this.changeSkins();
-    this.image = CanvasRenderer.loadNewImage(`../../assets/rockets/${this.rocketSkin}.png`);
+    this.image = CanvasRenderer.loadNewImage(`../assets/rockets/${this.rocketSkin}.png`);
   }
 
   private changeSkins(): void {

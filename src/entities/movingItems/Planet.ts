@@ -72,7 +72,7 @@ export default class Planet extends MovingItem {
   }
 
   public setPlanetImage(): void {
-    this.image = CanvasRenderer.loadNewImage(`../assets/planets/${this.name}.png`);
+    this.image = CanvasRenderer.loadNewImage(`assets/planets/${this.name}.png`);
 
     this.image.onload = (): void => {
       this.position = new Vector2(

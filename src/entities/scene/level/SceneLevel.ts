@@ -39,12 +39,12 @@ export default abstract class SceneLevel extends Scene {
 
   protected constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     super(canvas, player, alien);
-    this.sBucksImage = CanvasRenderer.loadNewImage('../assets/s-bucks/S-bucks.png');
-    this.sBucksHudImage = CanvasRenderer.loadNewImage('../assets/s-bucks/S-bucksHud.png');
+    this.sBucksImage = CanvasRenderer.loadNewImage('assets/s-bucks/S-bucks.png');
+    this.sBucksHudImage = CanvasRenderer.loadNewImage('assets/s-bucks/S-bucksHud.png');
     this.borderRadius = 4500;
     this.speedometer = new Speedometer(new Vector2(canvas.width, canvas.height));
     this.background = new Image();
-    this.background = CanvasRenderer.loadNewImage('../../../assets/BackgroundSpace.png');
+    this.background = CanvasRenderer.loadNewImage('../../assets/BackgroundSpace.png');
     this.minimapOffsetX = canvas.width - 10;
     this.timeToFinish = 500000;
     this.notificationManager = new NotificationManager();
