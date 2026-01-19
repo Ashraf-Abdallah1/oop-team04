@@ -7,7 +7,7 @@ import InstructionScene from '../InstructionScene.js';
 import Alien from '../../Alien.js';
 
 export default class StartScene extends StatusScene {
-  private startButton: HTMLImageElement = new Image();
+  private readonly startButton: HTMLImageElement = new Image();
 
   public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     super(canvas, player, alien);

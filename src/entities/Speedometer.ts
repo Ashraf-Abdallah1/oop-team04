@@ -42,4 +42,8 @@ export default class Speedometer extends CanvasItem {
   public setSpeed(newValue: number): void {
     this.speed = newValue;
   }
+
+  public getSpeed(): number {
+    return this.speed;
+  }
 }

@@ -6,6 +6,7 @@ import CanvasRenderer from '../../../rendering/CanvasRenderer.js';
 import Player from '../../movingItems/Player.js';
 import Alien from '../../Alien.js';
 import Speedometer from '../../Speedometer.js';
+import NotificationManager from '../../../managers/NotificationManager.js';
 
 export default abstract class SceneLevel extends Scene {
   private readonly sBucksHudImage: HTMLImageElement;
@@ -34,6 +35,8 @@ export default abstract class SceneLevel extends Scene {
 
   protected gameOver: boolean = false;
 
+  protected notificationManager: NotificationManager;
+
   protected constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     super(canvas, player, alien);
     this.sBucksImage = CanvasRenderer.loadNewImage('../assets/s-bucks/S-bucks.png');
@@ -44,6 +47,7 @@ export default abstract class SceneLevel extends Scene {
     this.background = CanvasRenderer.loadNewImage('../../../assets/BackgroundSpace.png');
     this.minimapOffsetX = canvas.width - 10;
     this.timeToFinish = 500000;
+    this.notificationManager = new NotificationManager();
   }
 
   public abstract update(delta: number): void;
@@ -72,6 +76,18 @@ export default abstract class SceneLevel extends Scene {
 
 
   /**
+   * reload the game
+   * */
+  public reloadGame(): void {
+    if (!this.isGameOVer()) {
+      this.setGameOver(true);
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
+    }
+  }
+
+  /**
    * Changes the minimap size
    */
   public changeMiniMapSize(): void {
@@ -86,8 +102,8 @@ export default abstract class SceneLevel extends Scene {
       this.miniMapRadius *= scaleChange;
       this.scale *= scaleChange;
       this.miniMapBig = true;
-      this.minimapOffsetX = this.getCanvas().width/2 + this.miniMapRadius;
-      this.minimapOffsetY = this.getCanvas().height/2 - this.miniMapRadius;
+      this.minimapOffsetX = this.getCanvas().width / 2 + this.miniMapRadius;
+      this.minimapOffsetY = this.getCanvas().height / 2 - this.miniMapRadius;
     }
   }
 
@@ -166,6 +182,19 @@ export default abstract class SceneLevel extends Scene {
   }
 
   /**
+   *  game status
+   *
+   * @return boolean game over status
+   * */
+  public isGameOVer(): boolean {
+    return this.gameOver;
+  }
+
+  public setGameOver(state: boolean): void {
+    this.gameOver = state;
+  }
+
+  /**
    * Renders al of elements in level1 on the canvas
    *
    * @param canvas the canvas to render on
@@ -175,13 +204,8 @@ export default abstract class SceneLevel extends Scene {
       CanvasRenderer.fillCanvas(canvas, 'black');
       CanvasRenderer.writeText(canvas, 'Tijd is om!', canvas.width / 2, canvas.height / 2, 'center', 'Starjedi', 72, 'white');
 
-      if (!this.gameOver) {
-        this.gameOver = true;
+      this.reloadGame();
 
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-      }
       return;
     }
 
@@ -212,7 +236,7 @@ export default abstract class SceneLevel extends Scene {
 
     this.player.render(canvas, this.player.getRotation(), this.camera.x, this.camera.y);
     this.player.getFlame().render(canvas, this.player.getFlame().getRotation(),
-      this.camera.x, this.camera.y);
+    this.camera.x, this.camera.y);
 
     CanvasRenderer.writeText(canvas, `${this.player.getSBucks()}`, this.sBucksImage.width + 30, 52, 'left', 'sans-serif', 30, '#C9C9C9');
 
@@ -228,5 +252,45 @@ export default abstract class SceneLevel extends Scene {
     this.renderExtensions(canvas);
 
     CanvasRenderer.writeText(canvas, `Time left: ${Math.ceil(this.timeToFinish / 1000)}s`, 10, 110, 'left', 'Starjedi', 24, 'white');
+
+    if (this.player.getLevel() === 2) {
+      let planetDescription: string = '';
+      this.planets.forEach((planet: Planet) => {
+        if (this.player.getPlanetToGo() == planet.getName()) {
+          planetDescription = planet.getDescription();
+        }
+      });
+      CanvasRenderer.writeText(
+        canvas,
+        planetDescription,
+        canvas.width / 2,
+        25,
+        'center',
+        'Starjedi',
+        24,
+        'white'
+      );
+    }
+
+    this.showNotifications();
+    this.notificationManager.updateAndRender(canvas);
+  }
+
+  public showNotifications(): void {
+    if (this.timeToFinish < 498000 && this.timeToFinish > 496000) {
+      this.notificationManager.show('Tip! Druk op M om de minimap te openen', 'info');
+    }
+
+    if (this.speedometer.getSpeed() >= 6000) {
+      this.notificationManager.show('Let op! Verminder snelheid om goed te kunnen sturen', 'warning');
+    }
+
+    if (this.timeToFinish <= 60000 && this.timeToFinish >= 56000) {
+      this.notificationManager.show('Je hebt nog 60 seconden over', 'warning');
+    }
+
+    if (this.timeToFinish <= 30000 && this.timeToFinish >= 26000) {
+      this.notificationManager.show('Je hebt nog 30 seconden over', 'warning');
+    }
   }
 }

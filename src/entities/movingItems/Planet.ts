@@ -6,6 +6,8 @@ import Question from '../Question.js';
 export default class Planet extends MovingItem {
   private readonly name: string;
 
+  private readonly description: string;
+
   private readonly orbitRadius: number;
 
   private midpoint: Vector2;
@@ -25,12 +27,14 @@ export default class Planet extends MovingItem {
   public constructor(
     midpoint: Vector2,
     name: string,
+    description: string,
     orbitRadius: number,
     speed: number,
     question: Question[],
   ) {
     super();
     this.name = name;
+    this.description = description;
     this.orbitRadius = orbitRadius;
     this.midpoint = midpoint;
     this.question = [];
@@ -129,5 +133,9 @@ export default class Planet extends MovingItem {
 
   public getRenderPointOfInterestKey(): boolean {
     return this.showPointOfIntrest;
+  }
+
+  public getDescription(): string{
+    return this.description;
   }
 }
