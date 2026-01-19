@@ -28,9 +28,10 @@ export default class OnPlanetScene extends Scene {
 
   private rocketImage: HTMLImageElement = new Image();
 
-  private rocketY: number = -200;
+  private rocketY: number;
 
   private rocketLanding: boolean = true;
+
   private notificationManager: NotificationManager;
 
   public constructor(
@@ -49,8 +50,9 @@ export default class OnPlanetScene extends Scene {
     this.planetImage = new Image();
     this.planetImage = CanvasRenderer.loadNewImage(`../../../assets/planets/onPlanet/On${planet.getName()}.png`);
     this.assignNextPlanet();
-    this.rocketImage.src = `../../../assets/rockets/${player.getRocketSkin()}.png`;
+    this.rocketImage.src = `../../../assets/rockets/BigRockets/${player.getRocketSkin()}.png`;
     this.notificationManager = new NotificationManager();
+    this.rocketY = -1500;
   }
 
   private assignNextPlanet(): void {
@@ -223,15 +225,22 @@ export default class OnPlanetScene extends Scene {
     const centerX: number = canvas.width / 2;
     const canvasHeight: number = canvas.height;
 
-    CanvasRenderer.drawImage(canvas, this.planetImage, 0, canvasHeight - canvas.height / 3);
+    CanvasRenderer.drawImage(canvas, this.planetImage, 0, canvasHeight - canvas.height / 6);
 
-    const rocketX = centerX - this.rocketImage.width / 2 - centerX / 1.5;
-    CanvasRenderer.drawImage(canvas, this.rocketImage, rocketX, this.rocketY, -Math.PI / 2);
+    const rocketX: number = centerX - this.rocketImage.width / 2 - centerX / 1.5;
+    CanvasRenderer.drawImage(canvas, this.rocketImage, rocketX, this.rocketY);
 
     if (this.rocketLanding) {
-      if (this.rocketY < canvasHeight - canvas.height / 2.4) {
-          this.rocketY += 2;
+      const targetY: number = canvasHeight - canvas.height / 6 + 30 - this.rocketImage.height;
+
+      const distance: number = targetY - this.rocketY;
+
+      const speed: number = Math.max(1, distance * 0.01);
+
+      if (distance > 0) {
+        this.rocketY += speed;
       } else {
+        this.rocketY = targetY;
         this.rocketLanding = false;
       }
     }
@@ -251,6 +260,7 @@ export default class OnPlanetScene extends Scene {
           starPositions.forEach((star: { x: number; y: number; size: number }) => {
             CanvasRenderer.drawStar(canvas, star.x, star.y, 5, star.size, star.size / 2, '#FFD700');
           });
+          this.rocketY -= 5;
         } else if (this.showFailureMessage) {
           CanvasRenderer.drawMessage(canvas, 'Helaas fout antwoord', '#F44336');
           this.handleNotifications();
@@ -289,14 +299,14 @@ export default class OnPlanetScene extends Scene {
             const firstQuestion: Question | undefined = this.getQuestion();
             if (firstQuestion) {
               const speechBubbleY: number = 200;
-              const speechBubbleWidth: number = 500;
+              const speechBubbleWidth: number = 600;
               const speechBubbleHeight: number = 100;
-              const speechBubbleX: number = centerX - 250;
+              const speechBubbleX: number = centerX - (speechBubbleWidth / 2);
 
               // Instellingen voor het Mission Paneel
-              const cardWidth: number = 900;
+              const cardWidth: number = 650;
               const cardHeight: number = 120;
-              const cardX: number = canvas.width - cardWidth - 200;
+              const cardX: number = (canvas.width / 2) - cardWidth / 2;
               const cardY: number = 65;
 
               CanvasRenderer.drawRoundedRect(
