@@ -36,8 +36,10 @@ export default class Player extends MovingItem {
     super();
     this.rocketSkin = 'rocket';
     this.image = CanvasRenderer.loadNewImage(`../../assets/rockets/${this.rocketSkin}.png`);
+    this.image.onload = (): void => {
+      this.position = new Vector2(0, 0);
+    };
     this.boardSize = boardSize;
-    this.position = new Vector2(0, 0);
     this.acceleration = 0;
     this.rotation = 0;
     this.flame = new Flame();
