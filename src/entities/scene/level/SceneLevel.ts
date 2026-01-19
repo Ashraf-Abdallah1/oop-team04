@@ -6,6 +6,7 @@ import CanvasRenderer from '../../../rendering/CanvasRenderer.js';
 import Player from '../../movingItems/Player.js';
 import Alien from '../../Alien.js';
 import Speedometer from '../../Speedometer.js';
+import NotificationManager from '../../../managers/NotificationManager.js';
 
 export default abstract class SceneLevel extends Scene {
   private readonly sBucksHudImage: HTMLImageElement;
@@ -30,7 +31,13 @@ export default abstract class SceneLevel extends Scene {
 
   private camera: Vector2 = new Vector2(0, 0);
 
-  public constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
+  protected timeToFinish: number;
+
+  protected gameOver: boolean = false;
+
+  protected notificationManager: NotificationManager;
+
+  protected constructor(canvas: HTMLCanvasElement, player: Player, alien: Alien) {
     super(canvas, player, alien);
     this.sBucksImage = CanvasRenderer.loadNewImage('./assets/s-bucks/S-bucks.png');
     this.sBucksHudImage = CanvasRenderer.loadNewImage('./assets/s-bucks/S-bucksHud.png');
@@ -39,6 +46,8 @@ export default abstract class SceneLevel extends Scene {
     this.background = new Image();
     this.background = CanvasRenderer.loadNewImage('./assets/BackgroundSpace.png');
     this.minimapOffsetX = canvas.width - 10;
+    this.timeToFinish = 500000;
+    this.notificationManager = new NotificationManager();
   }
 
   public abstract update(delta: number): void;
@@ -53,7 +62,6 @@ export default abstract class SceneLevel extends Scene {
    * process input for the scene
    *
    *  @param keyListener the keylistener to get input from
-   *  @param mouseListener the mouselistener to get input from
    * */
   public override processInput(keyListener: KeyListener): void {
     this.player.processInput(keyListener);
@@ -65,6 +73,18 @@ export default abstract class SceneLevel extends Scene {
     this.handleSceneSwitch(keyListener);
   }
 
+
+  /**
+   * reload the game
+   * */
+  public reloadGame(): void {
+    if (!this.isGameOVer()) {
+      this.setGameOver(true);
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
+    }
+  }
 
   /**
    * Changes the minimap size
@@ -81,8 +101,8 @@ export default abstract class SceneLevel extends Scene {
       this.miniMapRadius *= scaleChange;
       this.scale *= scaleChange;
       this.miniMapBig = true;
-      this.minimapOffsetX = this.getCanvas().width/2 + this.miniMapRadius;
-      this.minimapOffsetY = this.getCanvas().height/2 - this.miniMapRadius;
+      this.minimapOffsetX = this.getCanvas().width / 2 + this.miniMapRadius;
+      this.minimapOffsetY = this.getCanvas().height / 2 - this.miniMapRadius;
     }
   }
 
@@ -161,11 +181,33 @@ export default abstract class SceneLevel extends Scene {
   }
 
   /**
+   * status of the game
+   *
+   * @return boolean whether the game is over
+   * **/
+  public isGameOVer(): boolean {
+    return this.gameOver;
+  }
+
+  public setGameOver(state: boolean): void {
+    this.gameOver = state;
+  }
+
+  /**
    * Renders al of elements in level1 on the canvas
    *
    * @param canvas the canvas to render on
    * */
   public override render(canvas: HTMLCanvasElement): void {
+    if (this.timeToFinish <= 0) {
+      CanvasRenderer.fillCanvas(canvas, 'black');
+      CanvasRenderer.writeText(canvas, 'Tijd is om!', canvas.width / 2, canvas.height / 2, 'center', 'Starjedi', 72, 'white');
+
+      this.reloadGame();
+
+      return;
+    }
+
     this.camera.x = this.player.getPosition().x - canvas.width / 2;
     this.camera.y = this.player.getPosition().y - canvas.height / 2;
 
@@ -207,9 +249,50 @@ export default abstract class SceneLevel extends Scene {
     this.renderMinimap(canvas);
 
     this.renderExtensions(canvas);
+
+    CanvasRenderer.writeText(canvas, `Time left: ${Math.ceil(this.timeToFinish / 1000)}s`, 10, 110, 'left', 'Starjedi', 24, 'white');
+
+    if (this.player.getLevel() === 2) {
+      let planetDescription: string = '';
+      this.planets.forEach((planet: Planet) => {
+        if (this.player.getPlanetToGo() == planet.getName()) {
+          planetDescription = planet.getDescription();
+        }
+      });
+      CanvasRenderer.writeText(
+        canvas,
+        planetDescription,
+        canvas.width / 2,
+        25,
+        'center',
+        'Starjedi',
+        24,
+        'white'
+      );
+    }
+
+    this.showNotifications();
+    this.notificationManager.updateAndRender(canvas);
   }
 
-  public getPlanets(): Planet[] {
-    return this.planets;
+  /**
+   * Shows notifications to the player based on game events
+   */
+  public showNotifications(): void {
+    if (this.timeToFinish < 498000 && this.timeToFinish > 496000) {
+      this.notificationManager.show('Tip! Druk op M om de minimap te openen', 'info');
+    }
+
+    if (this.speedometer.getSpeed() >= 6000) {
+      this.notificationManager.show('Let op! Verminder snelheid om goed te kunnen sturen', 'warning');
+    }
+
+    if (this.timeToFinish <= 60000 && this.timeToFinish >= 56000) {
+      this.notificationManager.show('Je hebt nog 60 seconden over', 'warning');
+    }
+
+    if (this.timeToFinish <= 30000 && this.timeToFinish >= 26000) {
+      this.notificationManager.show('Je hebt nog 30 seconden over', 'warning');
+    }
   }
 }
