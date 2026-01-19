@@ -64,15 +64,18 @@ export default class Player extends MovingItem {
   }
 
   private changeSkins(): void {
-      if (this.sBucks < 500) {
-        this.rocketSkin = 'Rocket';
-      } if (this.sBucks >= 500) {
-        this.rocketSkin = 'Rocket1';
-      } if (this.sBucks >= 1000) {
-        this.rocketSkin = 'Rocket2';
-      } if (this.sBucks >= 1500) {
-        this.rocketSkin = 'Rocket3';
-      }
+    if (this.sBucks < 500) {
+      this.rocketSkin = 'Rocket';
+    }
+    if (this.sBucks >= 500) {
+      this.rocketSkin = 'Rocket1';
+    }
+    if (this.sBucks >= 1000) {
+      this.rocketSkin = 'Rocket2';
+    }
+    if (this.sBucks >= 1500) {
+      this.rocketSkin = 'Rocket3';
+    }
   }
 
   /**
