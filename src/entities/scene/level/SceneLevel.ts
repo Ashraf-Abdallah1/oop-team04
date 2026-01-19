@@ -62,7 +62,6 @@ export default abstract class SceneLevel extends Scene {
    * process input for the scene
    *
    *  @param keyListener the keylistener to get input from
-   *  @param mouseListener the mouselistener to get input from
    * */
   public override processInput(keyListener: KeyListener): void {
     this.player.processInput(keyListener);
@@ -182,10 +181,10 @@ export default abstract class SceneLevel extends Scene {
   }
 
   /**
-   *  game status
+   * status of the game
    *
-   * @return boolean game over status
-   * */
+   * @return boolean whether the game is over
+   * **/
   public isGameOVer(): boolean {
     return this.gameOver;
   }
@@ -236,7 +235,7 @@ export default abstract class SceneLevel extends Scene {
 
     this.player.render(canvas, this.player.getRotation(), this.camera.x, this.camera.y);
     this.player.getFlame().render(canvas, this.player.getFlame().getRotation(),
-    this.camera.x, this.camera.y);
+      this.camera.x, this.camera.y);
 
     CanvasRenderer.writeText(canvas, `${this.player.getSBucks()}`, this.sBucksImage.width + 30, 52, 'left', 'sans-serif', 30, '#C9C9C9');
 
@@ -276,6 +275,9 @@ export default abstract class SceneLevel extends Scene {
     this.notificationManager.updateAndRender(canvas);
   }
 
+  /**
+   * Shows notifications to the player based on game events
+   */
   public showNotifications(): void {
     if (this.timeToFinish < 498000 && this.timeToFinish > 496000) {
       this.notificationManager.show('Tip! Druk op M om de minimap te openen', 'info');

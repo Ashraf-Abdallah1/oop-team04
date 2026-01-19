@@ -7,7 +7,6 @@ import LevelOneScene from './level/LevelOneScene.js';
 import Player from '../movingItems/Player.js';
 import Question from '../Question.js';
 import Alien from '../Alien.js';
-import LevelTwoScene from './level/LevelTwoScene.js';
 import NotificationManager from '../../managers/NotificationManager.js';
 
 
@@ -21,8 +20,6 @@ export default class OnPlanetScene extends Scene {
   protected showFailureMessage: boolean = false;
 
   protected levelOneScene: LevelOneScene;
-
-  protected levelTwoScene: LevelTwoScene | undefined;
 
   protected planetImage: HTMLImageElement;
 
@@ -40,12 +37,10 @@ export default class OnPlanetScene extends Scene {
     planet: Planet,
     alien: Alien,
     levelOneScene: LevelOneScene,
-    levelTwoScene ?: LevelTwoScene,
   ) {
     super(canvas, player, alien);
     this.onPlanet = planet;
     this.levelOneScene = levelOneScene;
-    this.levelTwoScene = levelTwoScene;
 
     this.planetImage = new Image();
     this.planetImage = CanvasRenderer.loadNewImage(`../../../assets/planets/onPlanet/On${planet.getName()}.png`);
