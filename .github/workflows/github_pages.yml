@@ -43,7 +43,6 @@ jobs:
             --exclude=.git \
             --exclude=.github \
             --exclude=src \
-            --exclude=assets \
             --exclude=node_modules \
             .
       - name: Upload artifact
