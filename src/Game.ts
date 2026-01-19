@@ -27,7 +27,7 @@ export default abstract class Game {
   /**
    * The current mode of the gameloop
    */
-  private readonly mode: number;
+  private mode: number;
 
   /**
    * The current state of this gameloop
