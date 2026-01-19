@@ -39,7 +39,7 @@ export default class OnPlanetScene extends Scene {
     this.levelTwoScene = levelTwoScene;
 
     this.planetImage = new Image();
-    this.planetImage = CanvasRenderer.loadNewImage(`../../../assets/planets/onPlanet/On${planet.getName()}.png`);
+    this.planetImage = CanvasRenderer.loadNewImage(`../../assets/planets/onPlanet/On${planet.getName()}.png`);
     this.assignNextPlanet();
   }
 
