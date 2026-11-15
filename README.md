@@ -1,4 +1,4 @@
-# Space Taxi 🚀
+# Space Taxi
 
 An educational browser game about the solar system, built with **TypeScript** and the **HTML5 Canvas API** — no game engine, no framework.
 
