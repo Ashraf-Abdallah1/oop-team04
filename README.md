@@ -60,8 +60,8 @@ src/
 Requires [Node.js](https://nodejs.org/) 22 or newer.
 
 ```bash
-git clone https://github.com/Ashraf-Abdallah1/oop-team04.git
-cd oop-team04
+git clone https://github.com/Ashraf-Abdallah1/space-taxi.git
+cd space-taxi
 npm install
 npm run build
 ```
