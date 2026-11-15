@@ -1,44 +1,93 @@
-# Installing TypeScript
+# Space Taxi 🚀
 
-This is a skeleton app for people who want to use TypeScript. 
+An educational browser game about the solar system, built with **TypeScript** and the **HTML5 Canvas API** — no game engine, no framework.
 
-## Preparation
+You are a taxi pilot in space. Pick up alien passengers, fly them to the right planet and answer a question about that planet to earn S-Bucks and unlock better rockets.
 
-### Local NodeJS
+> First-year group project for the Object-Oriented Programming course, HBO-ICT at HZ University of Applied Sciences (2025–2026).
 
-1. Install [NodeJS](https://nodejs.org/en/download/). This will automatically also install `npm`.
-2. Open a terminal window (command prompt, git bash, powershell)
-3. Check if NodeJS is installed by typing `node --version` into the terminal. It should print a line with something like `v22.11.0`.
-4. Check if NPM is installed by typing  `npm --version` into the terminal. It should print a line with something like `10.9.0`.
+## Gameplay
 
-### Docker
+- Fly your rocket through a solar system with orbiting planets
+- Follow the minimap to the planet where a passenger is waiting
+- Bring the alien to its destination, described by a hint ("the planet closest to the sun")
+- Answer a multiple-choice question about the planet to earn **S-Bucks**
+- Your rocket upgrades at 500, 1000 and 1500 S-Bucks
+- Two levels, a timer and an end screen with your result
 
-If you dislike NodeJS and NPM piling up heaps of folders on your computer, use Docker!
+The in-game text and questions are in Dutch; the game is aimed at primary-school children.
 
-1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop).
-2. Open a terminal window.
-3. Clone this repository.
-4. Move to this folder inside the terminal.
-5. Run `docker run -it --rm -v .:/app -w /app node:lts bash`.
-6. You will now get a **bash** terminal from which you can execute commands.
-   - From the **bash** terminal you can execute `node --version` and `npm --version`.
-   - All commands executed in this environment will have an inpact on your project.
-7. Once finished, you can type `exit`.
+### Controls
 
-## Instructions
+| Key | Action |
+|---|---|
+| Arrow keys / WASD | Steer the rocket |
+| E | Land on a planet / interact |
+| M | Enlarge or shrink the minimap |
+| Mouse | Buttons and answers |
 
-1. Clone or download this repository to your computer
-2. Open a terminal or docker container in the project directory.
-3. Install the dependencies by running `npm install`.
-4. Compile the project by running `npm run build`. If you want to run the build script everytime you make changes automatically, you can use `npm run watch`.
-5. Run the application. You cannot just open the `index.html` file (see the following section). 
+## Tech
 
-### Webserver
+- **TypeScript 5.8** in strict mode, compiled to ES modules
+- **HTML5 Canvas** for all rendering
+- **ESLint** with stylistic and JSDoc rules
+- **GitHub Actions** workflow that builds the game and publishes it to GitHub Pages
 
-Applications built with es6 (and higher) modules must be run on a webserver. On Visual Studio Code, [Five Server](https://marketplace.visualstudio.com/items?itemName=yandeu.five-server) is recommended.
+## Architecture
 
-An example `index.html` is provided. **You cannot load the index.html from your filesystem. It will not work!**
+The game is fully object-oriented. A class diagram is included: [`classdiagram-space-taxi.svg`](classdiagram-space-taxi.svg).
 
-## Recommended VS Code Extension
- - To use the provided `.editorconfig` file, install the [EditorConfig](https://editorconfig.org/#download) plugin.
- - To use the provided `eslint.config.mjs` file, install the [ESLint](https://eslint.org/docs/user-guide/integrations) plugin.
+```
+src/
+├── app.ts, BaseGame.ts, Game.ts   game loop and entry point
+├── data/                          planets, hints and questions (DTOs)
+├── entities/
+│   ├── movingItems/               Player, Planet (inherit from MovingItem)
+│   ├── scene/                     Start, Instruction, Level one/two, OnPlanet, Status
+│   └── Alien, Question, Flame, Speedometer
+├── input/                         KeyListener, MouseListener
+├── managers/                      NotificationManager
+├── rendering/                     CanvasRenderer
+└── utils/                         Vector2
+```
+
+- **Inheritance and abstract classes**: `CanvasItem → MovingItem → Player / Planet` and `Scene → SceneLevel → LevelOneScene / LevelTwoScene`
+- **Scene pattern**: every screen is a scene with its own `processInput`, `update` and `render`
+- **Composition**: a `Planet` owns its `Question` objects; data is kept apart from logic in `data/`
+
+## Run it locally
+
+Requires [Node.js](https://nodejs.org/) 22 or newer.
+
+```bash
+git clone https://github.com/Ashraf-Abdallah1/oop-team04.git
+cd oop-team04
+npm install
+npm run build
+```
+
+Then serve the folder with any local web server, for example `npx serve .`, and open the shown address. Opening `index.html` straight from disk does not work, because the game uses ES modules.
+
+Use `npm run watch` to recompile on every change.
+
+## My contribution
+
+I made the most commits in the team. My main work:
+
+- Base classes `CanvasItem` and `MovingItem`, and the `Player` with movement and collision checks
+- The scene structure (`Scene`, `SceneLevel`) and the second level
+- Landing on a planet: the on-planet screen, the question flow and feedback on wrong answers
+- The passenger delivery logic (which planet the alien wants to go to next)
+- Timer, end screen and restarting the game
+- Several refactoring rounds and the folder structure
+- Fixing the GitHub Pages deployment workflow
+
+## Team
+
+Built by team 04: [Ashraf-Abdallah1](https://github.com/Ashraf-Abdallah1), [Arootsy](https://github.com/Arootsy), [RenzoMoretti](https://github.com/RenzoMoretti) and [verm0205](https://github.com/verm0205).
+
+Based on the TypeScript game skeleton by HZ University of Applied Sciences.
+
+## License
+
+MIT, see [LICENSE](LICENSE).
